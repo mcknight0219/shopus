@@ -26,6 +26,12 @@ Route::get('/', function () {
 |
 */
 
-Route::group(['middleware' => ['web']], function () {
-    //
+
+Route::group(['middleware' => ['cms']], function () {
+    
+});
+
+
+Route::group(['middleware' => ['weixin']], function () {
+    Route::controller('/', 'MainController');
 });
