@@ -10,22 +10,16 @@ class MessageMeta extends Model
 {
     protected $table = 'messageMetas';
 
-    /**
-     * Create message meta for a specific type
-     * @param \App\MessageType $type
-     * @param $json
-     */
-    public static function createOfType(MessageType $type, Array $json) {
-        if ($type === MessageType::UNKNOWN || count($json) == 0) {
+    public static function create($msgId, Array $props) {
+        if( is_null($msgId) || count($props) == 0 ) {
             Log::warning('Message type is invalid or json is empty');
             return;
         }
 
         $meta = new MessageMeta;
-        if ($type === MessageType::Text) {
-            $meta->type = 'text';
-
-        }
+        $meta->id = $msgId;
+        $meta->meta = json_encode($props);
+        $meta->save();
     }
 
     // Return a json instead of string
