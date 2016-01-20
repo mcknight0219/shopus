@@ -18,13 +18,12 @@ class MainController extends Controller
             }
             return "";
         }
-
     }
 
     /**
      * Receive normal user message and save them in database
      * @param  Request $request 
-     * @return [type]           [description]
+     * @return Response
      */
     public function postIndex(Request $request) 
     {
@@ -56,6 +55,6 @@ class MainController extends Controller
         $tmpStr = implode($tmpArr);
         $tmpStr = sha1($tmpStr);
 
-        return tmpStr === $signature;
+        return $tmpStr === $signature;
     }
 }
