@@ -3,9 +3,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Event extends Model
+class Outbound extends Model
 {
-    protected $table = "events";
+    protected $table = 'outbounds';
 
     public function message()
     {

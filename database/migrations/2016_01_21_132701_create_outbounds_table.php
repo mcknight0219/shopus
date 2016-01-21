@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMessageMetasTable extends Migration
+class CreateOutboundsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,9 +12,9 @@ class CreateMessageMetasTable extends Migration
      */
     public function up()
     {
-        Schema::create('messageMetas', function(Blueprint $table) {
-            $table->bigInteger('id')->primary();
-            $table->json('meta');
+        Schema::create('outbounds', function(Blueprint $table) {
+            $table->increments('id');
+            $table->json('content');
         });
     }
 
@@ -25,6 +25,6 @@ class CreateMessageMetasTable extends Migration
      */
     public function down()
     {
-        Schema::drop('messagesMetas');
+        Schema::drop('outbounds');
     }
 }

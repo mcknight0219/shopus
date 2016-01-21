@@ -14,12 +14,10 @@ class CreateEventsTable extends Migration
     {
         Schema::create('events', function(Blueprint $table) {
             $table->increments('id');
-            $table->string('toUserName');
-            $table->string('fromUserName');
-            $table->time('createTime');
             $table->enum('event', ['subscribe', 'unsubscribe', 'scan', 'location', 'click', 'view']);
-            // may contains eventKey or other event-sepcific data
-            $table->json('data');
+            $table->string('eventKey');
+            // only applies to subscribe/scan. Stores the ticket of qr code
+            $table->string('ticket');
         });
     }
 

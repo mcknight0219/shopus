@@ -1,11 +1,12 @@
 <?php
+
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Event extends Model
+class Inbound extends Model
 {
-    protected $table = "events";
+    protected $table = "inbounds";
 
     public function message()
     {
