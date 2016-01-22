@@ -56,10 +56,22 @@ class Outbound extends Model
         return json_decode($value, true);
     }
 
-    public function addArticle()
+    /**
+     * Addd article to content
+     * 
+     * @param String $title       
+     * @param String $description 
+     * @param String $picUrl      link to JPG or PNG format. 360x200 for first article and 200x200 for rest
+     * @param String $url         link when news clicked
+     */
+    public function addArticle($title, $description, $picUrl, $url)
     {
         $content = $this->content;
-        $size = ;
+        $size = array_key_exists('ArticleCount', $content) ? $content['ArticleCount'] : 0;
+        if( !$size ) {
+            $content['ArticleCount'] = 0;
+        }
+
         
     }
 }
