@@ -14,7 +14,7 @@ class CreateAppSecretsTable extends Migration
     {
         Schema::create('app_secrets', function(Blueprint $table) {
             // Permanent information about application
-            $table->string('appID');
+            $table->string('appId');
             $table->string('appSecret');
             $table->string('weixinApiEndpoint');
             $table->string('token', 32);

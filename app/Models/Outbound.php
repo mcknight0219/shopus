@@ -14,7 +14,7 @@ class Outbound extends Model
     }
 
     // Turn message to xml string so we can send them as response
-    public function xml()
+    public function toXml()
     { 
         $xml = new SimpleXML('<xml/>');
         array_map(function ($tag) use ($this) {
@@ -26,8 +26,7 @@ class Outbound extends Model
         $type = $this->message()->msgType;
         switch (true) {
             case strstr($type, 'news'):
-                // most important message. we use them for arrival of new items
-                // and promotion event
+                
 
                 break;
             case strstr($type, 'text'):
@@ -40,10 +39,8 @@ class Outbound extends Model
                 $xml->addChild('MediaId', $this->content['MediaId']);
                 break;
             case strstr($type, 'video'):
-                Log::warning('Video outbound message is not implemented !');
-                break;
             case strstr($type, 'music'):
-                Log::warning('Music outbound message is not implemented !');
+                Log::warning('Music/Video outbound message is not implemented !');
                 break;
             default:
                 Log::error('Not supported message type !');       
@@ -53,14 +50,16 @@ class Outbound extends Model
         return $dom->ownerDocument->saveXML($dom->ownerDocument->documentElement);
     }
 
+    // Return in array format
     public function getContentAttribute($value)
     {
-        return json_decode($value);
-    }
-    
-    public function articles()
-    {
-        
+        return json_decode($value, true);
     }
 
+    public function addArticle()
+    {
+        $content = $this->content;
+        $size = ;
+        
+    }
 }
