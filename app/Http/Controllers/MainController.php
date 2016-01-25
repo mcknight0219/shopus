@@ -7,16 +7,16 @@ use Illuminate\Http\Request;
 use DB;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\MessageFactory;
+use App\GrandDispatcher;
 
 class MainController extends Controller
 {
     public function getIndex(Request $request) 
     {
         if ($this->isCheckSignature($request)) {
-            if ($this->isCheckSignature($request)) {
-                return $request->input['echostr'];
-            }
-            return "";
+            if ($this->isCheckSignature($request)) return $request->input['echostr'];
+            else return "";
         }
     }
 
@@ -29,7 +29,14 @@ class MainController extends Controller
     {
         if ($request->post()) {
             $body = $request->getContent();
-            Message::fromXML($body);
+            $node = new SimpleXML($body);
+			try {
+				$msg = (new MessageFactory())->create($node->MsgType, $node);
+				$action = GrandDispatcher::handle($msg);
+				
+			} catch(Exception $e) {
+				
+			}
         }
     }
 
