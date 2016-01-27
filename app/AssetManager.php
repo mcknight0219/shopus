@@ -5,7 +5,7 @@ use GuzzleHttp\Client;
 use Log;
 use App\Models\AccessToken;
 use App\Models\Outbound;
-
+use Sunra\PhpSimple;
 
 class ErrorResponseException extends Exception;
 class SizeAndFormatException extends Exception;
@@ -25,8 +25,8 @@ class AssetManager
 
     function __construct()
     {
-        $client = new Client(['baseUri' => 'https://api.weixin.qq.com/cgi-bin']);
-        $token = new AccessToken;
+        $this->client = new Client(['baseUri' => 'https://api.weixin.qq.com/cgi-bin']);
+        $this->token = new AccessToken;
     }
 
     protected function guardResponse($response)
@@ -37,8 +37,7 @@ class AssetManager
         }
     }
 
-
-    protected function guardSizeAndFormat($type, $filepath, &$meta)
+    protected function guardSizeAndFormat($type, $filepath)
     {
         $fileInfo = $this->analyzeFile($filepath);
         if( array_key_exists('error', $fileinfo) ) {
@@ -62,10 +61,6 @@ class AssetManager
         if( $type === 'voice' && $fileinfo['playtime_seconds'] > 60) {
             throw new SizeAndFormatException;
         }
-
-        $meta['filelength'] = $filesize;
-        $meta['content-type'] = $fileformat;
-        $meta['filename'] = $fileinfo['filename'];
     }
 
     /**
@@ -102,33 +97,30 @@ class AssetManager
     public function assetsCount()
     {
         try {
-            $resp = json_decode($client->request('GET', 'material/get_materialcount', [
+            $resp = json_decode($this->client->request('GET', 'material/get_materialcount', [
                 'query' => [
-                    'access_token' => $token->get()
+                    'access_token' => $this->token->get()
                 ]
             ])->getBody(), true);
             guardResponse($resp);
             return $resp;
-        } catch(ErrorResponseException $e) {
-            return [];
         } catch(Exception $e) {
-            Log::error('Http request error: ' . $e->getMessage());
-            return [];
+            Log::error($e->getMessage());
+            return FALSE;
         }
     }
 
     public function assetsList($type)
     {
-        $lists = [];
         if( !in_array(strtolower($type), ['image', 'video', 'voice', 'news']) ) {
             Log::error("Unknown asset type: ${type}");
-            return $lists;
+            return FALSE;
         }
 
         try {
             $offset = 0; $total = 0;
             while (true) {
-                $resp = client->request('POST', 'material/batchget_material', [
+                $resp = $this->client->request('POST', 'material/batchget_material', [
                     'query' => ['access_token' => $token->get()],
                     'body'  => [
                         'type'  => $type,
@@ -136,23 +128,19 @@ class AssetManager
                         'count' => 20
                     ]
                 ]);
-                $decoded = json_decode($resp->getBody(), true);
-                guardResponse($decoded);
+                $respBody = json_decode($resp->getBody(), true);
+                guardResponse($respBody);
 
-                $count = $decoded['item_count'];
+                $count = $respBody['item_count'];
                 $total += $count;
-                if( $total === $decoded['total_count'] ) break;
+                if( $total === $respBody['total_count'] ) break;
                 else $offset = $total;
 
-                $lists = array_merge($lists, $decoded['item']);
+                return array_merge($lists, $respBody['item']);
             }
-        } catch(ErrorResponseException $e) {
-            $lists =  [];
         } catch(Exception $e) {
-            Log::error('Http request error: ' . $e->getMessage());
-            $lists =  [];
-        } finally {
-            return $lists;
+            Log::error($e->getMessage());
+            return FALSE;
         }
     }
 
@@ -162,23 +150,21 @@ class AssetManager
      *      
      * @param  string $type     supported types of material
      * @param  string $filepath file location for material
-     * @return array            contains mediaId server generates for us
+     * @return mixed            FALSE on failure, array of response on success
      */
     public function upload($type, $filepath)
     {
-        $info = [];
         if( !is_string($type) || !in_array($type, ['image', 'voice', 'video', 'thumb']) ) {
             Log::error("Unknown asset type: ${type}");
-            return
+            return FALSE;
         }
 
         try {
-            $meta = [];
-            $this->guardSizeAndFormat($type, $filepath, $meta);
-            $resp = $client->request('POST', 'media/upload', [
+            $this->guardSizeAndFormat($type, $filepath);
+            $resp = $this->client->request('POST', 'media/upload', [
                 'query' => [
                     'type' => $type,
-                    'access_token' => $token->get()
+                    'access_token' => $this->token->get()
                 ],
                 'multipart' => [
                     [
@@ -187,18 +173,12 @@ class AssetManager
                     ]
                 ]
             ]);
-            $decoded = json_decode($resp->getBody());
-            $this->guardResponse($decoded);
-            $info = $decoded;
-        } catch(ErrorResponseException $e) {
-            $info = [];
-        } catch(SizeAndFormatException $e) {
-            // do nothing
+            $respBody = json_decode($resp->getBody());
+            $this->guardResponse($respBody);
+            return $respBody;
         } catch(Exception $e) {
             Log::error('Http request error: ' . $e->getMessage());
-            $info = [];
-        } finally {
-            return $info;
+            return FALSE;
         }
     }
 
@@ -217,10 +197,10 @@ class AssetManager
         }
         
         try {
-            $resp = $client->request('GET', 'media/get', [
+            $resp = $this->client->request('GET', 'media/get', [
                 'query' => [
                     'media_id' => $mediaId,
-                    'access_token' => $token->get()
+                    'access_token' => $this->token->get()
                 ],
                 'stream' => true
             ]);
@@ -240,13 +220,87 @@ class AssetManager
         }
     }
 
+    // All external image url in article content is discarded. It needs to
+    // be uploaded to weixin server and use their provided url instead.
+    // 
+    // The function automatically converts any non-tencent image link
+    protected function preprocessArticleContent($html)
+    {
+        $html = str_get_html($html);
+        foreach( $html->find('img') as $element ) {
+            $link = $element->src;
+            
+        }
+    }
+
     /**
      * Add permanent material to server
      * 
-     * @param Outbound $news The model for news outbound message
+     * @param Array $attributes
+     * @return  mixed  FALSE on failure, array of response(contains mediaId) on success
      */
-    public function addNews(Outbound $news)
+    public function createArticle(Array $attributes)
     {
-        
+        static $attrs = ['title', 'cover', 'author', 'digest', 'content', 'url'];
+        if( !array_reduce($attrs, function($carry, $a) { return $carry && array_key_exists($a, $attributes); }, true) {
+            Log::warning('Must provide all fields to create an article');
+            return FALSE;
+        }
+
+        try {
+            $resp = $this->client->request('POST', 'material/add_news', [
+                'query' => ['access_token' => $this->token->get()],
+                'body' => [
+                    'title' => $attributes['title'],
+                    'thumbnail_media_id' => $attributes['cover'],
+                    'author' => $attributes['author'],
+                    'digest' => $attributes['digest'],
+                    'show_cover_pic' => 1,
+                    'content' => $attributes['content'],
+                    'content_source_url' => $attributes['url']
+                ]
+            ]);
+            $respBody = json_decode($resp->getBody());
+            $this->guardResponse($respBody);
+            return $respBody;
+        } catch (ErrorResponseException $e) {
+            return FALSE;
+        } catch (Exception $e) {
+            Log::error('Http request error: ' . $e->getMessage());
+            return FALSE;
+        }
+    }
+
+    /**
+     * Create permanent material for media file. 
+     * @param  string $pathOrUrl either url or local path
+     * @return mixed            FALSE on failure, array of response on success
+     */
+    protected function createMedia($type, $pathOrUrl)
+    {
+        if( $type !== 'image' ) { LOG::error('Not implemented for other media type'); return FALSE; }
+        try {
+            $this->guardSizeAndFormat($type, $pathOrUrl);
+            $resp = $this->client->request('POST', 'material/add_material', [
+                'query' => ['access_token' => $this->token->get()],
+                'multipart' => [
+                    [
+                        'name' => 'media',
+                        'content' => fopen($pathOrUrl, 'r');
+                    ]
+                ]
+            ]);
+            $respBody = json_decode($resp->getBody());
+            $this->guardResponse($respBody);
+            return $respBody;
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return FALSE;
+        }
+    }
+
+    public function createImage($pathOrUrl)
+    {
+        return $this->createMedia('image', $pathOrUrl);
     }
 }
