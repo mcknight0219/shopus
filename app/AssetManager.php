@@ -227,14 +227,31 @@ class AssetManager
     protected function preprocessArticleContent($html)
     {
         $html = str_get_html($html);
+        static $host = 'mmbiz.qpic.cn';
         foreach( $html->find('img') as $element ) {
             $link = $element->src;
-            
+            if( parse_url($link)['host'] !== $host ) {
+                $resp = $this->client->request('POST', 'uploadimg', [
+                    'query' => ['access_token' => $this->token->get()],
+                    'multipart' => [
+                        [
+                            'name' => 'media',
+                            'content' => fopen($link, 'r')
+                        ]
+                    ]
+                ]);
+                $respBody = json_decode($resp);
+                // no need to panic, server will remove that link for us
+                if( array_key_exists('url', $respBody) ) $element->src = $respBody['url'];
+                else continue;
+            }       
         }
+
+        return $html->save();
     }
 
     /**
-     * Add permanent material to server
+     * Create news material. Only support single 
      * 
      * @param Array $attributes
      * @return  mixed  FALSE on failure, array of response(contains mediaId) on success
@@ -256,7 +273,7 @@ class AssetManager
                     'author' => $attributes['author'],
                     'digest' => $attributes['digest'],
                     'show_cover_pic' => 1,
-                    'content' => $attributes['content'],
+                    'content' => $this->preprocessArticleContent($attributes['content']),
                     'content_source_url' => $attributes['url']
                 ]
             ]);
@@ -272,7 +289,43 @@ class AssetManager
     }
 
     /**
+     * Update the news already stored
+     * @param  String $mediaId
+     * @param  Array  $attributes
+     * @return Boolean            
+     */
+    public function updateArticle($mediaId, Array $attributes)
+    {
+        try {
+            $resp = $this->client->request('POST', 'material/update_news', [
+                'query' => ['access_token' => $this->token->get()],
+                'body' => [
+                    'media_id' => $mediaId,
+                    'articles' => [
+                        'title' => $attributes['title'],
+                        'author' => $attributes['author'],
+                        "thumb_media_id" => $attributes['cover'],
+                        "digest" => $attributes['digest'],
+                        "show_cover_pic" => 1,
+                        "content" => $this->preprocessArticleContent($attributes['content']),
+                        "content_source_url" => $attributes['url']
+                    ]
+                ]
+            ]);
+            $respBody = json_encode($resp);
+            if( $respBody['errcode'] !== 0 ) {
+                Log::error('Updating news failed: ' . $respBody['errmsg']);
+                return FALSE;
+            }
+            return TRUE;
+        } catch (Exception $e) {
+            return FALSE;
+        }           
+    }
+
+    /**
      * Create permanent material for media file. 
+     * 
      * @param  string $pathOrUrl either url or local path
      * @return mixed            FALSE on failure, array of response on success
      */
@@ -302,5 +355,27 @@ class AssetManager
     public function createImage($pathOrUrl)
     {
         return $this->createMedia('image', $pathOrUrl);
+    }
+
+
+    /**
+     * Remove a material given media id
+     *         
+     * @param  String $mediaId
+     * @return mixed 
+     */
+    public function delete($mediaId)
+    {
+        try {
+            $resp = $this->client->request('POST', 'material/del_material', [
+                'query' => ['access_token' => $this->token->get()],
+                'body'  => ['media_id' => $mediaId]
+            ]);
+            $respBody = json_decode($resp);
+            $this->guardResponse($respBody);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return FALSE;
+        }
     }
 }

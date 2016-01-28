@@ -28,7 +28,8 @@ Route::get('/', function () {
 
 
 Route::group(['middleware' => ['cms']], function () {
-    
+    Route::controller('/cms/login', 'Auth\AuthController');
+    Route::get('/cms/logout', 'Auth\AuthController@getLogout');  
 });
 
 
