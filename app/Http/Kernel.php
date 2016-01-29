@@ -31,6 +31,9 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
         ],
 
+        'weixin' => [
+        ],
+
         'api' => [
             'throttle:60,1',
         ],

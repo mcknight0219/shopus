@@ -27,9 +27,10 @@ Route::get('/', function () {
 */
 
 
-Route::group(['middleware' => ['cms']], function () {
-    Route::controller('/cms/login', 'Auth\AuthController');
-    Route::get('/cms/logout', 'Auth\AuthController@getLogout');  
+Route::group(['middleware' => ['web']], function () {
+    Route::get('/cms/login',    'Auth\AuthController@getLogin');
+    Route::post('/cms/login',   'Auth\AuthController@postLogin');
+    Route::get('/cms/logout',   'Auth\AuthController@getLogout');  
 });
 
 
