@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="pure-u-1-4"></div>
-    {!! Form::open(['id' => 'loginForm', 'class' => implode(' ', ['pure-form', 'pure-u-1', 'pure-u-sm-1-2', 'pure-form-stacked'])])!!}
+    {!! Form::open(['id' => 'loginForm', 'autocomplete' => 'off', 'class' => implode(' ', ['pure-form', 'pure-u-1', 'pure-u-sm-1-2', 'pure-form-stacked'])])!!}
     
     <div class="margintop2"></div>
 
@@ -15,11 +15,11 @@
     <div class="right"><a href="/cms/register">Create Account</a></div>
     {!! Form::label('email', 'Email:', ['class' => 'control-label']) !!}
 
-    {!! Form::email('email', null, ['class' => 'pure-input-1', 'placeholder' => 'your@email.com', 'autofocus', 'tabindex' => '1']) !!}
+    {!! Form::email('email', null, ['class' => 'pure-input-1', 'placeholder' => 'your@email.com', 'autofocus', 'tabindex' => '1', 'autocomplete' => 'off']) !!}
 
     {!! Form::label('password', 'Password:', ['class' => 'control-label margintop1 inlineblock']) !!}
 
-    {!! Form::password('password', ['class' => "pure-input-1 ", 'tabindex' => '2', 'id' => 'password']) !!}
+    {!! Form::password('password', ['class' => "pure-input-1 ", 'tabindex' => '2', 'id' => 'password', 'autocomplete' => 'off']) !!}
 
     <div class="margintop1 centertext">
         {!! Form::button('LOG IN', ['class' => 'borderedbutton', 'tabindex' => '3']) !!}

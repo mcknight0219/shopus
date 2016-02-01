@@ -5,33 +5,12 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use Validator;
 use Session;
+use Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
 class AuthController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Registration & Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users, as well as the
-    | authentication of existing users. By default, this controller uses
-    | a simple trait to add these behaviors. Why don't you explore it?
-    |
-    */
-
-    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
-
-    /**
-     * Where to redirect users after login / registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/';
-
     /**
      * Create a new authentication controller instance.
      *
@@ -39,11 +18,16 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => 'logout']);
     }
 
+
+    public function getLogout()
+    {
+        Auth::logout();
+        return redirect()->action('CmsController@index');
+    }
     
-    public function getLogin()
+    public function getLogin(Request $request)
     {
         return view('login')->with('loginError', []);
     }
@@ -53,8 +37,18 @@ class AuthController extends Controller
         $input  = $request->all();
         $email  = $input['email'];
         $pass   = $input['password'];
-        if( strlen($email) === 0 )  return redirect()->action('Auth\AuthController@getLogin');
         
+        $user = User::where('email', $email)->first();
+        if( $user === null ) {
+            return view('login')->with('loginError', ['Email doesn\'t have an account associated with it']);
+        }
+
+        if( !$this->authenticateUser($user, $pass) ) {
+            return view('login')->with('loginError', ['Incorrect password']);
+        }
+
+        Auth::login($user);
+        return redirect()->action('CmsController@index');
     }
 
     public function getRegister()
@@ -68,44 +62,24 @@ class AuthController extends Controller
         $email = $input['email'];
         $password = $input['password'];
 
-        if( strlen($email) === 0 ) {
-            return redirect()->action('Auth\AuthController@getRegister');
-        }
-
-        if( count(User::where('email', $email)->get()) > 0 ) {
+        if( User::where('email', $email)->first() ) {
             return view('register')->with('registerError', ['Email has been registered']);
         }
         
-        $user = new User($input);
+        try {
+            $user = new User($input);
+            $user->password = password_hash($password, PASSWORD_BCRYPT);
+            $user->save();
+
+            Auth::login($user);
+            return redirect()->action('CmsController@index');
+        } catch( Exception $e) {
+            return view('erros.503');
+        }
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
+    protected function authenticateUser($user, $password)
     {
-        return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|confirmed|min:6',
-        ]);
-    }
-
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
+        return password_verify($password, $user->password);
     }
 }

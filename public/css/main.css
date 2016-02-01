@@ -12,6 +12,9 @@ h1, h2, h4, h5, h6, .title {
   font-family: Trebuchet MS, Droid Sans;
   font-weight: normal; }
 
+h2 {
+  margin-top: 1.5em;
+}
 a, .linkcolor, .title {
   color: #ff0000;
   text-decoration: none; }
@@ -94,6 +97,9 @@ a, .linkcolor, .title {
 
 .alert {
   color: #fc1b0f;
-  border-color: #fc1b0f; }
+  border-color: #fc1b0f; 
+}
+
+
 
 /*# sourceMappingURL=main.css.map */
