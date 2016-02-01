@@ -7,11 +7,13 @@
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
     <link rel="stylesheet" href="/css/main.css">
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <script type="text/javascript" src="/js/all.js"></script>
 </head>
 <body>
     <div class="nav">
        <a class="left navlink" href="/cms">Shopus</a>
-       <a class="left navlink" href="/cms/login">Login</a>
+       <a class="left navlink" href="/cms/login">Log In</a>
        <div class="right pure-form search_container">
            <input id="productsearch" class="pure-input-rounded" type="text" placeholder="Search Products" name="q"></input>
        </div>    
@@ -30,6 +32,6 @@
         •
         <a href="/contact">Contact</a>
     </div>
-    <script src="/js/main.js"/>
+
 </body>
 </html>

@@ -1,5 +1,5 @@
 html, button, input, select, textarea, .pure-g [class*="pure-u"] {
-  font-family: Droid Sans, Helvetica, sans-serif; }
+  font-family: Trebuchet MS, Droid Sans; }
 
 body {
   color: #000;
@@ -9,11 +9,12 @@ body {
   padding: 16px; }
 
 h1, h2, h4, h5, h6, .title {
-  font-family: Droid Sans, Helvetica, sans-serif;
+  font-family: Trebuchet MS, Droid Sans;
   font-weight: normal; }
 
 a, .linkcolor, .title {
-  color: #ff0000; }
+  color: #ff0000;
+  text-decoration: none; }
 
 .nav a {
   text-decoration: none;
@@ -30,6 +31,10 @@ a, .linkcolor, .title {
   padding-top: 55px;
   padding-bottom: 44px; }
 
+.footer a {
+  color: #aaa;
+  text-decoration: underline; }
+
 .left {
   float: left !important; }
 
@@ -39,8 +44,41 @@ a, .linkcolor, .title {
 .clear {
   clear: both !important; }
 
+.margintop1 {
+  margin-top: 1em !important; }
+
+.margintop2 {
+  margin-top: 2em !important; }
+
+.inlineblock {
+  display: inline-block !important; }
+
+.centertext {
+  text-align: center; }
+
+.borderedbutton {
+  font-family: Trebuchet MS, Droid Sans;
+  color: #ff0000;
+  border-color: #ff0000;
+  display: inline-block;
+  border: 1px solid;
+  border-radius: 8px;
+  padding: 7px 16px 8px 16px;
+  background-color: transparent;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none; }
+
+.borderedbutton:active {
+  background-color: #ff0000;
+  color: #ffffff; }
+
+.borderedbutton:focus {
+  outline: 0; }
+
 .navlink {
-  font-family: Droid Sans, Helvetica, sans-serif;
+  font-family: Trebuchet MS, Droid Sans;
   text-transform: capitalize; }
 
 .search_container {
@@ -50,5 +88,12 @@ a, .linkcolor, .title {
   width: 180px;
   font-size: 0.74em;
   padding: 0.25em 2em; }
+
+.alert {
+  text-align: center !important; }
+
+.alert {
+  color: #fc1b0f;
+  border-color: #fc1b0f; }
 
 /*# sourceMappingURL=main.css.map */

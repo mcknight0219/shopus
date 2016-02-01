@@ -28,9 +28,14 @@ Route::get('/', function () {
 
 
 Route::group(['middleware' => ['web']], function () {
-    Route::get('/cms/login',    'Auth\AuthController@getLogin');
-    Route::post('/cms/login',   'Auth\AuthController@postLogin');
-    Route::get('/cms/logout',   'Auth\AuthController@getLogout');  
+
+    Route::get('/cms/', 'CmsController@index');
+
+    Route::get ('/cms/register',    'Auth\AuthController@getRegister');
+    Route::post('/cms/register',    'Auth\AuthController@postRegister');
+    Route::get ('/cms/login',       'Auth\AuthController@getLogin');
+    Route::post('/cms/login',       'Auth\AuthController@postLogin');
+    Route::get ('/cms/logout',      'Auth\AuthController@getLogout');  
 });
 
 

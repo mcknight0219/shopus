@@ -17,7 +17,7 @@ class CreateMaterialsTable extends Migration
             $table->integer('merchantId');
             $table->bigInteger('mediaId')->unique();
             $table->enum('type', ['news', 'image', 'voice', 'video', 'thumbnail']);
-            $table->boolean('active')->default(TRUE)
+            $table->boolean('active')->default(TRUE);
             $table->boolean('permanent')->default(FALSE);
             $table->timestamps();
         });

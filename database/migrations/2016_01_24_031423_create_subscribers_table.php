@@ -13,7 +13,7 @@ class CreateSubscribersTable extends Migration
     public function up()
     {
         Schema::create('subscribers', function(Blueprint $table) {
-			$table->increment('id');
+			$table->increments('id');
 			$table->integer('openId');
 			$table->boolean('unsubscribed');
 			$table->timestamps();

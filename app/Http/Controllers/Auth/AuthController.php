@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use Validator;
+use Session;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
@@ -43,12 +45,38 @@ class AuthController extends Controller
     
     public function getLogin()
     {
-        return view('login');
+        return view('login')->with('loginError', []);
     }
 
-    public function postLogin()
+    public function postLogin(Request $request)
     {
+        $input  = $request->all();
+        $email  = $input['email'];
+        $pass   = $input['password'];
+        if( strlen($email) === 0 )  return redirect()->action('Auth\AuthController@getLogin');
+        
+    }
 
+    public function getRegister()
+    {
+        return view('register')->with('registerError', []);
+    }
+
+    public function postRegister(Request $request)
+    {
+        $input = $request->all();
+        $email = $input['email'];
+        $password = $input['password'];
+
+        if( strlen($email) === 0 ) {
+            return redirect()->action('Auth\AuthController@getRegister');
+        }
+
+        if( count(User::where('email', $email)->get()) > 0 ) {
+            return view('register')->with('registerError', ['Email has been registered']);
+        }
+        
+        $user = new User($input);
     }
 
     /**
