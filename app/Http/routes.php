@@ -2,21 +2,6 @@
 
 /*
 |--------------------------------------------------------------------------
-| Routes File
-|--------------------------------------------------------------------------
-|
-| Here is where you will register all of the routes in an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-/*
-|--------------------------------------------------------------------------
 | Application Routes
 |--------------------------------------------------------------------------
 |
@@ -35,6 +20,12 @@ Route::group(['middleware' => ['web']], function () {
     Route::get ('/cms/login',       'Auth\AuthController@getLogin');
     Route::post('/cms/login',       'Auth\AuthController@postLogin');
     Route::get ('/cms/logout',      'Auth\AuthController@getLogout');  
+
+    Route::get ('/cms/profile/edit', 'CmsController@getEditProfile');
+    Route::post('/cms/profile/edit', 'CmsController@postEditProfile');
+
+    Route::get ('/cms/product/add',  'CmsController@getAddProduct');
+    Route::post('/cms/product/add',  'CmsController@postAddProduct');
 });
 
 

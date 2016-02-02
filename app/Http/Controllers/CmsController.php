@@ -14,4 +14,24 @@ class CmsController extends Controller
     {
         return view('cms');  
     }
+
+    public function getEditProfile()
+    {
+
+    }
+
+    public function postEditProfile()
+    {
+
+    }
+
+    public function getAddProduct()
+    {
+
+    }
+
+    public function postAddProduct()
+    {
+        
+    }
 }

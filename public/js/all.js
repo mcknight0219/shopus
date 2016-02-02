@@ -46,6 +46,25 @@ $(document).ready(function() {
 
         $('form').submit();
     });
+
+    // On Cms homepage, user can click to edit their profile
+    $('div#editProfile').click(function() {
+        window.location.href='/cms/profile/edit';        
+    });
+    $('div#addProduct').click(function() {
+        window.location.href='/cms/product/add';
+    })
+    // Toggle fold/unfold
+    $('div#unfoldProduct').click(function() {
+        var klass = $('div#unfoldProduct > i').attr('class');
+        var dir = klass.match(/fa-chevron-(up|down)/)[1];
+        if( dir === 'up' ) {
+            klass = klass.replace(dir, 'down');
+        } else {
+            klass = klass.replace(dir, 'up');
+        }
+        $('div#unfoldProduct > i').attr('class', klass);
+    })
 });
 
 function _validateEmail(email) {
@@ -61,4 +80,30 @@ function _validatePassword(pass) {
     }
     return true;
 };
+
+// Determine country according to state/province
+function _findCountry(state) {
+    var canada = {
+        'Ontario': 'ON',
+        'Quebec': 'QC',
+        'Nova Scotia': 'NS',
+        'New Brunswick': 'NB',
+        'Manitoba': 'MB',
+        'British Columbia': 'BC',
+        'Prince Edward Island': 'PE',
+        'Saskatchewan': 'SK',
+        'Alberta': 'AB',
+        'Newfoundland and Labrador': 'NL'
+    };
+
+    for( var key in canada) {
+        var val = canada[key];
+        if( state.length === 2 ) {
+            if( state === val ) return 'ca';
+        } else {
+            if( state === key ) return 'ca';
+        }
+    }
+    return 'us';
+}
 //# sourceMappingURL=all.js.map

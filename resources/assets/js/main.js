@@ -46,6 +46,25 @@ $(document).ready(function() {
 
         $('form').submit();
     });
+
+    // On Cms homepage, user can click to edit their profile
+    $('div#editProfile').click(function() {
+        window.location.href='/cms/profile/edit';        
+    });
+    $('div#addProduct').click(function() {
+        window.location.href='/cms/product/add';
+    })
+    // Toggle fold/unfold
+    $('div#unfoldProduct').click(function() {
+        var klass = $('div#unfoldProduct > i').attr('class');
+        var dir = klass.match(/fa-chevron-(up|down)/)[1];
+        if( dir === 'up' ) {
+            klass = klass.replace(dir, 'down');
+        } else {
+            klass = klass.replace(dir, 'up');
+        }
+        $('div#unfoldProduct > i').attr('class', klass);
+    })
 });
 
 function _validateEmail(email) {

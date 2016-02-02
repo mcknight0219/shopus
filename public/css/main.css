@@ -12,9 +12,6 @@ h1, h2, h4, h5, h6, .title {
   font-family: Trebuchet MS, Droid Sans;
   font-weight: normal; }
 
-h2 {
-  margin-top: 1.5em;
-}
 a, .linkcolor, .title {
   color: #ff0000;
   text-decoration: none; }
@@ -53,11 +50,24 @@ a, .linkcolor, .title {
 .margintop2 {
   margin-top: 2em !important; }
 
+.marginleft1 {
+  margin-left: 1em; }
+
+.marginrigt1 {
+  margin-right: 1em; }
+
+.marginbottom1 {
+  margin-bottom: -1px; }
+
 .inlineblock {
   display: inline-block !important; }
 
 .centertext {
   text-align: center; }
+
+.controlwidget {
+  color: #ff0000;
+  padding: 0 0.5em 0 0.5em; }
 
 .borderedbutton {
   font-family: Trebuchet MS, Droid Sans;
@@ -97,9 +107,23 @@ a, .linkcolor, .title {
 
 .alert {
   color: #fc1b0f;
-  border-color: #fc1b0f; 
-}
+  border-color: #fc1b0f; }
 
+.cardname {
+  text-align: center !important;
+  color: #aaa;
+  display: inline-block; }
 
+.cardval {
+  text-align: left !important;
+  text-decoration: underline;
+  -webkit-text-decoration-color: #ff0000;
+  text-decoration-color: #ff0000;
+  display: inline-block; }
+
+.headtitle {
+  text-align: left;
+  font-size: 1.3em;
+  font-weight: bold; }
 
 /*# sourceMappingURL=main.css.map */
