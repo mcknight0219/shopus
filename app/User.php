@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Profile;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -23,4 +24,9 @@ class User extends Authenticatable
     protected $hidden = [
         'remember_token',
     ];
+
+    public function profile()
+    {
+        return $this->hasOne('App\Profile');
+    }
 }

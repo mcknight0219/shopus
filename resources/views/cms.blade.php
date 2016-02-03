@@ -33,7 +33,7 @@
                         <span class="cardval">Calgary</span>
                         <span class="cardname marginleft1">State:</span>
                         <span class="cardval">Alberta</span>
-                        <span class="cardanme" id="countryFlag"><img src={{ "/img/us.svg" }} width="15px" height="15px"></span>
+                        <span class="cardanme" id="countryFlag"><img src={{ "/img/us.svg" }} width="20px" height="15px"></span>
                     </div> 
                     <div class="pure-u-1 margintop1">
                         <span class="cardname marginleft1 marginright1"><i class="fa fa-shopping-bag"></i></span>

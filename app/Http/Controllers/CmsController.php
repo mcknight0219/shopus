@@ -15,9 +15,10 @@ class CmsController extends Controller
         return view('cms');  
     }
 
+
     public function getEditProfile()
     {
-
+        return view('cms.edit');
     }
 
     public function postEditProfile()
@@ -32,6 +33,6 @@ class CmsController extends Controller
 
     public function postAddProduct()
     {
-        
+
     }
 }

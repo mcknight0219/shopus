@@ -80,30 +80,4 @@ function _validatePassword(pass) {
     }
     return true;
 };
-
-// Determine country according to state/province
-function _findCountry(state) {
-    var canada = {
-        'Ontario': 'ON',
-        'Quebec': 'QC',
-        'Nova Scotia': 'NS',
-        'New Brunswick': 'NB',
-        'Manitoba': 'MB',
-        'British Columbia': 'BC',
-        'Prince Edward Island': 'PE',
-        'Saskatchewan': 'SK',
-        'Alberta': 'AB',
-        'Newfoundland and Labrador': 'NL'
-    };
-
-    for( var key in canada) {
-        var val = canada[key];
-        if( state.length === 2 ) {
-            if( state === val ) return 'ca';
-        } else {
-            if( state === key ) return 'ca';
-        }
-    }
-    return 'us';
-}
 //# sourceMappingURL=all.js.map
