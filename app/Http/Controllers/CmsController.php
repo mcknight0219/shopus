@@ -21,7 +21,7 @@ class CmsController extends Controller
         if( $user ) {
             $profile = $user->profile;
             $profile = ($profile === null) ? new Profile : $profile;
-            return view('cms')->with('profile', $user->profile);
+            return view('cms')->with('profile', $profile);
         } else {
             return view('cms');
         }  
