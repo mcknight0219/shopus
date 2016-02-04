@@ -15,12 +15,16 @@ class CreateProfilesTable extends Migration
         Schema::create('profiles', function (Blueprint $table) {
             $table->increments('id');
             // foreign key
-            $table->foreign('user_id')->reference('id')->on('users');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->string('weixin')->unique();
             $table->string('name');
             $table->string('address');
             $table->string('city');
             $table->string('state');
+            $table->string('photo');
+
+            $table->timestamps();
         });
     }
 
