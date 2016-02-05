@@ -15,18 +15,14 @@
 
         <div class="pure-g margintop2">
             <div class="pure-u-1 pure-u-sm-1-3">
-                <img class="pure-img" src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cf/Flag_of_Canada.svg/1280px-Flag_of_Canada.svg.png" alt=""></img>
+                <img class="pure-img" src={{ 'cms/profile/photo/' . Auth::user()->id }} alt=""></img>
             </div> 
             <div class="pure-u-1 pure-u-sm-2-3">
                <div class="pure-u-1 margintop1">
                 <div class="pure-g">
-                    <div class="pure-u-1-2">
+                    <div class="pure-u-1">
                         <span class="cardname marginleft1">Weixin:</span>
                         <span id="profileWeixinId" class="cardval">{{ $profile->weixin }}</span>
-                    </div>
-                    <div class="pure-u-1-2">
-                        <span class="cardname marginleft1">Name:</span>
-                        <span class="cardval">{{ $profile->name }}</span>
                     </div>
                 </div>
             </div>

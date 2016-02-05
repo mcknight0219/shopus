@@ -36,11 +36,11 @@ $(document).ready(function() {
             if( pass2 !== undefined ) {
                 if( pass !== pass2 ) {
                     $('#passwordAgain').webuiPopover({
-                    content: 'Retyped password doesn\'t match',
-                    placement: 'bottom',
-                    trigger: 'manual',
-                    dismissible: true,
-                    autoHide: 2500
+                        content: 'Retyped password doesn\'t match',
+                        placement: 'bottom',
+                        trigger: 'manual',
+                        dismissible: true,
+                        autoHide: 2500
                     });
                     $('#passwordAgain').webuiPopover('show');
                     return;
@@ -51,7 +51,7 @@ $(document).ready(function() {
         });
     }
 
-    // Remind
+    // Remind user if no weixin id is associated
     if( location.pathname === '/cms') {
         _remindProfileEmpty();
          // On Cms homepage, user can click to edit their profile
@@ -60,7 +60,7 @@ $(document).ready(function() {
         });
     
         $('div#addProduct').click(function() {
-            window.location.href='/cms/product/add';
+            window.location.href='/cms/products/add';
         })
         // Toggle fold/unfold
         $('div#unfoldProduct').click(function() {
@@ -76,8 +76,31 @@ $(document).ready(function() {
     }
 
     if( location.pathname === '/cms/profile/edit') {
+        if( $('form input[name="weixin"]').val() !== "" ) {
+            $('form input[name="weixin"]').prop('readonly', true);
+        }
+
+        // if there is default text already filled
+       ['address', 'city'].forEach(function(field) {
+            if( $('form input[name="' + field + '"]').val() !== "" ) {
+                $('form input[name="' + field + '"]').click(function() {
+                    $(this).select();
+                })
+            }
+       }); 
+
         $(".borderedbutton").click(function() {
-            console.log('Hello');
+            if( $('form input[name="weixin"]').val() === "" ) {
+                $('form input[name="weixin"]').webuiPopover({
+                    content: 'Please link your Weixin ID',
+                    placement: 'bottom-right',
+                    trigger: 'manual',
+                    dismissible: true,
+                    autoHide: 4500
+                }).webuiPopover('show');
+                
+                return;
+            }
             $('form').submit();
         });
     }
@@ -98,7 +121,7 @@ function _validatePassword(pass) {
 };
 
 function _remindProfileEmpty() {
-    if( $('#profileWeixinId').val() === '' ) {
+    if( $('#profileWeixinId').text() === '' ) {
        $('div#editProfile').webuiPopover({
             content: 'Go here to complete your profile !',
             placement: 'bottom-left',

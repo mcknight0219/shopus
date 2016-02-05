@@ -9,7 +9,8 @@
         "laravel/framework": "5.2.*",
         "james-heinrich/getid3": "^1.9",
         "sunra/php-simple-html-dom-parser": "^1.5",
-        "laravelcollective/html": "^5.2"
+        "laravelcollective/html": "^5.2",
+        "intervention/image": "^2.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

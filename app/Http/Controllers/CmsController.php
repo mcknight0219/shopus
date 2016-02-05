@@ -21,6 +21,7 @@ class CmsController extends Controller
         if( $user ) {
             $profile = $user->profile;
             $profile = ($profile === null) ? new Profile : $profile;
+            
             return view('cms')->with('profile', $profile);
         } else {
             return view('cms');
@@ -30,7 +31,13 @@ class CmsController extends Controller
 
     public function getEditProfile()
     {
-        return view('cms.edit')->with('profile', Auth::user()->profile);
+        $profile = Auth::user()->profile;
+        if( $profile === null ) {
+            $profile = new Profile();
+            $profile->user_id = Auth::user()->id;
+        }
+
+        return view('cms.edit')->with('profile', $profile);
     }
 
     public function postEditProfile(Request $request)
@@ -41,38 +48,29 @@ class CmsController extends Controller
             $profile->user_id = Auth::user()->id;
         } else {
             // updating
-            array_map(function($prop) {
-                if( $request->has($prop) && strlen($request[$prop]) > 0) {
-                    $profile[$prop] = $request[$prop];
+            array_map(function($prop) use ($request, $profile) {
+                if( $request->has($prop) && strlen($request->$prop) > 0) {
+                    $profile->$prop = $request->$prop;
                 }
             }, ['address', 'city', 'state']);
         }
         
-        
-        if( $request->hasFile('photo') && $request->isValid('photo') ) {
+        if( $request->hasFile('photo') && $request->file('photo')->isValid('photo') ) {
             $file = $request->file('photo');
-            $name = md5_file($file->getRealPath()) . '.' . $file->getOriginalExtension();
-            $destPathPrefix = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix();
+            $name = md5_file($file->getRealPath()) . '.' . $file->getClientOriginalExtension();
+            $destPathPrefix = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix() . '/photo';
             $file->move($destPathPrefix, $name);
             $profile->photo = $name;
         }
 
         try {
             $profile->save();
-            return view('cms')->with('profile', $profile);
+            return Redirect::to('cms');
         } catch(Exception $e) {
             Session::flash('error', 'Failed updating profile. Please try again later.');
-            return Redirect::to('cms/profile/edit');
+            return Redirect::to('cms:profile:edit');
         }
     }
 
-    public function getAddProduct()
-    {
 
-    }
-
-    public function postAddProduct()
-    {
-
-    }
 }
