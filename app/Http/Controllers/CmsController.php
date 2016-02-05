@@ -35,8 +35,20 @@ class CmsController extends Controller
 
     public function postEditProfile(Request $request)
     {
-        $profile = new Profile($request->all());
-        $profile->user_id = Auth::user()->id;
+        $profile = Profile::where('weixin', $request->weixin)->first();
+        if( $profile === null ) {
+            $profile = new Profile($request->all());
+            $profile->user_id = Auth::user()->id;
+        } else {
+            // updating
+            array_map(function($prop) {
+                if( $request->has($prop) && strlen($request[$prop]) > 0) {
+                    $profile[$prop] = $request[$prop];
+                }
+            }, ['address', 'city', 'state']);
+        }
+        
+        
         if( $request->hasFile('photo') && $request->isValid('photo') ) {
             $file = $request->file('photo');
             $name = md5_file($file->getRealPath()) . '.' . $file->getOriginalExtension();

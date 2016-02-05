@@ -67,7 +67,8 @@ a, .linkcolor, .title {
 
 .controlwidget {
   color: #ff0000;
-  padding: 0 0.5em 0 0.5em; }
+  padding: 0 0.5em 0 0.5em;
+  cursor: pointer; }
 
 .borderedbutton {
   font-family: Trebuchet MS, Droid Sans;

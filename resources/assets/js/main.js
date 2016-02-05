@@ -51,7 +51,7 @@ $(document).ready(function() {
         });
     }
 
-    // Remind
+    // Remind user if no weixin id is associated
     if( location.pathname === '/cms') {
         _remindProfileEmpty();
          // On Cms homepage, user can click to edit their profile
@@ -76,8 +76,15 @@ $(document).ready(function() {
     }
 
     if( location.pathname === '/cms/profile/edit') {
+        if( $('form[name="weixin"]').val() !== "" ) {
+            $('form[name="weixin"]').attr('disabled', true);
+        }
         $(".borderedbutton").click(function() {
-            console.log('Hello');
+            if( $('form[name="weixin"]').val() === "" ) {
+                $('form[name="weixin"]').webuiPopover({
+
+                });
+            }
             $('form').submit();
         });
     }
