@@ -66,7 +66,7 @@ return [
             'driver' => 's3',
             'key'    => 'AKIAII2FZRDK7FZQL3SQ',
             'secret' => '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',
-            'region' => 'Oregon',
+            'region' => 'us-west-2',
             'bucket' => 'shopus-backend-data',
         ],
 

@@ -58,9 +58,9 @@ class CmsController extends Controller
         if( $request->hasFile('photo') && $request->file('photo')->isValid('photo') ) {
             $file = $request->file('photo');
             $name = md5_file($file->getRealPath()) . '.' . $file->getClientOriginalExtension();
-            $destPathPrefix = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix() . '/photo';
-            $file->move($destPathPrefix, $name);
             $profile->photo = $name;
+
+            Storage::disk('s3')->put($name, file_get_contents($file->getRealPath()));
         }
 
         try {

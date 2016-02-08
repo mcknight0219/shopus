@@ -22,7 +22,6 @@ class PhotoController extends Controller
         if( $user === null || strlen($user->profile->photo) === 0 ) {
             return Response::make(null, 404);
         }
-        $prefix = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix() . '/photo';
-        return Image::make($prefix . '/' . $user->profile->photo)->response();    
+        return Image::make(Storage::disk('s3')->get($user->profile->photo))->response();    
     }    
 }
