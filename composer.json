@@ -10,7 +10,8 @@
         "james-heinrich/getid3": "^1.9",
         "sunra/php-simple-html-dom-parser": "^1.5",
         "laravelcollective/html": "^5.2",
-        "intervention/image": "^2.3"
+        "intervention/image": "^2.3",
+        "league/flysystem-aws-s3-v3": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

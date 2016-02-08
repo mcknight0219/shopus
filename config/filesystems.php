@@ -64,10 +64,10 @@ return [
 
         's3' => [
             'driver' => 's3',
-            'key'    => 'your-key',
-            'secret' => 'your-secret',
-            'region' => 'your-region',
-            'bucket' => 'your-bucket',
+            'key'    => 'AKIAII2FZRDK7FZQL3SQ',
+            'secret' => '08tlwZ5Nt5F3aNqIg/fvzXxEzFkSRiGq+c6HEtkQ',
+            'region' => 'Oregon',
+            'bucket' => 'shopus-backend-data',
         ],
 
         'rackspace' => [

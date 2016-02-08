@@ -1,5 +1,5 @@
 html, button, input, select, textarea, .pure-g [class*="pure-u"] {
-  font-family: Trebuchet MS, Droid Sans; }
+  font-family: Lato, Trebuchet MS, Droid Sans; }
 
 body {
   color: #000;
@@ -9,10 +9,10 @@ body {
   padding: 16px; }
 
 h1, h2, h4, h5, h6, .title {
-  font-family: Trebuchet MS, Droid Sans;
+  font-family: Lato, Trebuchet MS, Droid Sans;
   font-weight: normal; }
 
-a, .linkcolor, .title {
+a, .linkcolor {
   color: #ff0000;
   text-decoration: none; }
 
@@ -71,7 +71,7 @@ a, .linkcolor, .title {
   cursor: pointer; }
 
 .borderedbutton {
-  font-family: Trebuchet MS, Droid Sans;
+  font-family: Lato, Trebuchet MS, Droid Sans;
   color: #ff0000;
   border-color: #ff0000;
   display: inline-block;
@@ -92,7 +92,7 @@ a, .linkcolor, .title {
   outline: 0; }
 
 .navlink {
-  font-family: Trebuchet MS, Droid Sans;
+  font-family: Lato, Trebuchet MS, Droid Sans;
   text-transform: capitalize; }
 
 .search_container {
@@ -126,5 +126,49 @@ a, .linkcolor, .title {
   text-align: left;
   font-size: 1.3em;
   font-weight: bold; }
+
+.productcell {
+  display: block;
+  height: 100px;
+  position: relative;
+  color: #000;
+  text-decoration: none; }
+
+.productphoto {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  top: 0;
+  left: 0; }
+
+.productcontent {
+  position: absolute;
+  left: 110px;
+  top: 10;
+  width: calc(100% - 100px);
+  height: 80%; }
+
+.titlestack {
+  position: relative;
+  top: 20%;
+  max-height: 100%; }
+
+.singleline {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0.075em 0 0.075em 0; }
+
+.titlestack > .title {
+  color: #000;
+  font-weight: normal;
+  margin: 0.075em; }
+
+.titlestack > .title::first-letter {
+  font-size: 120%; }
+
+.caption {
+  color: #808080;
+  font-size: 0.85em;
+  font-weight: normal; }
 
 /*# sourceMappingURL=main.css.map */

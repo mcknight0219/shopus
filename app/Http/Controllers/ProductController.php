@@ -10,9 +10,10 @@ use App\Http\Controllers\Controller;
 
 class ProductController extends Controller
 {
+
     public function getAddProduct()
     {
-
+        return view('product.add');
     }
 
     public function postAddProduct()
