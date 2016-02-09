@@ -63,7 +63,7 @@
             <div class="right" id="addProduct"><i class= "fa fa-plus controlwidget"></i></div>
         </div>
     </div>
-    <div id="tuckin"></div>
+
     <div class="margintop2"></div>
     <div class="productcell">
         <img class="productphoto" src="http://s7d9.scene7.com/is/image/TheBay/888067642803_main?$COACHMAIN$&wid=325&hei=325&fit=fit,1">
@@ -84,7 +84,7 @@
         </div>
         </div>
     </div>
-    </div>
+
 </div>
 <div class="pure-u-1-6"></div>
 </div>

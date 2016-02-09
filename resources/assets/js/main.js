@@ -104,7 +104,57 @@ $(document).ready(function() {
             $('form').submit();
         });
     }
+
+    if( location.pathname === '/cms/products/add' ) {
+        $('#fileSelector').change(function() {
+            _toggleProgressbar();
+            var file = new FormData();
+            if( $(this)[0].files &&  $(this)[0].files[0] ) {
+                var type = $('form select').val();
+                file.append('type', $(this)[0].files[0]);
+                $.ajax({
+                    xhr: function() {
+                        var xhr = new window.XMLHttpRequest();
+                        xhr.upload.addEventListener('progress', function(e) {
+                            console.log(e);
+                            if( e.lengthComputable ) {
+                                var percent = e.loaded / e.total;
+                                console.log(percent);
+                                $('#uploadProgressbar').attr('value', percent);
+                            }
+                        }, false);
+
+                        return xhr;
+                    },
+                    url: '/cms/products/photo',
+                    type: 'POST',
+                    data: file,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        _toggleProgressbar();
+                    },
+                    error: function(jqXHR, status, errorMessage) {
+                        console.log(errorMessage);
+                    }
+                })
+            }
+        });
+
+        $('.borderedbutton').click(function() {
+
+        });
+    }
 });
+
+function _toggleProgressbar() {
+    var $selector = $('#uploadProgressbar');
+    if( $selector.attr('hidden') === undefined ) {
+        $selector.attr('hidden', true);
+    } else {
+        $selector.removeAttr('hidden');
+    }
+}
 
 function _validateEmail(email) {
     var re = /^\S+@\S+$/;
@@ -131,4 +181,4 @@ function _remindProfileEmpty() {
             closeable: true
        }).webuiPopover('show'); 
     }
-}
+};

@@ -29,13 +29,13 @@
         {!! Form::select('phototype', ['Front' => 'Front', 'Back' => 'Back', 'Top' => 'Top', 'Bottom' => 'Bottom', 'Custom1' => 'Custom1', 'Custom2' => 'Custom2'], 'Front') !!}
         <div class="uploadcell pure-button">
             <span class="centertext">Choose File</span>
-            {!! Form::file('photo', ['class' => 'uploadbutton']) !!}
+            {!! Form::file('photo', ['class' => 'uploadbutton', 'id' => 'fileSelector']) !!}
         </div>
     </div>
     {{-- The progress bar --}}
     <div class="pure-control-group narrowgap">
         {!! Form::label('', '') !!}
-        <progress class="progressbar" value="70" max="100"></progress>
+        <progress class="progressbar" value="0" max="100" id="uploadProgressbar" hidden></progress>
     </div>
 
     <div class="pure-controls">

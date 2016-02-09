@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use Input;
 use Session;
 
 class ProductController extends Controller
@@ -27,7 +28,8 @@ class ProductController extends Controller
 
     }
 
-    // The action is only supposed to get called during product
+    // The action is only supposed to get called during product photo
+    // uploading
     public function postProductPhotoAsync(Request $request)
     {
         if( !$request->ajax() ) {
@@ -35,9 +37,14 @@ class ProductController extends Controller
         }
         
         if( $request->hasFile('photo') && $request->file('photo')->isValid() ) {
-            // store the file in session. Later when the form is actually submitted,
-            // we could retrieve them
-            Session::
+            $upload = &Session::get('productPhotoUpload', []);
+            $type = strtolower(Input::get('type'));
+            static $acceptedTypes =['front', 'back', 'top', 'bottom', 'custom1', 'custom2'];
+            if(! in_array($type, $acceptedTypes) ) {
+                return;
+            }
+
+            $upload[$type] = Input::get('file');
         }
     }
 

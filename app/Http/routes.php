@@ -14,18 +14,19 @@
 
 Route::group(['middleware' => ['web'], 'prefix' => 'cms'], function () {
 
-    Route::get ('/',            'CmsController@index')->name('cms');
-    Route::get ('register',    'Auth\AuthController@getRegister');
-    Route::post('register',    'Auth\AuthController@postRegister');
-    Route::get ('login',       'Auth\AuthController@getLogin');
-    Route::post('login',       'Auth\AuthController@postLogin');
-    Route::get ('logout',      'Auth\AuthController@getLogout');  
+    Route::get ('/',                'CmsController@index')->name('cms');
+    Route::get ('register',         'Auth\AuthController@getRegister');
+    Route::post('register',         'Auth\AuthController@postRegister');
+    Route::get ('login',            'Auth\AuthController@getLogin');
+    Route::post('login',            'Auth\AuthController@postLogin');
+    Route::get ('logout',           'Auth\AuthController@getLogout');
 
-    Route::get ('profile/edit', 'CmsController@getEditProfile')->name('cms:profile:edit');
-    Route::post('profile/edit', 'CmsController@postEditProfile');
+    Route::get ('profile/edit',     'CmsController@getEditProfile')->name('cms:profile:edit');
+    Route::post('profile/edit',     'CmsController@postEditProfile');
 
-    Route::get ('products/add',  'ProductController@getAddProduct');
-    Route::post('products/add',  'ProductController@postAddProduct');
+    Route::get ('products/add',     'ProductController@getAddProduct');
+    Route::post('products/add',     'ProductController@postAddProduct');
+    Route::post('products/photo',   'ProductController@postProductPhotoAsync');
 
     Route::get ('profile/photo/{userid}', 'PhotoController@getPhoto')->name('cms:photo');
 });
