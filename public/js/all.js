@@ -1,4 +1,7 @@
 $(document).ready(function() {
+    $.ajaxSetup({
+        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content') }
+    });
 
     if( location.pathname === '/cms/login' || location.pathname === '/cms/register' ) { 
 
@@ -110,20 +113,19 @@ $(document).ready(function() {
             _toggleProgressbar();
             var file = new FormData();
             if( $(this)[0].files &&  $(this)[0].files[0] ) {
-                var type = $('form select').val();
-                file.append('type', $(this)[0].files[0]);
+                var type = $('form select').val().toLowerCase();
+                file.append(type, $(this)[0].files[0]);
                 $.ajax({
                     xhr: function() {
                         var xhr = new window.XMLHttpRequest();
                         xhr.upload.addEventListener('progress', function(e) {
-                            console.log(e);
                             if( e.lengthComputable ) {
-                                var percent = e.loaded / e.total;
+                                var percent = e.loaded / e.total * 100;
                                 console.log(percent);
                                 $('#uploadProgressbar').attr('value', percent);
                             }
                         }, false);
-
+                        
                         return xhr;
                     },
                     url: '/cms/products/photo',
