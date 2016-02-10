@@ -132,7 +132,11 @@ a, .linkcolor {
   height: 100px;
   position: relative;
   color: #000;
-  text-decoration: none; }
+  text-decoration: none;
+  cursor: pointer; }
+
+.productcell:hover {
+  background-color: #fef8f2; }
 
 .productphoto {
   position: absolute;

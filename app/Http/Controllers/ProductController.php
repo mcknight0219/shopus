@@ -23,7 +23,7 @@ class ProductController extends Controller
 
     public function getEditProduct($productId)
     {
-
+        return view('product.edit')->with('productId', $productId);
     }
 
     public function postEditProduct(Request $request)
