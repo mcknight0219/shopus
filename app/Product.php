@@ -23,6 +23,11 @@ class Product extends Model
      */
     public function setBrandIdAttribute($value)
     {
-        
+        $brand = Brand::where('name', $value)->first();
+        if( $brand === null ) {
+            $brand =new Brand(['name' => $value]);
+            $brand->save();
+        }
+        $this->attributes['brand'] = $brand->id;
     }
 }

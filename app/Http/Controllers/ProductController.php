@@ -6,11 +6,12 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Jobs\StoreProductPhotos;
 
 use Log;
-use Input;
 use Response;
 use Session;
+use Redirect;
 
 class ProductController extends Controller
 {
@@ -20,10 +21,34 @@ class ProductController extends Controller
         return view('product.add');
     }
 
-    public function postAddProduct()
+    public function getEditProduct($productId)
+    {
+
+    }
+
+    public function postEditProduct(Request $request)
+    {
+
+    }
+
+    public function postAddProduct(Request $request)
     {
         $product = new Product($request->all());
+		$product->save();
         
+        // Let's save up product photos
+        static $types = ['front', 'back', 'top', 'bottom', 'custom1', 'custom2'];
+        foreach( $types as $type ) {
+            $content = $this->_releaseFile(Session::getId(), $type);
+            if( $content === false ) continue;
+            // start a backend job
+            $this->dispatch(new StoreProductPhotos(array_merge([
+                'product_id'    => $product->id,
+                'type'          => $type
+            ], $content)));
+        }
+        
+        return Redirect::to('cms');
     }
 
     public function getProductPhoto(Request $request, $productId) 
@@ -59,6 +84,29 @@ class ProductController extends Controller
             Storage::disk('local')->makeDirectory($dir);
         }
         $file->move($dir, $type . '.' . $file->getClientOriginalExtension());
+    }
+
+    /**
+     * Read upload from _holdFile and release the temporary file
+     *     
+     * @param  Int      $sessionId
+     * @param  String   $type
+     * @return mixed    FALSE | array of file content and extension name
+     */
+    protected function _releaseFile($sessionId, $type)
+    {
+        $dir = '/tmp/' . $sessionId;
+        if(! $this->_hasDirectory($dir) ) {
+            return false;
+        }
+        foreach( Storage::disk('local')->files($dir) as $file ) {
+            if( basename($file) === $type ) {
+                $content = file_get_contents($file);
+                $ext = pathinfo($file, PATHINFO_EXTENSION);
+                Storage::disk('local')->delete($dir . '/' . $file);
+                return ['ext' => $ext, 'content' => content];
+            }
+        }
     }
 
     // two level maximum

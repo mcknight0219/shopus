@@ -17,7 +17,7 @@ class CreateProductPhotosTable extends Migration
             $table->integer('product_id')->unsigned();
             $table->foreign('product_id')->references('id')->on('products');
             $table->enum('type', ['front', 'back', 'top', 'bottom', 'custom1', 'custom2']);
-            $table->string('name');
+            $table->string('location');
         });
     }
 
