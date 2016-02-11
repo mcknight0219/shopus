@@ -14,6 +14,7 @@
 
 Route::group(['middleware' => ['web'], 'prefix' => 'cms'], function () {
 
+    // Account management
     Route::get ('/',                'CmsController@index')->name('cms');
     Route::get ('register',         'Auth\AuthController@getRegister');
     Route::post('register',         'Auth\AuthController@postRegister');
@@ -21,16 +22,25 @@ Route::group(['middleware' => ['web'], 'prefix' => 'cms'], function () {
     Route::post('login',            'Auth\AuthController@postLogin');
     Route::get ('logout',           'Auth\AuthController@getLogout');
 
-    Route::get ('profile/edit',     'CmsController@getEditProfile')->name('cms:profile:edit');
-    Route::post('profile/edit',     'CmsController@postEditProfile');
-
-    Route::get ('products/add',     'ProductController@getAddProduct');
-    Route::post('products/add',     'ProductController@postAddProduct');
-    Route::post('products/photo',   'ProductController@postProductPhotoAsync');
-
-    Route::get ('profile/photo/{userid}', 'PhotoController@getPhoto')->name('cms:photo');
+    // Profile facing public
+    Route::get('profile/{id}',          'ProfileController@getProfile')
+        ->where('id', '[0-9]+');
+    Route::get ('profile/photo/{id}',   'PhotoController@getPhoto')
+        ->where('id', '[0-9]+');
 });
 
+Route::group(['middleware' => ['web', 'auth'], 'prefix' => 'cms'], function () {
+    // Only authenticated user can edit *his* profile
+    Route::get ('profile/edit',     'ProfileController@getEditProfile')->name('cms:profile:edit');
+    Route::post('profile/edit',     'ProfileController@postEditProfile');
+
+    // Product management
+    Route::get ('product/add',     'ProductController@getAddProduct');
+    Route::post('product/add',     'ProductController@postAddProduct');
+    Route::post('product/photo',   'ProductController@postProductPhotoAsync');
+    Route::get ('product/{id}',    'ProductController@getProduct');
+    
+});
 
 Route::group(['middleware' => ['weixin']], function () {
     Route::controller('/', 'MainController');

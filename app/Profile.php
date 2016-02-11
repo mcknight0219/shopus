@@ -9,4 +9,9 @@ class Profile extends Model
     protected $fillable = [
         'weixin', 'name', 'address', 'city', 'state'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }

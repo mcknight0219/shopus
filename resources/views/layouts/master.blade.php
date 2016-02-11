@@ -34,6 +34,7 @@
             @yield('content')
         </div>
     </div>
+    
     <div class="footer is-center l-box">
         © 2016 Shopus, Inc 
         •

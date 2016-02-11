@@ -16,10 +16,6 @@ use Redirect;
 class ProductController extends Controller
 {
 
-    public function getAddProduct()
-    {
-        return view('product.add');
-    }
 
     public function getEditProduct($productId)
     {
@@ -29,6 +25,17 @@ class ProductController extends Controller
     public function postEditProduct(Request $request)
     {
 
+    }
+
+    public function getProduct($productId)
+    {
+
+    }
+
+
+    public function getAddProduct()
+    {
+        return view('product.add');
     }
 
     public function postAddProduct(Request $request)
@@ -49,11 +56,6 @@ class ProductController extends Controller
         }
         
         return Redirect::to('cms');
-    }
-
-    public function getProductPhoto(Request $request, $productId) 
-    {
-
     }
 
     // The action is only supposed to get called during product photo

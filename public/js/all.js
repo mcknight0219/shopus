@@ -63,7 +63,7 @@ $(document).ready(function() {
         });
     
         $('div#addProduct').click(function() {
-            window.location.href='/cms/products/add';
+            window.location.href='/cms/product/add';
         })
         // Toggle fold/unfold
         $('div#unfoldProduct').click(function() {
@@ -108,7 +108,7 @@ $(document).ready(function() {
         });
     }
 
-    if( location.pathname === '/cms/products/add' ) {
+    if( location.pathname === '/cms/product/add' ) {
         $('#fileSelector').change(function() {
             _toggleProgressbar();
             var file = new FormData();
@@ -128,7 +128,7 @@ $(document).ready(function() {
                         
                         return xhr;
                     },
-                    url: '/cms/products/photo',
+                    url: '/cms/product/photo',
                     type: 'POST',
                     data: file,
                     processData: false,
