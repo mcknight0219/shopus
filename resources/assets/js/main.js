@@ -121,7 +121,6 @@ $(document).ready(function() {
                         xhr.upload.addEventListener('progress', function(e) {
                             if( e.lengthComputable ) {
                                 var percent = e.loaded / e.total * 100;
-                                console.log(percent);
                                 $('#uploadProgressbar').attr('value', percent);
                             }
                         }, false);
@@ -135,6 +134,7 @@ $(document).ready(function() {
                     contentType: false,
                     success: function(response) {
                         _toggleProgressbar();
+                        $('#fileSelector').val = "";
                     },
                     error: function(jqXHR, status, errorMessage) {
                         console.log(errorMessage);
@@ -147,7 +147,7 @@ $(document).ready(function() {
             _remindEmpty($('form input[name="brand"]'), 'Brand cannot be empty') ||
             _remindEmpty($('form input[name="name"]'),  'Name cannot be empty') ||
             _remindEmpty($('form input[name="price"]'), 'Price cannot be empty') ||
-            _remindEmpty($('form textarea'), 'Description cannot be empty');
+            _remindEmpty($('form textarea'), 'Description cannot be empty') || $('form').submit();
         });
     }
 });

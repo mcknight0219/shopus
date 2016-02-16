@@ -12,6 +12,8 @@ use Log;
 use Response;
 use Session;
 use Redirect;
+use Storage;
+use Auth;
 use App\Product;
 
 class ProductController extends Controller
@@ -41,11 +43,11 @@ class ProductController extends Controller
 
     public function postAddProduct(Request $request)
     {
-        $product = new Product($request->all());
-		$product->save();
+        $product = new Product($request->only(['name', 'price', 'description']));
+        $product->brand_id = $request->brand;
         
         // Let's save up product photos
-        static $types = ['front', 'back', 'top', 'bottom', 'custom1', 'custom2'];
+        $types = ['front', 'back', 'top', 'bottom', 'custom1', 'custom2'];
         foreach( $types as $type ) {
             $content = $this->_releaseFile(Session::getId(), $type);
             if( $content === false ) continue;
@@ -55,7 +57,8 @@ class ProductController extends Controller
                 'type'          => $type
             ], $content)));
         }
-        
+        $product->user_id = Auth::user()->id; 
+        $product->save();
         return Redirect::to('cms');
     }
 
@@ -82,11 +85,13 @@ class ProductController extends Controller
     protected function _holdFile($sessionId, $file, $type)
     {
         //$tmpDir = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix() . '/tmp';
-        $dir = '/tmp/' . $sessionId;
+        $dir = 'tmp/' . $sessionId;
         if(! $this->_hasDirectory($dir) ) {
             Storage::disk('local')->makeDirectory($dir);
         }
-        $file->move($dir, $type . '.' . $file->getClientOriginalExtension());
+
+        $destPath = $dir . '/' . $type . '.' . $file->getClientOriginalExtension();
+        Storage::disk('local')->put($destPath, file_get_contents($file));
     }
 
     /**
@@ -98,26 +103,30 @@ class ProductController extends Controller
      */
     protected function _releaseFile($sessionId, $type)
     {
-        $dir = '/tmp/' . $sessionId;
+        $dir = 'tmp/' . $sessionId;
         if(! $this->_hasDirectory($dir) ) {
             return false;
         }
+
         foreach( Storage::disk('local')->files($dir) as $file ) {
-            if( basename($file) === $type ) {
-                $content = file_get_contents($file);
+            if( pathinfo($file)['filename'] === $type ) {
+                $content = file_get_contents(storage_path() . '/app/' . $file);
                 $ext = pathinfo($file, PATHINFO_EXTENSION);
-                Storage::disk('local')->delete($dir . '/' . $file);
-                return ['ext' => $ext, 'content' => content];
+                Storage::disk('local')->delete($file);
+                return ['ext' => $ext, 'content' => $content];
             }
         }
+        return false;
     }
 
     // two level maximum
     protected function _hasDirectory($dir)
     {
-        Log::info($dir);
         $parts = explode('/', $dir);
-        $parts = array_filter($parts, function($part) { return strlen($part) > 0; });
+        $parts = array_values(
+            array_filter($parts, function($part) { return strlen($part) > 0; })
+        );
+
         if( count($parts) > 2 ) {
             Log::warning('_hasDirectory() only supports two level recursion');
             return false;
@@ -126,7 +135,7 @@ class ProductController extends Controller
         if( in_array($parts[0], Storage::disk('local')->directories('/')) ) {
             if( count($parts) === 1) return true;
             else {
-                return in_array($parts[1], Storage::disk('local')->directories('/' . $parts[0]));
+                return in_array($parts[0] . '/' . $parts[1], Storage::disk('local')->directories('/' . $parts[0]));
             }
         }
 

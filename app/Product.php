@@ -3,12 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Brand;
+use App\Brand;
 
 class Product extends Model
 {
 
     protected $fillable = [
+        'name', 'price', 'description'
     ];
 
     public function photos()
@@ -28,6 +29,6 @@ class Product extends Model
             $brand =new Brand(['name' => $value]);
             $brand->save();
         }
-        $this->attributes['brand'] = $brand->id;
+        $this->attributes['brand_id'] = $brand->id;
     }
 }

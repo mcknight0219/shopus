@@ -7,6 +7,8 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
+use App\ProductPhoto;
+
 use Log;
 use Storage;
 
@@ -30,7 +32,7 @@ class StoreProductPhotos extends Job implements ShouldQueue
         $this->_id      = $arr['product_id'];
         $this->_ext     = $arr['ext'];
         $this->_type    = $arr['type'];
-        $this->_content = $arr['content'];    
+        $this->_content = $arr['content'];
     }
 
     /**
@@ -53,5 +55,10 @@ class StoreProductPhotos extends Job implements ShouldQueue
             // retry or just report?
             Log::error('Cannot create product phot: ' . $e->getMessage());
         }
+    }
+
+    public function failed()
+    {
+        Log::info('Error pushing the queue');
     }
 }
