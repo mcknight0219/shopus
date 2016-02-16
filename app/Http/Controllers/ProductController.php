@@ -12,6 +12,7 @@ use Log;
 use Response;
 use Session;
 use Redirect;
+use App\Product;
 
 class ProductController extends Controller
 {
@@ -27,9 +28,9 @@ class ProductController extends Controller
 
     }
 
-    public function getProduct($productId)
+    public function showProduct($productId)
     {
-
+        return view('product.show')->with('product', Product::find($productId));
     }
 
 
@@ -114,6 +115,7 @@ class ProductController extends Controller
     // two level maximum
     protected function _hasDirectory($dir)
     {
+        Log::info($dir);
         $parts = explode('/', $dir);
         $parts = array_filter($parts, function($part) { return strlen($part) > 0; });
         if( count($parts) > 2 ) {

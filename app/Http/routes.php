@@ -25,7 +25,7 @@ Route::group(['middleware' => ['web'], 'prefix' => 'cms'], function () {
     // Profile facing public
     Route::get('profile/{id}',          'ProfileController@getProfile')
         ->where('id', '[0-9]+');
-    Route::get ('profile/photo/{id}',   'PhotoController@getPhoto')
+    Route::get ('profile/photo/{id}',   'PhotoController@getProfilePhoto')
         ->where('id', '[0-9]+');
 });
 
@@ -38,7 +38,8 @@ Route::group(['middleware' => ['web', 'auth'], 'prefix' => 'cms'], function () {
     Route::get ('product/add',     'ProductController@getAddProduct');
     Route::post('product/add',     'ProductController@postAddProduct');
     Route::post('product/photo',   'ProductController@postProductPhotoAsync');
-    Route::get ('product/{id}',    'ProductController@getProduct');
+    Route::get ('product/{id}',    'ProductController@showProduct')->where('id', '[0-9]+');
+    Route::get ('product/{id}/photo', 'PhotoController@getProductPhoto')->where('id', '[0-9]+');
     
 });
 

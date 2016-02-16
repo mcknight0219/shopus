@@ -9,10 +9,12 @@ use Storage;
 use Image;
 use Response;
 use Auth;
+use Redirect;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\User;
+use App\Profile;
 
 class ProfileController extends Controller
 {

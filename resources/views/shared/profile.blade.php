@@ -1,6 +1,6 @@
 <div class="pure-g margintop2">
     <div class="pure-u-1 pure-u-sm-1-3">
-        <img class="pure-img" src={{ action('PhotoController@getPhoto', $profile->user->id) }} alt=""></img>
+        <img class="pure-img" src={{ action('PhotoController@getProfilePhoto', $profile->user->id) }} alt=""></img>
     </div> 
     <div class="pure-u-1 pure-u-sm-2-3">
         <div class="pure-u-1 margintop1">

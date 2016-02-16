@@ -144,7 +144,10 @@ $(document).ready(function() {
         });
 
         $('.borderedbutton').click(function() {
-
+            _remindEmpty($('form input[name="brand"]'), 'Brand cannot be empty') ||
+            _remindEmpty($('form input[name="name"]'),  'Name cannot be empty') ||
+            _remindEmpty($('form input[name="price"]'), 'Price cannot be empty') ||
+            _remindEmpty($('form textarea'), 'Description cannot be empty');
         });
     }
 });
@@ -176,7 +179,7 @@ function _remindProfileEmpty() {
     if( $('#profileWeixinId').text() === '' ) {
        $('div#editProfile').webuiPopover({
             content: 'Go here to complete your profile !',
-            placement: 'bottom-left',
+            placement: 'bottom',
             trigger: 'manual',
             dimissible: true,
             autoHide: 4500,
@@ -184,3 +187,15 @@ function _remindProfileEmpty() {
        }).webuiPopover('show'); 
     }
 };
+
+function _remindEmpty(selector, msg) {
+    return selector.val() === '' &&
+    selector.webuiPopover({
+        content: msg,
+        placement: 'bottom',
+        trigger: 'manual',
+        dismissible: true,
+        autoHide: 4500,
+        closeable: true
+    }).webuiPopover('show');
+}
