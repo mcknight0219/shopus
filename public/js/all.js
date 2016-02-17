@@ -108,6 +108,14 @@ $(document).ready(function() {
         });
     }
 
+    if( location.pathname === '/cms/brand' ) {
+        $('.title').click(function() {
+            $(this).replaceWith(function() {
+                return "<input style=\"outline:none; border-width: 0 0 2px 0\" type=\"text\">"
+            })
+        }) 
+    }
+
     if( location.pathname === '/cms/product/add' ) {
         $('#fileSelector').change(function() {
             _toggleProgressbar();

@@ -162,13 +162,28 @@ a, .linkcolor {
     background-color: #fef8f2;
 }
 
+.editable:hover {
+    cursor: text;
+}
 
 .productphoto {
     position: absolute;
-    width: 100px;
-    height: 100px;
+    max-width: 100px;
+    max-height: 100px;
     top: 0;
     left: 0;
+}
+
+.productphoto input.selector {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    cursor: pointer;
+    opacity: 0;
+    width: 100%;
+    filter: alpha(opacity=0); 
 }
 
 .productcontent {

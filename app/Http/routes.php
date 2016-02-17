@@ -43,6 +43,12 @@ Route::group(['middleware' => ['web', 'auth'], 'prefix' => 'cms'], function () {
     
 });
 
+// Admin only pages
+Route::group(['middleware' => ['web', 'auth', 'admin'], 'prefix' => 'cms'], function () {
+    Route::get('brand',             'BrandController@getBrand');
+    Route::post('brand/{id}/edit',  'BrandController@psotBrandEdit')->where('id', '[0-9]+');
+});
+
 Route::group(['middleware' => ['weixin']], function () {
     Route::controller('/', 'MainController');
 });
