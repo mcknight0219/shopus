@@ -108,10 +108,11 @@ $(document).ready(function() {
         });
     }
 
-    // This makes me regret not using Angular or React :(
+    // First time I feel sick about jquery :(
     if( location.pathname === '/cms/brand' ) {
         $(document).on('click', '.title', function(e) {
             var target = $(e.target);
+            var brandId = target.closest('.productcell').attr('data-index-number');
             var orig = target.text();
             target.replaceWith(function() {
                 return "<input id=\"brandName\" class=\"title\" style=\"outline:none; border-width: 0 0 2px 0\" type=\"text\" data-source=\"" + orig + "\">";
@@ -125,13 +126,14 @@ $(document).ready(function() {
                 });
 
                 if( !isEmpty ) {
-                    _postBrandChange('name', $newVal);
+                    _postBrandChange(brandId, 'name', $newVal);
                 }
             })
         });
 
         $(document).on('click', '.caption', function(e) {
             var target = $(e.target);
+            var brandId = target.closest('.productcell').attr('data-index-number');
             orig = target.text();
             target.replaceWith(function() {
             	return "<input id=\"brandWebsite\" class=\"caption\" style=\"outline:none; border-width: 0 0 2px 0\" type=\"text\" data-source=\"" + orig + "\">";
@@ -145,9 +147,30 @@ $(document).ready(function() {
 				});
 
                 if( !isEmpty ) {
-                    _postBrandChange('website', newVal);
+                    _postBrandChange(brandId, 'website', newVal);
                 }
 			});
+        });
+
+        $(document).on('change', '.selector', function(e) {
+            var target = $(e.target);
+            var brandId = target.closest('.productcell').attr('data-index-number');
+            var file = new FormData();
+            if( target[0].files && target[0].files[0] ) {
+                file.append('logo', target[0].files[0]);
+                $.ajax({
+                    url: '/cms/brand/' + brandId + '/edit',
+                    type: 'POST',
+                    data: file,
+                    processData: false,
+                    contentType: false,
+                    success: function(data, textStatus, xhr) {
+                        if( xhr.status === '200') {
+                            console.log('Success');
+                        }                      
+                    }
+                });
+            }
         });
     }
 
@@ -182,7 +205,7 @@ $(document).ready(function() {
                     error: function(jqXHR, status, errorMessage) {
                         console.log(errorMessage);
                     }
-                })
+                });
             }
         });
 
@@ -196,7 +219,9 @@ $(document).ready(function() {
 });
 
 function _postBrandChange(brandId, fieldName, value) {
-	$.ajax({ url: '/cms/brand/' + brandId + '/edit', type: 'POST', data: {filedName: value} });
+    var o = {};
+    o[fieldName] = value;
+	$.ajax({ url: '/cms/brand/' + brandId + '/edit', type: 'POST', dataType: 'text', data: o });
 }
 
 function _toggleProgressbar() {

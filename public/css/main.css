@@ -142,8 +142,8 @@ a, .linkcolor {
 
 .productphoto {
   position: absolute;
-  max-width: 100px;
-  max-height: 100px;
+  width: 100px;
+  height: 100px;
   top: 0;
   left: 0; }
 

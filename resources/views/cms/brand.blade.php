@@ -6,7 +6,7 @@
     <div class="pure-u-1-4"></div>
     <div class="pure-u-1 pure-u-sm-1-2">
 @foreach ($brands as $brand) 
-   <div class="productcell margintop1" data-source="{{$brand->id}}">
+   <div class="productcell margintop1" data-index-number="{{$brand->id}}">
        <div class="productphoto">
             <input type="file" class="selector"></input> 
             <img src={{$brand->logo === "" ? "http://placehold.it/100x100" : $brand->logo }}>

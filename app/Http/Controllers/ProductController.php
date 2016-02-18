@@ -45,6 +45,8 @@ class ProductController extends Controller
     {
         $product = new Product($request->only(['name', 'price', 'description']));
         $product->brand_id = $request->brand;
+        $product->user_id = Auth::user()->id; 
+        $product->save();
         
         // Let's save up product photos
         $types = ['front', 'back', 'top', 'bottom', 'custom1', 'custom2'];
@@ -57,8 +59,7 @@ class ProductController extends Controller
                 'type'          => $type
             ], $content)));
         }
-        $product->user_id = Auth::user()->id; 
-        $product->save();
+               
         return Redirect::to('cms');
     }
 
