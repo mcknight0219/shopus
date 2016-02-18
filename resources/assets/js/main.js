@@ -108,12 +108,47 @@ $(document).ready(function() {
         });
     }
 
+    // This makes me regret not using Angular or React :(
     if( location.pathname === '/cms/brand' ) {
-        $('.title').click(function() {
-            $(this).replaceWith(function() {
-                return "<input style=\"outline:none; border-width: 0 0 2px 0\" type=\"text\">"
+        $(document).on('click', '.title', function(e) {
+            var target = $(e.target);
+            var orig = target.text();
+            target.replaceWith(function() {
+                return "<input id=\"brandName\" class=\"title\" style=\"outline:none; border-width: 0 0 2px 0\" type=\"text\" data-source=\"" + orig + "\">";
+            });
+            $('#brandName').focus();
+            $('#brandName').focusout(function() {
+                var isEmpty = $(this).val() === '';
+                var newVal = isEmpty ? $(this).attr('data-source') : $(this).val();
+                $(this).replaceWith(function() {
+                   return "<div class=\"title singleline editable\">" + newVal + "</div>";
+                });
+
+                if( !isEmpty ) {
+                    _postBrandChange('name', $newVal);
+                }
             })
-        }) 
+        });
+
+        $(document).on('click', '.caption', function(e) {
+            var target = $(e.target);
+            orig = target.text();
+            target.replaceWith(function() {
+            	return "<input id=\"brandWebsite\" class=\"caption\" style=\"outline:none; border-width: 0 0 2px 0\" type=\"text\" data-source=\"" + orig + "\">";
+            });
+			$('#brandWebsite').focus();
+			$('#brandWebsite').focusout(function() {
+                var isEmpty = $(this).val() === '';
+				var newVal = isEmpty ? $(this).attr('data-source') : $(this).val();
+				$(this).replaceWith(function() {
+				 return "<div class=\"caption singleline editable\">" + newVal  + "</div>";
+				});
+
+                if( !isEmpty ) {
+                    _postBrandChange('website', newVal);
+                }
+			});
+        });
     }
 
     if( location.pathname === '/cms/product/add' ) {
@@ -159,6 +194,10 @@ $(document).ready(function() {
         });
     }
 });
+
+function _postBrandChange(brandId, fieldName, value) {
+	$.ajax({ url: '/cms/brand/' + brandId + '/edit', type: 'POST', data: {filedName: value} });
+}
 
 function _toggleProgressbar() {
     var $selector = $('#uploadProgressbar');
