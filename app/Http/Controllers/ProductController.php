@@ -47,18 +47,11 @@ class ProductController extends Controller
         $product->brand_id = $request->brand;
         $product->user_id = Auth::user()->id; 
         $product->save();
-        
-        // Let's save up product photos
-        $types = ['front', 'back', 'top', 'bottom', 'custom1', 'custom2'];
-        foreach( $types as $type ) {
-            $content = $this->_releaseFile(Session::getId(), $type);
-            if( $content === false ) continue;
-            // start a backend job
-            $this->dispatch(new StoreProductPhotos(array_merge([
-                'product_id'    => $product->id,
-                'type'          => $type
-            ], $content)));
-        }
+
+         $this->dispatch(new StoreProductPhotos([
+            'product_id' => $product->id,
+            'session_id' => Session::getId()
+        ]));
                
         return Redirect::to('cms');
     }
@@ -105,7 +98,7 @@ class ProductController extends Controller
     protected function _releaseFile($sessionId, $type)
     {
         $dir = 'tmp/' . $sessionId;
-        if(! $this->_hasDirectory($dir) ) {
+        if(! exists($dir) ) {
             return false;
         }
 
@@ -119,28 +112,4 @@ class ProductController extends Controller
         }
         return false;
     }
-
-    // two level maximum
-    protected function _hasDirectory($dir)
-    {
-        $parts = explode('/', $dir);
-        $parts = array_values(
-            array_filter($parts, function($part) { return strlen($part) > 0; })
-        );
-
-        if( count($parts) > 2 ) {
-            Log::warning('_hasDirectory() only supports two level recursion');
-            return false;
-        }
-
-        if( in_array($parts[0], Storage::disk('local')->directories('/')) ) {
-            if( count($parts) === 1) return true;
-            else {
-                return in_array($parts[0] . '/' . $parts[1], Storage::disk('local')->directories('/' . $parts[0]));
-            }
-        }
-
-        return false;
-    }
-
 }

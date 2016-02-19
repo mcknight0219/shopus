@@ -13,11 +13,8 @@ class StoreProductPhotos extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
 
-    protected $_content;
-    protected $_ext;
-    // product id
-    protected $_id;
-    protected $_type;
+    protected $_productId;
+    protected $_sessionId;
     
     /**
      * Create a new job instance.
@@ -26,10 +23,8 @@ class StoreProductPhotos extends Job implements ShouldQueue
      */
     public function __construct($arr)
     {
-        $this->_id      = $arr['product_id'];
-        $this->_ext     = $arr['ext'];
-        $this->_type    = $arr['type'];
-        //$this->_content = $arr['content'];
+        $this->_productId = $arr['product_id'];
+        $this->_sessionId = $arr['session'];
     }
 
     /**
@@ -39,22 +34,29 @@ class StoreProductPhotos extends Job implements ShouldQueue
      */
     public function handle()
     {
-        Log::info('Job is handled');
-        /*
-        $name = md5($this->_content) . '.' . $this->_ext;
-        Storage::disk('s3')->put($name, $this->_content);
-        try {
-            $photo = new ProductPhoto();
-            $photo->type = $this->_type;
-            $photo->location = $name;
-            $photo->product_id = $this->_id;
+        $dir = 'tmp/' . $this->_sessionId;
+        if(! exists($dir) ) {
+            Log::warning('No files uploaded for session ' . $this->_sessionId);
+            return;
+        }  
 
-            $photo->save();
-        } catch(Exception $e) {
-            // retry or just report?
-            Log::error('Cannot create product phot: ' . $e->getMessage());
+        foreach( Storage::disk('local')->files($dir) as $file ) {
+            $type = pathinfo($file)['filename'];
+            $content = file_get_contents(storage_path() . '/app/' . $file);
+            $name = md5($content) . '.' . pathinfo($file, PATHINFO_EXTENSION);
+            Storage::disk('s3')->put($name, $content);
+            Storage::disk('local')->delete($file);
+
+            $photo = new ProductPhoto();
+            $photo->type = $type;
+            $photo->location = $name;
+            $photo->product_id = $this->_productId;
+            try {
+                $photo->save();
+            } catch( Exception $e) {
+                Log::error($e->getMessage());
+            }
         }
-        */
     }
 
 }
