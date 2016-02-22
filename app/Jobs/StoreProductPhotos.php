@@ -7,6 +7,8 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
+use App\ProductPhoto;
+use Storage;
 use Log;
 
 class StoreProductPhotos extends Job implements ShouldQueue
@@ -24,7 +26,7 @@ class StoreProductPhotos extends Job implements ShouldQueue
     public function __construct($arr)
     {
         $this->_productId = $arr['product_id'];
-        $this->_sessionId = $arr['session'];
+        $this->_sessionId = $arr['session_id'];
     }
 
     /**
@@ -35,7 +37,7 @@ class StoreProductPhotos extends Job implements ShouldQueue
     public function handle()
     {
         $dir = 'tmp/' . $this->_sessionId;
-        if(! exists($dir) ) {
+        if(! $this->exists($dir) ) {
             Log::warning('No files uploaded for session ' . $this->_sessionId);
             return;
         }  
@@ -57,6 +59,28 @@ class StoreProductPhotos extends Job implements ShouldQueue
                 Log::error($e->getMessage());
             }
         }
+    }
+
+    protected function exists($dir)
+    {
+        $parts = explode('/', $dir);
+        $parts = array_values(
+            array_filter($parts, function($part) { return strlen($part) > 0; })
+        );
+
+        if( count($parts) > 2 ) {
+            Log::warning('_hasDirectory() only supports two level recursion');
+            return false;
+        }
+
+        if( in_array($parts[0], Storage::disk('local')->directories('/')) ) {
+            if( count($parts) === 1) return true;
+            else {
+                return in_array($parts[0] . '/' . $parts[1], Storage::disk('local')->directories('/' . $parts[0]));
+            }
+        }
+
+        return false;
     }
 
 }

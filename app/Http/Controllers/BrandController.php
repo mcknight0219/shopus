@@ -48,14 +48,15 @@ class BrandController extends Controller
         }
         else if( $request->hasFile('logo') && $request->file('logo')->isValid() ) {
             $content = file_get_contents($request->file('logo'));
-            $brand->logo = md5($content) . '.' . $request->file('logo')->getClientOriginalExtension();
+            $name = md5($content) . '.' . $request->file('logo')->getClientOriginalExtension();
+            $brand->logo = $name;
             
-            Storage::disk('s3')->put($brand->logo, $content);
+            Storage::disk('s3')->put($name, $content);
         }
 
         try {
             $brand->save();
-            return Response::make('', 200);
+            return Response::json(['status' => 'ok']);
         } catch( Exception $e) {
             Log::error("Failed updaing brand " . $brandId);
         }

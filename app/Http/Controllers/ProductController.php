@@ -48,7 +48,7 @@ class ProductController extends Controller
         $product->user_id = Auth::user()->id; 
         $product->save();
 
-         $this->dispatch(new StoreProductPhotos([
+        $this->dispatch(new StoreProductPhotos([
             'product_id' => $product->id,
             'session_id' => Session::getId()
         ]));
@@ -61,7 +61,7 @@ class ProductController extends Controller
     public function postProductPhotoAsync(Request $request)
     {
         if( !$request->ajax() ) {
-            return Response::make('' , 400);
+            return Response::json('' , 400);
         }
         
         static $acceptedTypes =['front', 'back', 'top', 'bottom', 'custom1', 'custom2'];
@@ -73,14 +73,15 @@ class ProductController extends Controller
         $id = Session::getId();
         $this->_holdFile($id, $request->file($type), $type);
 
-        return Response::make('$contents', 204);
+        return Response::json(['status' => 'ok']);
     }
 
     protected function _holdFile($sessionId, $file, $type)
     {
         //$tmpDir = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix() . '/tmp';
         $dir = 'tmp/' . $sessionId;
-        if(! $this->_hasDirectory($dir) ) {
+
+        if(! $this->exists($dir) ) {
             Storage::disk('local')->makeDirectory($dir);
         }
 
@@ -88,28 +89,25 @@ class ProductController extends Controller
         Storage::disk('local')->put($destPath, file_get_contents($file));
     }
 
-    /**
-     * Read upload from _holdFile and release the temporary file
-     *     
-     * @param  Int      $sessionId
-     * @param  String   $type
-     * @return mixed    FALSE | array of file content and extension name
-     */
-    protected function _releaseFile($sessionId, $type)
+    protected function exists($dir)
     {
-        $dir = 'tmp/' . $sessionId;
-        if(! exists($dir) ) {
+        $parts = explode('/', $dir);
+        $parts = array_values(
+            array_filter($parts, function($part) { return strlen($part) > 0; })
+        );
+
+        if( count($parts) > 2 ) {
+            Log::warning('_hasDirectory() only supports two level recursion');
             return false;
         }
 
-        foreach( Storage::disk('local')->files($dir) as $file ) {
-            if( pathinfo($file)['filename'] === $type ) {
-                $content = file_get_contents(storage_path() . '/app/' . $file);
-                $ext = pathinfo($file, PATHINFO_EXTENSION);
-                Storage::disk('local')->delete($file);
-                return ['ext' => $ext, 'content' => $content];
+        if( in_array($parts[0], Storage::disk('local')->directories('/')) ) {
+            if( count($parts) === 1) return true;
+            else {
+                return in_array($parts[0] . '/' . $parts[1], Storage::disk('local')->directories('/' . $parts[0]));
             }
         }
+
         return false;
     }
 }

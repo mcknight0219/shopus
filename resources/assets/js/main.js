@@ -126,7 +126,7 @@ $(document).ready(function() {
                 });
 
                 if( !isEmpty ) {
-                    _postBrandChange(brandId, 'name', $newVal);
+                    _postBrandChange(brandId, 'name', newVal);
                 }
             })
         });
@@ -145,7 +145,6 @@ $(document).ready(function() {
 				$(this).replaceWith(function() {
 				 return "<div class=\"caption singleline editable\">" + newVal  + "</div>";
 				});
-
                 if( !isEmpty ) {
                     _postBrandChange(brandId, 'website', newVal);
                 }
@@ -164,10 +163,15 @@ $(document).ready(function() {
                     data: file,
                     processData: false,
                     contentType: false,
+                    dataType: 'JSON',
                     success: function(data, textStatus, xhr) {
-                        if( xhr.status === '200') {
-                            console.log('Success');
-                        }                      
+                        if( xhr.status === 200) {
+                            // jQuery is fragile
+                            target.next().attr('src', '/cms/brand/' + brandId + '/logo');
+                        }
+                    },
+                    error: function(xhr, textStatus, error) {
+                        console.log(error);
                     }
                 });
             }
@@ -187,6 +191,7 @@ $(document).ready(function() {
                         xhr.upload.addEventListener('progress', function(e) {
                             if( e.lengthComputable ) {
                                 var percent = e.loaded / e.total * 100;
+                                console.log(percent);
                                 $('#uploadProgressbar').attr('value', percent);
                             }
                         }, false);
@@ -198,7 +203,8 @@ $(document).ready(function() {
                     data: file,
                     processData: false,
                     contentType: false,
-                    success: function(response) {
+                    dataType: 'JSON',
+                    success: function(data, textStatus, xhr) {
                         _toggleProgressbar();
                         $('#fileSelector').val = "";
                     },

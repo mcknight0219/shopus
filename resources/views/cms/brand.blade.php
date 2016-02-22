@@ -8,8 +8,8 @@
 @foreach ($brands as $brand) 
    <div class="productcell margintop1" data-index-number="{{$brand->id}}">
        <div class="productphoto">
-            <input type="file" class="selector"></input> 
-            <img src={{$brand->logo === "" ? "http://placehold.it/100x100" : $brand->logo }}>
+            <input type="file" class="selector">
+            <img src={{$brand->logo === "" ? URL::to('/') . "/img/100x100.png" : action('BrandController@getBrandLogo', $brand->id) }}>
        </div>
        <div class="productcontent">
            <div class="titlestack">
