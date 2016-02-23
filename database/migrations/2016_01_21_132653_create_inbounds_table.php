@@ -16,7 +16,7 @@ class CreateInboundsTable extends Migration
             $table->increments('id');
             $table->bigInteger('msgId');
             // Lumping everything else in a json format
-            $table->json('content');
+            $table->text('content');
         });
     }
 

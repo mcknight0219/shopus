@@ -14,7 +14,7 @@ class CreateOutboundsTable extends Migration
     {
         Schema::create('outbounds', function(Blueprint $table) {
             $table->increments('id');
-            $table->json('content');
+            $table->text('content');
         });
     }
 
