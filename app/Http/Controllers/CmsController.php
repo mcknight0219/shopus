@@ -17,8 +17,6 @@ class CmsController extends Controller
         $user = Auth::user();
         if( $user ) {
             $profile = $user->profile;
-            $profile = ($profile === null) ? new Profile : $profile;
-            
             return view('cms')->with('profile', $profile);
         } else {
             return view('cms');
