@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use DB;
+use Log;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\MessageFactory;
@@ -14,8 +15,11 @@ class MainController extends Controller
 {
     public function getIndex(Request $request) 
     {
+        Log::info('Request coming in ' . $request);
         if ($this->isCheckSignature($request)) {
-            if ($this->isCheckSignature($request)) return $request->input['echostr'];
+            if ($this->isCheckSignature($request)) {
+                return $request->input['echostr'];
+            }
             else return "";
         }
     }
@@ -55,7 +59,7 @@ class MainController extends Controller
         $signature = $request->input['signature'];
         $timestamp = $request->input['timestamp'];
         $nonce = $request->input['nonce'];
-        $token = DB::select('select token from app_secrets');
+        $token = env('WECHAT_TOKEN');
 
         $tmpArr = [$token, $timestamp, $nonce];
         sort($tmpArr, SORT_STRING);
