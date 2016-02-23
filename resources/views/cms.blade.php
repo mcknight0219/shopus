@@ -12,9 +12,9 @@
                 <div class="right" id="editProfile"><i class="controlwidget fa fa-pencil"></i></div>
             </div>
         </div>
-
+@if( $profile !== null )
         @include('shared.profile', ['profile'=> $profile])
-   
+@endif
     <div class="pure-g margintop2">
         <div class="pure-u-1">
             <div class="left headtitle">Products</div>
