@@ -18,7 +18,7 @@ class BrandController extends Controller
 {
     public function getBrand()
     {
-        return view('cms.brand')->with('brands', Brand::all());
+        return view('brand')->with('brands', Brand::all());
     }
 
     public function postBrandAsync(Request $request, $brandId)

@@ -17,7 +17,7 @@ class Authenticate
     public function handle($request, Closure $next)
     {
         if( !Auth::user() ) {
-            return redirect('cms');
+            return redirect('/');
         }
         return $next($request);
     }

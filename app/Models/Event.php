@@ -9,7 +9,7 @@ class Event extends Model
 
     public function message()
     {
-        return $this->morphOne('Message', 'messageable');
+        return $this->morphOne('App\Models\Message', 'messageable');
     }
 	
 	// Some subscription event are sent with qr scan information

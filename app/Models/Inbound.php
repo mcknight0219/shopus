@@ -8,8 +8,10 @@ class Inbound extends Model
 {
     protected $table = "inbounds";
 
+    public $timestamps = false;
+
     public function message()
     {
-        return $this->morphOne('Message', 'messageable');
+        return $this->morphOne('App\Models\Message', 'messageable');
     }
 }

@@ -1,11 +1,10 @@
 <?php
-
 namespace App;
 
-use Models\Message;
-use Models\Inbound;
-use Models\Outbound;
-use Models\Event;
+use App\Models\Message;
+use App\Models\Inbound;
+use App\Models\Outbound;
+use App\Models\Event;
 
 use App\Exceptions\MessageFactoryException;
 
@@ -37,14 +36,14 @@ class MessageFactory
     // common fields for all type of messages
     protected $_commonAttrs = ['ToUserName', 'FromUserName', 'CreateTime', 'MsgType'];
 
-    protected function _createBasic($attriubtes)
+    protected function _createBasic($attributes)
     {
         try {
             $message = new Message;
             $message->toUserName = $attributes['ToUserName'];
-            $message->fromUserName = $attriubtes['FromUserName'];
+            $message->fromUserName = $attributes['FromUserName'];
             $message->createTime = $this->_epochToTimestamp($attributes['CreateTime']);
-            $message->type = $attributes['MsgType'];
+            $message->msgType = $attributes['MsgType'];
             
             $message->save();
             return $message;
@@ -59,9 +58,9 @@ class MessageFactory
         $message = $this->_createBasic($attributes);
 
         $inbound = new Inbound;
-        $inbound->msgId = $attriubtes['MsgId'];
+        $inbound->msgId = $attributes['MsgId'];
         $inbound->content = json_encode(
-            array_filter($attributes, function predicate($a) {
+            array_filter($attributes, function($a) {
                 return !in_array($a, array_merge($this->_commonAttrs, ['MsgId']));
             })
         );
@@ -81,7 +80,7 @@ class MessageFactory
 
         $outbound = new Outbound;
         $outbound->content = json_encode(
-            array_filter($attributes, function predicate($a) {
+            array_filter($attributes, function($a) {
                 return !in_array($a, $this->_commonAttrs);
             })
         );
@@ -113,7 +112,7 @@ class MessageFactory
 
     protected function _epochToTimestamp($epoch)
     {
-        $dt = new DateTime(intval($epoch));
+        $dt = (new \DateTime())->setTimestamp(intval($epoch));
         return $dt->format('Y-m-d H:i:s');        
     }
 }

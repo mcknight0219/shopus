@@ -19,7 +19,7 @@ class Administrate
     {
         $user = Auth::user();
         if( !$this->isAdministrator($user) ) {
-            return redirect('cms');
+            return redirect('/');
         }
 
         return $next($request);

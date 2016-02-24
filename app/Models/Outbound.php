@@ -10,7 +10,7 @@ class Outbound extends Model
 
     public function message()
     {
-        return $this->morphOne('Message', 'messageable');
+        return $this->morphOne('App\Models\Message', 'messageable');
     }
     
     public function type()

@@ -13,6 +13,8 @@ class Message extends Model
 {
     protected $table = 'messages';
 
+    public $timestamps = false;
+
     public function messageable()
     {
         return $this->morphTo();

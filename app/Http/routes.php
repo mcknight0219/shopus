@@ -10,13 +10,13 @@
 | kernel and includes session state, CSRF protection, and more.
 |
 */
-if( env('APP_ENV') === 'local' ) {
+if( env('APP_ENV') === 'production' ) {
+    $domain = 'wechat.shopus.li';   
+} else {
     $domain = 'wechat.shopus.app';
 } 
-else if( env('APP_ENV') === 'production' ) {
-    $domain = 'wechat.shopus.li';   
-}
 
+// The single point of entry for wechat interface
  Route::group(['domain' => $domain ,'middleware' => ['weixin']], function () {
         Route::controller('/', 'MainController');
 });
