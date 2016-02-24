@@ -3,7 +3,7 @@ $(document).ready(function() {
         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content') }
     });
 
-    if( location.pathname === '/cms/login' || location.pathname === '/cms/register' ) { 
+    if( location.pathname === '/login' || location.pathname === '/register' ) { 
 
         $(".borderedbutton").click(function() {
             var email = $('#email').val();
@@ -55,15 +55,15 @@ $(document).ready(function() {
     }
 
     // Remind user if no weixin id is associated
-    if( location.pathname === '/cms') {
+    if( location.pathname === '/') {
         _remindProfileEmpty();
          // On Cms homepage, user can click to edit their profile
         $('div#editProfile').click(function() {
-            window.location.href='/cms/profile/edit';        
+            window.location.href='/profile/edit';        
         });
     
         $('div#addProduct').click(function() {
-            window.location.href='/cms/product/add';
+            window.location.href='/product/add';
         })
         // Toggle fold/unfold
         $('div#unfoldProduct').click(function() {
@@ -78,7 +78,7 @@ $(document).ready(function() {
         });
     }
 
-    if( location.pathname === '/cms/profile/edit') {
+    if( location.pathname === '/profile/edit') {
         if( $('form input[name="weixin"]').val() !== "" ) {
             $('form input[name="weixin"]').prop('readonly', true);
         }
@@ -109,7 +109,7 @@ $(document).ready(function() {
     }
 
     // First time I feel sick about jquery :(
-    if( location.pathname === '/cms/brand' ) {
+    if( location.pathname === '/brand' ) {
         $(document).on('click', '.title', function(e) {
             var target = $(e.target);
             var brandId = target.closest('.productcell').attr('data-index-number');
@@ -158,7 +158,7 @@ $(document).ready(function() {
             if( target[0].files && target[0].files[0] ) {
                 file.append('logo', target[0].files[0]);
                 $.ajax({
-                    url: '/cms/brand/' + brandId + '/edit',
+                    url: '/brand/' + brandId + '/edit',
                     type: 'POST',
                     data: file,
                     processData: false,
@@ -167,7 +167,7 @@ $(document).ready(function() {
                     success: function(data, textStatus, xhr) {
                         if( xhr.status === 200) {
                             // jQuery is fragile
-                            target.next().attr('src', '/cms/brand/' + brandId + '/logo');
+                            target.next().attr('src', '/brand/' + brandId + '/logo');
                         }
                     },
                     error: function(xhr, textStatus, error) {
@@ -178,7 +178,7 @@ $(document).ready(function() {
         });
     }
 
-    if( location.pathname === '/cms/product/add' ) {
+    if( location.pathname === '/product/add' ) {
         $('#fileSelector').change(function() {
             _toggleProgressbar();
             var file = new FormData();
@@ -198,7 +198,7 @@ $(document).ready(function() {
                         
                         return xhr;
                     },
-                    url: '/cms/product/photo',
+                    url: '/product/photo',
                     type: 'POST',
                     data: file,
                     processData: false,
@@ -227,7 +227,7 @@ $(document).ready(function() {
 function _postBrandChange(brandId, fieldName, value) {
     var o = {};
     o[fieldName] = value;
-	$.ajax({ url: '/cms/brand/' + brandId + '/edit', type: 'POST', dataType: 'text', data: o });
+	$.ajax({ url: '/brand/' + brandId + '/edit', type: 'POST', dataType: 'text', data: o });
 }
 
 function _toggleProgressbar() {

@@ -17,11 +17,11 @@
 </head>
 <body>
     <div class="nav">
-       <a class="left navlink" href="/cms">Shopus</a>
+       <a class="left navlink" href="/">Shopus</a>
        @if( Auth::user() )
-        <a class="left navlink" href="/cms/logout">Log Out</a>
+        <a class="left navlink" href="/logout">Log Out</a>
        @else
-        <a class="left navlink" href="/cms/login">Log In</a>
+        <a class="left navlink" href="/login">Log In</a>
        @endif
        <div class="right pure-form search_container">
            <input id="productsearch" class="pure-input-rounded" type="text" placeholder="Search Products" name="q"></input>

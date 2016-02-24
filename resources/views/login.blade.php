@@ -12,7 +12,7 @@
         @endfor
     @endif
 
-    <div class="right"><a href="/cms/register">Create Account</a></div>
+    <div class="right"><a href="/register">Create Account</a></div>
     {!! Form::label('email', 'Email:', ['class' => 'control-label']) !!}
 
     {!! Form::email('email', null, ['class' => 'pure-input-1', 'placeholder' => 'your@email.com', 'autofocus', 'tabindex' => '1', 'autocomplete' => 'off']) !!}
