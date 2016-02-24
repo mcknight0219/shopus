@@ -10,9 +10,18 @@
 | kernel and includes session state, CSRF protection, and more.
 |
 */
+if( env('APP_ENV') === 'local' ) {
+    $domain = 'wechat.shopus.app';
+} 
+else if( env('APP_ENV') === 'production' ) {
+    $domain = 'wechat.shopus.li';   
+}
 
+ Route::group(['domain' => $domain ,'middleware' => ['weixin']], function () {
+        Route::controller('/', 'MainController');
+});
 
-Route::group(['middleware' => ['web'], 'prefix' => 'cms'], function () {
+Route::group(['middleware' => ['web']], function () {
 
     // Account management
     Route::get ('/',                'CmsController@index')->name('cms');
@@ -29,7 +38,7 @@ Route::group(['middleware' => ['web'], 'prefix' => 'cms'], function () {
         ->where('id', '[0-9]+');
 });
 
-Route::group(['middleware' => ['web', 'auth'], 'prefix' => 'cms'], function () {
+Route::group(['middleware' => ['web', 'auth']], function () {
     // Only authenticated user can edit *his* profile
     Route::get ('profile/edit',     'ProfileController@getEditProfile')->name('cms:profile:edit');
     Route::post('profile/edit',     'ProfileController@postEditProfile');
@@ -44,12 +53,11 @@ Route::group(['middleware' => ['web', 'auth'], 'prefix' => 'cms'], function () {
 });
 
 // Admin only pages
-Route::group(['middleware' => ['web', 'auth', 'admin'], 'prefix' => 'cms'], function () {
+Route::group(['middleware' => ['web', 'auth', 'admin']], function () {
     Route::get ('brand',            'BrandController@getBrand');
     Route::post('brand/{id}/edit',  'BrandController@postBrandAsync')->where('id', '[0-9]+');
     Route::get ('brand/{id}/logo',  'BrandController@getBrandLogo')->where('id', '[0-9]+');
 });
 
-Route::group(['middleware' => ['weixin']], function () {
-    Route::controller('/', 'MainController');
-});
+
+
