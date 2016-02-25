@@ -69,12 +69,6 @@ class Outbound extends Model
     {
         return json_decode($value, true);
     }
-
-	public function setContentAttribute($value)
-	{
-		if( !is_array($value) )	return;
-		$this->content = json_encode($value);
-	}
     
     /**
      * Get the article for news message
@@ -83,7 +77,7 @@ class Outbound extends Model
      */
     public function articles()
     {
-    	if( $this->message()->type !== 'news' ) {
+    	if( $this->message->msgType !== 'news' ) {
     		LOG::warning('Accessing article for non-news message');
     		return false;
     	}
@@ -95,22 +89,22 @@ class Outbound extends Model
     public function numArticles()
     {
     	$as = $this->articles();
-    	if( !$as )	return $as;
+    	if( $as === false )	return $as;
     	else 		return count($as);
     }
 
 	public function deleteArticle($title)
 	{
-		if( !is_string($title) || strlen($title) ) {
+		if( !is_string($title) || strlen($title) === 0 ) {
 			return false;
 		}
 		
 		$content = $this->content;
 		$found = false;
-		for ($i = 0; $i < $content['Articles']; $i++) {
+		for ($i = 0; $i < count($content['Articles']); $i++) {
 			if( $content['Articles'][$i]['Title'] === $title ) {
-				unset($content['Articles'][$i]);
-				$this->content = $content;
+                unset($content['Articles'][$i]);
+				$this->content = json_encode($content);
 				$found = true;
 			}
 		}
@@ -134,6 +128,10 @@ class Outbound extends Model
     public function addArticle($title, $description, $picUrl, $url)
     {
         $content = $this->content;
+        if( $content === null ) {
+            $content = [];
+        }
+
         if( !array_key_exists('Articles', $content) ) {
         	$content['Articles'] = array();
         }
@@ -143,7 +141,7 @@ class Outbound extends Model
         	'PicUrl' 		=> $picUrl,
         	'Url'			=> $url
         ];
-        $this->content = $content;
+        $this->content = json_encode($content);
         try { $this->save(); return true; } catch(Exception $e) {
         	return false;
         } 

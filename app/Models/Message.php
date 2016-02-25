@@ -19,6 +19,5 @@ class Message extends Model
     {
         return $this->morphTo();
     }
-
     
 }

@@ -99,7 +99,7 @@ class MessageFactoryTest extends TestCase
         $this->assertEquals($attributes['Content'], $arr['Content']);
     }
 
-    public function testCreateOutboundArticle()
+    public function testCreateOutboundArticleAdd()
     {
         $attributes = [
             'ToUserName'    => 'toUser',
@@ -109,9 +109,67 @@ class MessageFactoryTest extends TestCase
         ];
 
         $m = (new MessageFactory)->create('outbound', $attributes);
+        $this->assertEquals('news', $m->msgType);
+
         $o = $m->messageable;
-        $o->addArticle('title1', 'description1', 'picurl', 'url');
+        
+        // add article
+        $o->addArticle('title1', 'description1', 'picurl1', 'url');
         $this->assertEquals(1, $o->numArticles());
+
+        $articles = $o->articles();
+        $article = $articles[0];
+        $this->assertEquals('title1', $article['Title']);
+        $this->assertEquals('description1', $article['Description']);
+        $this->assertEquals('picurl1', $article['PicUrl']);
+        $this->assertEquals('url', $article['Url']);
+    }
+
+    public function testCreateOutboundArticleDelete()
+    {
+        $attributes = [
+            'ToUserName'    => 'toUser',
+            'FromUserName'  => 'fromUser',
+            'CreateTime'    => 12345678,
+            'MsgType'       => 'news'
+        ];
+        $m = (new MessageFactory)->create('outbound', $attributes);
+        $o = $m->messageable;
+
+        $o->addArticle('title1', 'description1', 'picurl1', 'url');
+        $this->assertEquals(1, $o->numArticles());
+
+        // delete non-existent article
+        $o->deleteArticle('title2');
+        $this->assertEquals(1, $o->numArticles());
+
+        $o->deleteArticle('title1');
+        $this->assertEquals(0, $o->numArticles());
+    }
+
+    public function testCreateOutboundArticleXML()
+    {
+        $attributes = [
+            'ToUserName'    => 'toUser',
+            'FromUserName'  => 'fromUser',
+            'CreateTime'    => 12345678,
+            'MsgType'       => 'news'
+        ];
+        $m = (new MessageFactory)->create('outbound', $attributes);
+        $o = $m->messageable;
+        $o->addArticle('title1', 'description1', 'picurl1', 'url1');
+        $o->addArticle('title2', 'description2', 'picurl2', 'url2');
+        $this->assertEquals(2, $o->numArticles());
+
+        $xmlStr = $o->toXml();
+        $xml = simplexml_load_string($xmlStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+        $arr = json_decode(json_encode((array)$xml), TRUE);
+
+        $this->assertEquals(2, $arr['ArticleCount']);
+        $article1 = $arr['Articles']['item'][0];
+        $this->assertEquals('title1', $article1['Title']);
+        $article2 = $arr['Articles']['item'][1];
+        $this->assertEquals('title2', $article2['Title']);
     }
 
     /**

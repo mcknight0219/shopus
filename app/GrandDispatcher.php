@@ -5,9 +5,8 @@ namespace App;
 use DB;
 use Log;
 use App\Models\Message;
-use App\Action;
-
-use App\Models\Subscriber;
+use App\Models\Actions\NoopAction;
+use App\Models\Actions\SubscribeAction;
 
 // A central place to handle received message 
 class GrandDispatcher 
@@ -15,58 +14,49 @@ class GrandDispatcher
 	public function handle(Message $msg)
 	{
 		// If message is redundant, we do nothing
-		if( $this->_isOutbound($msg) || $this->_isRedundant($msg) ) {
-			return Action::Noop;
+		if( $this->_checkRedundant($msg) ) {
+			return new NoopAction;
 		}
 	
-		if( $msg->msgType === 'event' ) return $this->_handleEventMessage($msg);
-		else return $this->_handleIncomingMessage($msg);
+		if( $msg->msgType === 'event' ) {
+            return $this->handleEventMessage($msg);
+        } else {
+            return $this->handleIncomingMessage($msg);
+        }
 	}
 	
-	protected function _handleEventMessage($msg)
+	protected function handleEventMessage($msg)
 	{
-		$event = $msg->event;
-		if( $event === 'unsubscribe' ) {
-			$id = $msg->fromUserName;
-			$user = Subscriber::where('openId', $id)->get();
-			if( $user === null ) {
-				Log::warning("Subscriber ${id}'s record is missing from table subscribers");
-			} else {
-				$user->unsubscribed = true;
-				$user->save();
-			}
-			return Action::Noop;
-		} else if( $event === 'subscribe' ) {
-			$user = Subscriber(['unionId' => $msg->fromUserName]);
-			$user->save();
-			$action = new Action();
-			$action->welcome($user);	
-		} else if( $event === 'CLICK' ) {
+        switch ($msg->messageable->event) {
+            case 'subscribe':
+                $action = new SubscribeAction; break;
+            case 'unsubscribe':
+                $action = new UnsubscribeAction; break;
+            case 'click':
+                $action = new MenuClickAction; break;
+            case 'VIEW':
+                $action = new MenuViewAction; break;
+            case 'SCAN':
+            case 'LOCATION':
+                return new NoopAction;
+        }
 
-		} else if( $event === 'VIEW') {
-
-		} else if( $event === 'SCAN' ) {
-			return Action::Noop;
-		}
+        $action->setMessage($msg);
+        return $action;
 	}
 	
-	protected function _handleIncomingMessage($msg)
+	protected function handleIncomingMessage($msg)
 	{
 		
 	}
-	
-	protected function _isOutbound(Message $msg)
+
+	protected function _checkRedundant(Message $msg)
 	{
-		return get_class($msg->messageable) === 'Outbound';
-	}
-	
-	protected function _isRedundant(Message $msg)
-	{
-		$klass = get_class($msg->messageable());
-		// Inbound message is distinquished by msgId.
+		$klass = get_class($msg->messageable);
+		// Inbound message is distinguished by msgId.
 		// Event message can be differed by FromUserName + CreateTime
 		if( $klass === 'Inbound' ) {
-			$result = Inbound::where('msgId',$msg->messageable->msgId)->get();
+			$result = Inbound::where('msgId', $msg->messageable->msgId)->get();
 			return $result !== null;
 		} else if( $klass === 'Event' ) {
 			$result = Message::where('FromUserName', $msg->fromUserName)

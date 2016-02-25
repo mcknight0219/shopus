@@ -17,7 +17,7 @@ class CreateMessagesTable extends Migration
             $table->string('toUserName');
             $table->string('fromUserName');
             $table->timestamp('createTime');
-            $table->enum('msgType', ['event', 'text', 'image', 'voice', 'video', 'shortvideo', 'location', 'link']);
+            $table->enum('msgType', ['event', 'text', 'image', 'voice', 'video', 'shortvideo', 'location', 'link', 'news']);
             $table->integer('messageable_id');
             $table->string('messageable_type');
         });
