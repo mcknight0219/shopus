@@ -32,9 +32,10 @@ class MainController extends Controller
     {
         if ($request->post()) {
             $body = $request->getContent();
-            $node = new SimpleXML($body);
+            $xml = simplexml_load_string($body, 'SimpleXMLElement', LIBXML_NOCDATA);
+            $attrs = json_decode(json_encode((array)$xml), TRUE);
 			try {
-				$msg = (new MessageFactory())->create($node->MsgType, $node);
+				$msg = (new MessageFactory)->create($attrs['MsgType'], $attrs);
 				$action = GrandDispatcher::handle($msg);
 				
 			} catch(Exception $e) {

@@ -7,6 +7,8 @@ class Event extends Model
 {
     protected $table = "events";
 
+	public $timestamps = false;
+
     public function message()
     {
         return $this->morphOne('App\Models\Message', 'messageable');

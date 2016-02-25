@@ -102,7 +102,7 @@ class MessageFactory
         $event->ticket = array_key_exists('Ticket', $attributes) ? $attributes['Ticket'] : null;
         // For LOCATION event, pack Latitude, Longitude, and Precision in eventKey
         if (array_key_exists('Latitude', $attributes)) {
-            $event->eventKey = array($attributes['Latitude'], $attributes['Longitude'], $attributes['Precision']).implode(';');
+            $event->eventKey = implode(';', [$attributes['Latitude'], $attributes['Longitude'], $attributes['Precision']]);
         }
         $event->save();
     

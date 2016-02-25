@@ -3,32 +3,33 @@ namespace App\Models;
 
 use Log;
 use Illuminate\Database\Eloquent\Model;
+use App\Libraries\SimpleXMLElementEx;
+
 
 class Outbound extends Model
 {
     protected $table = 'outbounds';
 
+	public $timestamps = false;
+
     public function message()
     {
         return $this->morphOne('App\Models\Message', 'messageable');
-    }
-    
-    public function type()
-    {
-    	return $this->message()->type;	
     }
 
     // Turn message to xml string so we can send them as response
     public function toXml()
     {
-        $xml = new SimpleXML('<xml/>');
-        array_map(function ($tag) use ($this) {
-            $xml->addChild(ucfirst($tag), $this->message()[$tag]);
-        }, ['toUserName', 'fromUserName', 'createTime', 'msgType']);
+        $xml = new SimpleXMLElementEx('<xml/>');
+
+		$xml->addChildCData('ToUserName', 	$this->message->toUserName);
+		$xml->addChildCData('FromUserName',	$this->message->fromUserName);
+		$xml->addChild('CreateTime', strtotime($this->message->createTime));
+		$xml->addChildCData('MsgType', $this->message->msgType);
 
         // add specific tags according to msg type.
         // Note content fields are always capitalized
-        $type = $this->message()->msgType;
+        $type = $this->message->msgType;
         switch (true) {
             case strstr($type, 'news'):
 				$articles = $this->articles();
@@ -43,10 +44,11 @@ class Outbound extends Model
 				}
             	break;
             case strstr($type, 'text'):
-				$xml->addChild('Content', $this->content['Content']);
+				$xml->addChildCData('Content', $this->content['Content']);
             	break;
 			case strstr($type, 'image'):
-            	$xml->addChild('MediaId', $this->content['MediaId']);
+				$image = $xml->addChild('Image');
+            	$image->addChild('MediaId', $this->content['MediaId']);
             	break;
 			// We are not going to support those types of media in near future	
             case strstr($type, 'voice'):
@@ -67,6 +69,12 @@ class Outbound extends Model
     {
         return json_decode($value, true);
     }
+
+	public function setContentAttribute($value)
+	{
+		if( !is_array($value) )	return;
+		$this->content = json_encode($value);
+	}
     
     /**
      * Get the article for news message
@@ -121,17 +129,10 @@ class Outbound extends Model
      * @param String $description 
      * @param String $picUrl      link to JPG or PNG format. 360x200 for first article and 200x200 for rest
      * @param String $url         link when news clicked
+	 * @return Boolean
      */
     public function addArticle($title, $description, $picUrl, $url)
     {
-    	$_validate = function($prev, $param) {
-    		return $prev && is_string($param) && strlen($param) > 0;
-    	}
-    	if( !array_reduce([$title, $description, $picUrl, $url], '_validate', true) ) {
-    		Log::error('addArticle(): parameters must be non-empty strings');
-    		return false;
-    	}
-    
         $content = $this->content;
         if( !array_key_exists('Articles', $content) ) {
         	$content['Articles'] = array();

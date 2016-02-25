@@ -14,4 +14,9 @@ class Inbound extends Model
     {
         return $this->morphOne('App\Models\Message', 'messageable');
     }
+
+    public function getContentAttribute($value)
+    {
+        return json_decode($value, true);
+    }
 }
