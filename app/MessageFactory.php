@@ -60,9 +60,9 @@ class MessageFactory
         $inbound = new Inbound;
         $inbound->msgId = $attributes['MsgId'];
         $inbound->content = json_encode(
-            array_filter($attributes, function($a) {
-                return !in_array($a, array_merge($this->_commonAttrs, ['MsgId']));
-            })
+            array_filter($attributes, function($k) {
+                return !in_array($k, array_merge($this->_commonAttrs, ['MsgId']));
+            }, ARRAY_FILTER_USE_KEY)
         );
         $inbound->save();
 
@@ -80,9 +80,9 @@ class MessageFactory
 
         $outbound = new Outbound;
         $outbound->content = json_encode(
-            array_filter($attributes, function($a) {
-                return !in_array($a, $this->_commonAttrs);
-            })
+            array_filter($attributes, function($k) {
+                return !in_array($k, $this->_commonAttrs);
+            }, ARRAY_FILTER_USE_KEY)
         );
         $outbound->save();
 
@@ -112,7 +112,6 @@ class MessageFactory
 
     protected function _epochToTimestamp($epoch)
     {
-        $dt = (new \DateTime())->setTimestamp(intval($epoch));
-        return $dt->format('Y-m-d H:i:s');        
+        return date('Y-m-d H:i:s', intval($epoch));
     }
 }
