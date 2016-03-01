@@ -25,5 +25,5 @@ interface HttpServiceInterface
      * @param bool $retry
      * @return mixed
      */
-    public function request($method, $path, $body, $retry);
+    public function request($method, $path, $body, $retry = true);
 }

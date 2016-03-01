@@ -1,6 +1,7 @@
 <?php
 namespace App\Wechat;
 
+use App\Wechat\HttpServiceInterface;
 use Log;
 
 // We don't need to store assets or meta in our database because
@@ -13,23 +14,19 @@ class AssetService
     /**
      * @var The wechat http service
      */
-    protected $httpSerice;
+    protected $httpService;
 
-    function __construct()
+    public function __construct(HttpServiceInterface $httpService)
     {
-        $this->httpSerice = App::make('App\Wechat\HttpServiceInterface');
+        $this->httpService = $httpService;
     }
 
-    /**
-     * Get the total number of materials uploaded
-     * @param $type  String could be [voice, video, image, news]
-     * @return Integer
-     */
     public function count($type)
     {
         try {
-            $resp = $this->httpSerice->request('GET', 'material/get_materialcount', []);
-            return $resp[$type];
+            $resp = $this->httpService->request('GET', 'material/get_materialcount', []);
+            $key = $type . '_count';
+            return $resp[$key];
         } catch (\Exception $e) {
             $this->logError($e);
             return self::ERROR_RESPONSE_SCALAR;
@@ -41,8 +38,8 @@ class AssetService
         try {
             $offset = 0; $total = 0; $batch = [];
             while (true) {
-                $resp = $this->httpSerice->request('POST', 'material/batchget_material', [
-                    'body' => [
+                $resp = $this->httpService->request('POST', 'material/batchget_material', [
+                    'form_params' => [
                         'type'      => $type,
                         'offset'    => $offset,
                         'count'     => 20
@@ -56,7 +53,6 @@ class AssetService
                 }
                 $offset = $total;
             }
-
             return $batch;
         } catch (\Exception $e) {
             $this->logError($e);
@@ -64,50 +60,33 @@ class AssetService
         }
     }
 
-    /**
-     * Create temporary material on remote server. It will be deleted after 3 days
-     *
-     * @param $type [image, voice, video, thumb]
-     * @param $filepath
-     * @return Array
-     */
     public function upload($type, $filepath)
     {
         try {
-            $resp = $this->httpSerice->request('POST', 'media/upload', [
+            $resp = $this->httpService->request('POST', 'media/upload', [
                 'query' => [
                     'type' => $type
                 ],
                 'multipart' => [
                     [
                         'name' => 'media',
-                        'content' => fopen($filepath, 'r')
+                        'contents' => fopen($filepath, 'r')
                     ]
                 ]
             ]);
-
             return $resp['media_id'];
         } catch (\Exception $e) {
+            var_dump($e->getMessage());
             $this->logError($e);
             return self::ERROR_RESPONSE_SCALAR;
         }
     }
 
-    /**
-     * Create a single news material
-     *
-     * @param $attr
-     * @return array
-     */
     public function article($attr)
     {
         try {
-            $content = $this->preprocessArticleContent($attr['content']);
-            unset($attr['content']);
-            $attr['content'] = $content;
-
-            $resp = $this->httpSerice->request('POST', 'material/add_news', [
-                'body' => $attr
+            $resp = $this->httpService->request('POST', 'material/add_news', [
+                'form_params' => $attr
             ]);
 
             return $resp['media_id'];
@@ -120,100 +99,38 @@ class AssetService
     public function image($filepath)
     {
         try {
-
-        } catch (\Exception $e) {
-            $this->logError($e);
-            return self::
-        }
-    }
-
-    /**
-     * Create permanent material for media file. 
-     * 
-     * @param  string $pathOrUrl either url or local path
-     * @return mixed            FALSE on failure, array of response on success
-     */
-    protected function createMedia($type, $pathOrUrl)
-    {
-        if( $type !== 'image' ) { LOG::error('Not implemented for other media type'); return FALSE; }
-        try {
-            $this->guardSizeAndFormat($type, $pathOrUrl);
-            $resp = $this->client->request('POST', 'material/add_material', [
-                'query' => ['access_token' => $this->token->get()],
+            $resp = $this->httpService->request('POST', 'material/add_material', [
                 'multipart' => [
-                    [
-                        'name' => 'media',
-                        'content' => fopen($pathOrUrl, 'r');
-                    ]
+                    'name'      => 'media',
+                    'type'      => 'image',
+                    'contents'   => fopen($filepath, 'r')
                 ]
             ]);
-            $respBody = json_decode($resp->getBody());
-            $this->guardResponse($respBody);
-            return $respBody;
-        } catch (Exception $e) {
-            Log::error($e->getMessage());
-            return FALSE;
+
+            return $resp['media_id'];
+        } catch (\Exception $e) {
+            $this->logError($e);
+            return self::ERROR_RESPONSE_SCALAR;
         }
     }
 
-    public function createImage($pathOrUrl)
-    {
-        return $this->createMedia('image', $pathOrUrl);
-    }
 
-
-    /**
-     * Remove a material given media id
-     *         
-     * @param  String $mediaId
-     * @return mixed 
-     */
     public function delete($mediaId)
     {
         try {
-            $resp = $this->client->request('POST', 'material/del_material', [
-                'query' => ['access_token' => $this->token->get()],
-                'body'  => ['media_id' => $mediaId]
+            $this->httpService->request('POST', 'material/del_material', [
+                'form_params' => [
+                    'media_id' => $mediaId
+                ]
             ]);
-            $respBody = json_decode($resp);
-            $this->guardResponse($respBody);
-        } catch (Exception $e) {
-            Log::error($e->getMessage());
-            return FALSE;
+        } catch (\Exception $e) {
+            $this->logError($e);
         }
     }
 
-    /**
-     * Replace external image url with uploaded url so it won't be ignored
-     */
-    protected function preprocessArticleContent($html)
-    {
-        $html = str_get_html($html);
-        static $host = 'mmbiz.qpic.cn';
-        foreach( $html->find('img') as $element ) {
-            $link = $element->src;
-            if( parse_url($link)['host'] !== $host ) {
-                $resp = $this->client->request('POST', 'uploadimg', [
-                    'query' => ['access_token' => $this->token->get()],
-                    'multipart' => [
-                        [
-                            'name' => 'media',
-                            'content' => fopen($link, 'r')
-                        ]
-                    ]
-                ]);
-                $respBody = json_decode($resp);
-                // no need to panic, server will remove that link for us
-                if( array_key_exists('url', $respBody) ) $element->src = $respBody['url'];
-                else continue;
-            }
-        }
-
-        return $html->save();
-    }
 
     protected function logError(\Exception $e)
     {
-
+        Log::error("Failed processing material: {$e->getMessage()}");
     }
 }

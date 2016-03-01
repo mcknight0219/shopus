@@ -1,6 +1,8 @@
 /vendor
 /node_modules
 /.phpintel
+/.idea
+/.bundle
 Homestead.yaml
 Homestead.json
 .env

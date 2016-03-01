@@ -1,6 +1,8 @@
 <?php
 namespace App\Wechat;
 
+use App\Wechat\HttpServiceInterface;
+use Log;
 /**
  * Send customer message when certain events happen
  *
@@ -10,9 +12,9 @@ class CustomMessageService
 {
     protected $httpService;
 
-    public function __construct()
+    public function __construct(HttpServiceInterface $httpService)
     {
-        $this->httpService = App::make('App\Wechat\WechatServiceInterface');
+        $this->httpService = $httpService;
     }
 
     public function sendText($customer, $text)
