@@ -34,7 +34,7 @@ class MessageFactory
     }
 
     // common fields for all type of messages
-    protected $_commonAttrs = ['ToUserName', 'FromUserName', 'CreateTime', 'MsgType'];
+    protected $commonAttrs = ['ToUserName', 'FromUserName', 'CreateTime', 'MsgType'];
 
     protected function _createBasic($attributes)
     {
@@ -61,7 +61,7 @@ class MessageFactory
         $inbound->msgId = $attributes['MsgId'];
         $inbound->content = json_encode(
             array_filter($attributes, function($k) {
-                return !in_array($k, array_merge($this->_commonAttrs, ['MsgId']));
+                return !in_array($k, array_merge($this->commonAttrs, ['MsgId']));
             }, ARRAY_FILTER_USE_KEY)
         );
         $inbound->save();
@@ -81,7 +81,7 @@ class MessageFactory
         $outbound = new Outbound;
         $outbound->content = json_encode(
             array_filter($attributes, function($k) {
-                return !in_array($k, $this->_commonAttrs);
+                return !in_array($k, $this->commonAttrs);
             }, ARRAY_FILTER_USE_KEY)
         );
         $outbound->save();

@@ -141,8 +141,9 @@ class Outbound extends Model
         	'PicUrl' 		=> $picUrl,
         	'Url'			=> $url
         ];
+
         $this->content = json_encode($content);
-        try { $this->save(); return true; } catch(Exception $e) {
+		try { $this->save(); return true; } catch(Exception $e) {
         	return false;
         } 
     }

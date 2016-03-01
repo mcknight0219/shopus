@@ -134,7 +134,7 @@ $(document).ready(function() {
         $(document).on('click', '.caption', function(e) {
             var target = $(e.target);
             var brandId = target.closest('.productcell').attr('data-index-number');
-            orig = target.text();
+            var orig = target.text();
             target.replaceWith(function() {
             	return "<input id=\"brandWebsite\" class=\"caption\" style=\"outline:none; border-width: 0 0 2px 0\" type=\"text\" data-source=\"" + orig + "\">";
             });
