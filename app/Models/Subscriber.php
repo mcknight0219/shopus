@@ -2,6 +2,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Profile;
 
 class Subscriber extends Model
 {
@@ -21,5 +22,15 @@ class Subscriber extends Model
     public function unsubscribed()
     {
         return $this->unsubscribed;
+    }
+
+    /**
+     * Check if this subscriber is a vendor
+     * 
+     * @return Boolean
+     */
+    public function vendor()
+    {
+
     }
 }

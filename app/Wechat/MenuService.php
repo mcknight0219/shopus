@@ -1,6 +1,8 @@
 <?php
 namespace App\Wechat;
 
+use Log;
+
 class MenuService
 {
     protected $httpService;
@@ -10,5 +12,24 @@ class MenuService
         $this->httpService = $httpService;
     }
 
+    public function create($definition)
+    {
+        try {
+            $this->httpService->request('POST', 'menu/create', [
+                'form_params'   => $definition
+            ]);
+        } catch (\Exception $e) {
+            Log::error("Menu service: {$e->getMessage()}");
+        }
+    }
 
+    public function info()
+    {
+        try {
+            $info = $this->httpService->request('GET', 'get_current_selfmenu_info', []);
+            if ($info['is_menu_open'] === 1)
+        } catch (\Exception $e) {
+            Log::error("Menu service: {$e->getMessage()}");
+        }
+    }
 }
