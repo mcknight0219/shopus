@@ -11,9 +11,6 @@
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/main.css">
-    <script src="https://cdn.jsdelivr.net/jquery/1.11.3/jquery.min.js"></script>
-    <script src="/js/all.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.webui-popover/1.2.1/jquery.webui-popover.min.js"></script>
 </head>
 <body>
     <div class="nav">
@@ -31,7 +28,9 @@
 
     <div class="container pure-g">
         <div class="content pure-u-1">
+            <div id="app">
             @yield('content')
+            </div>
         </div>
     </div>
     
@@ -43,5 +42,10 @@
         <a href="/contact">Contact</a>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/jquery/1.11.3/jquery.min.js"></script>
+    <script src="/js/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/0.1.17/vue-resource.min.js"></script>
+    <script src="/js/all.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.webui-popover/1.2.1/jquery.webui-popover.min.js"></script>
 </body>
 </html>

@@ -4,24 +4,41 @@
     <div class="pure-u-1-4"></div>
     {!! Form::open(['id' => 'editPrpfileForm','class' => 'pure-form pure-form-stacked pure-u-1 pure-u-sm-1-2', 'files' => true]) !!}
     <div class="margintop2"></div> 
-    {!! Form::label('weixin', 'Weixin ID:', ['class' => 'control-label']) !!}
-    {!! Form::text('weixin', $profile->weixin, ['placeholder' => 'Your Weixin', 'class' => 'pure-input-1']) !!}
-     
-    {!! Form::label('address', 'Address:', ['class' => 'control-label margintop1']) !!}
-    {!! Form::text('address', $profile->address, ['placeholder' => 'Your Address', 'class' => 'pure-input-1']) !!}
-
-    {!! Form::label('city', 'City:', ['class' => 'control-label margintop1']) !!}
-    {!! Form::text('city', $profile->city, ['placeholder' => 'Your City', 'class' => 'pure-input-1']) !!}
-
-    {!! Form::label('state', 'State / Province:', ['class' => 'control-label margintop1']) !!}
-    {!! Form::select('state', ['AL'=>'AL', 'CA'=>'CA', 'AB'=>'AB'], $profile->state)  !!}
-
-    {!! Form::label('photo', 'Photo:', ['class' => 'control-label margintop1']) !!}
-    {!! Form::file('photo') !!}
-
-    {!! Form::close() !!}
-    <div class="margintop2 centertext">
-        {!! Form::button('Save Profile', ['class' => 'borderedbutton', 'tabindex' => '6']) !!}
+    <fieldset>
+    <div class="pure-g">
+    <div class="pure-u-1 pure-u-md-2-3">
+    {!! Form::label('weixin', 'Weixin ID', ['class' => 'control-label']) !!}
+    {!! Form::text('weixin', $profile->weixin, ['v-model' => 'profileData.weixin', 'placeholder' => 'Your Weixin', 'class' => 'pure-u-23-24']) !!}
     </div>
+    <div class="pure-u-1 pure-u-md-1-3">
+        {!! Form::label('sex', 'Sex', ['class' => 'control-label']) !!}
+        {!! Form::select('sex', ['M' => 'Boy', 'F' => 'Girl'], 'F') !!}
+    </div>
+
+    <div class="pure-u-1 pure-u-md-2-3">
+        {!! Form::label('city', 'City', ['class' => 'control-label margintop1']) !!}
+        {!! Form::text('city', $profile->city, ['' => '', 'placeholder' => 'Your City', 'class' => 'pure-u-23-24']) !!}
+    </div>
+
+    <div class="pure-u-1 pure-u-md-1-3">
+        {!! Form::label('country', 'Country', ['class' => 'control-label margintop1']) !!}
+        {!! Form::text('city', $profile->country, ['' => '', 'placeholder' => 'Country', 'class' => 'pure-u-23-24']) !!}
+    </div>
+
+    <div class="pure-u-1">
+        {!! Form::label('photo', 'Profile Image', ['class' => 'control-label']) !!}
+        <div class="uploadcell pure-button  pure-u-23-24">
+            <span class="centertext">Add photo</span>
+            {!! Form::file('photo', ['class' => 'uploadbutton', 'id' => 'fileSelector']) !!}
+        </div>
+    </div>
+
+    <div class="margintop2 centertext">
+        {!! Form::submit('Save Profile', ['class' => 'borderedbutton', 'tabindex' => '6']) !!}
+    </div>
+    </div>
+    </fieldset>
+    {!! Form::close() !!}
+    
     <div class="pure-u-1-4"></div>
 @stop

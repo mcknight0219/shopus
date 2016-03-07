@@ -18,10 +18,10 @@ class CreateProfilesTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('weixin')->unique();
-            $table->string('name');
-            $table->string('address');
+            $table->string('firstName');
+            $table->string('lastName');
+            $table->string('country');
             $table->string('city');
-            $table->string('state');
             $table->string('photo');
 
             $table->timestamps();

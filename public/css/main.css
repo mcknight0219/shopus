@@ -65,6 +65,9 @@ a, .linkcolor {
 .centertext {
   text-align: center; }
 
+.bigg {
+  font-size: 2em; }
+
 .controlwidget {
   color: #ff0000;
   padding: 0 0.5em 0 0.5em;
@@ -84,6 +87,7 @@ a, .linkcolor {
   -webkit-user-select: none;
   -webkit-touch-callout: none; }
 
+.profilebutton
 .borderedbutton:active {
   background-color: #ff0000;
   color: #ffffff; }
@@ -110,17 +114,21 @@ a, .linkcolor {
   color: #fc1b0f;
   border-color: #fc1b0f; }
 
-.cardname {
-  text-align: center !important;
-  color: #aaa;
-  display: inline-block; }
+.profile-column {
+  margin-left: 15px; }
 
-.cardval {
-  text-align: left !important;
-  text-decoration: underline;
-  -webkit-text-decoration-color: #ff0000;
-  text-decoration-color: #ff0000;
-  display: inline-block; }
+.profile-address {
+  text-align: left;
+  font-size: 0.95em;
+  color: grey; }
+
+.profile-caption {
+  text-align: left;
+  font-size: 1.6em; }
+
+.profile-subcaption {
+  text-align: left;
+  font-size: 1em; }
 
 .headtitle {
   font-size: 1.3em;
@@ -139,6 +147,12 @@ a, .linkcolor {
 
 .editable:hover {
   cursor: text; }
+
+.pencil {
+  color: red; }
+
+.pencil:hover {
+  background: lightgray; }
 
 .productphoto {
   position: absolute;
@@ -198,9 +212,11 @@ a, .linkcolor {
   display: inline-block;
   position: relative;
   overflow: hidden;
-  margin-left: 17px;
-  width: 120px;
-  height: 40px; }
+  width: 100%;
+  height: 70%; }
+
+.uploadcell:hover {
+  cursor: pointer; }
 
 .uploadcell input.uploadbutton {
   position: absolute;
@@ -230,5 +246,8 @@ textarea {
 
 .longinput {
   width: 250px; }
+
+.error {
+  color: red; }
 
 /*# sourceMappingURL=main.css.map */

@@ -36,12 +36,13 @@ Route::group(['middleware' => ['web']], function () {
         ->where('id', '[0-9]+');
     Route::get ('profile/photo/{id}',   'PhotoController@getProfilePhoto')
         ->where('id', '[0-9]+');
+
+    // for ajax updating profile.
+    // TODO create api route group
+    Route::post('profile/edit',     'ProfileController@postEditProfile');
 });
 
 Route::group(['middleware' => ['web', 'auth']], function () {
-    // Only authenticated user can edit *his* profile
-    Route::get ('profile/edit',     'ProfileController@getEditProfile')->name('cms:profile:edit');
-    Route::post('profile/edit',     'ProfileController@postEditProfile');
 
     // Product management
     Route::get ('product/add',     'ProductController@getAddProduct');

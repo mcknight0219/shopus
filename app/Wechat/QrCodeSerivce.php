@@ -16,7 +16,7 @@ class QrCodeService
     public function createTicket($sceneId)
     {
         try {
-            return = $this->httpService->request('POST', 'qrcode/create', [
+            return $this->httpService->request('POST', 'qrcode/create', [
                 'form_params' => [
                     'action_name'   => 'QR_LIMIT_SCENE',
                     'action_info'   => [
