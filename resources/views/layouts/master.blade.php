@@ -43,9 +43,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/jquery/1.11.3/jquery.min.js"></script>
-    <script src="/js/vue.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/0.1.17/vue-resource.min.js"></script>
-    <script src="/js/all.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.webui-popover/1.2.1/jquery.webui-popover.min.js"></script>
+    <script src="/js/bundle.js"></script> 
 </body>
 </html>

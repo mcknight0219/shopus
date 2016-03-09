@@ -49,9 +49,14 @@
         </div>
     </div>
 
-    <div id="popoverNameForm" style="display: none">
+    <div style="display: none">
+    <div id="nameFormPopover">
+            <name-form></name-form>
+    </div>
+    </div>
+    <div style="display: none">
         <div style='font-size:0.75em'>
-            {!! Form::open(['@submit.prevent' => 'profile/edit', 'class' => 'pure-form pure-form-stacked']) !!}
+            {!! Form::open(['url' => 'profile/edit', '@submit.prevent' => 'updateProfile', 'class' => 'pure-form pure-form-stacked']) !!}
                 <fieldset>
                     {!! Form::label('name', 'Name', ['class' => 'control-label']) !!}
                     <div class="pure-g">
@@ -66,21 +71,6 @@
                 </fieldset>
 
             {!! Form::close() !!}
-        </div>
-    </div>
-
-    <div id="popoverAddressForm" style="display:none">
-        <div style="font-size: 0.75em">
-            <div class="pure-form pure-form-stacked" v-on:submit.prevent="updateAddress">
-                <fieldset>
-                    <label for="country">Country</label>
-                    <input type="text" placeholder="country">
-
-                    <label for="city">City</label>
-                    <input type="text" placeholder="city">
-                    <button type="submit" class="pure-button pure-button-primary margintop1">Save</button>
-                </fieldset>
-            </div>
         </div>
     </div>
 </div>
