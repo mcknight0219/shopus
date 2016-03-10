@@ -2,7 +2,9 @@ var Vue = require('vue');
 
 Vue.use(require('vue-resource'))
 
-var NameForm = require('./components/NameForm.vue');
+var NameForm    = require('./components/NameForm.vue');
+var AddressForm = require('./components/AddressForm.vue');
+var WeixinForm  = require('./components/WeixinForm.vue');
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf_token"]').attr('content');
 
@@ -29,8 +31,8 @@ new Vue({
         },
 
         nameFormData: {
-            firstName: '',
-            lastName: '',
+            firstName: 'Qiang',
+            lastName: 'Guo',
             errors: ''
         },
 
@@ -38,28 +40,9 @@ new Vue({
     },
 
     components: {
-        'name-form': NameForm
-    },
-
-    ready: function() {
-        var that = this;
-        $(event.target).webuiPopover({
-            placement: 'right',
-            dismissible: false,
-            width: '250px',
-            closeable: true,
-            trigger: 'manual',
-            html: true,
-            content: function() {
-                return $('#nameFormPopover');
-            },
-            onShow: function() {
-                that.profileData.editing = true;
-            },
-            onHide: function() {
-                that.profileData.editing = false;
-            }
-        });
+        'name-form': NameForm,
+        'address-form': AddressForm,
+        'weixin-form': WeixinForm
     },
 
     methods: {
@@ -71,20 +54,16 @@ new Vue({
             this.profileData.editable = false;
         },
 
-        showNameEditor: function(event) {
-            
-        },
-
-        showAddressEditor: function(event) {
+        triggerPopover: function(element, content) {
             var that = this;
-            $(event.target).webuiPopover({
+            element.webuiPopover({
                 placement: 'right',
                 dismissible: false,
                 width: '250px',
                 closeable: true,
-                content: function() {
-                    return $('#popoverAddressForm').html();
-                },
+                trigger: 'manual',
+                html: true,
+                content: content,
                 onShow: function() {
                     that.profileData.editing = true;
                 },
@@ -92,20 +71,24 @@ new Vue({
                     that.profileData.editing = false;
                 }
             });
+
+            element.webuiPopover('show');
         },
 
-        // Save changes on server
-        updateProfile: function(event) {
+        showNameEditor: function(event) {
+            this.triggerPopover($(event.target), $('#nameFormPopover'));
+        },
+
+        showAddressEditor: function(event) {
+           this.triggerPopover($(event.target), $('#addressFormPopover'));
+        },
+
+        showWeixinEditor: function(event) {
+            this.triggerPopover($(event.target), $('#weixinFormPopover'));
+        },
+
+        update: function() {
             alert('Hello');
-            this.$http.post('profile/edit', {
-                "firstName": this.nameFormData.firstName,
-                "lastName" : this.nameFormData.lastName
-            }, function (data) {
-                console.log(data);
-            });
-        },
-
-        updateAddress: function(event) {
         },
 
         login: function() {

@@ -18,14 +18,14 @@
         <div class="pure-u-1" v-on:mouseenter="enableProfileEdit" v-on:mouseleave="disableProfileEdit">
             <div class="profile-column">
                 <div class="profile-caption singleline">
-                    <span>{{ $profile->name or 'Your Name' }}</span>
+                    <span id="namecell">{{ $profile->name or 'Your Name' }}</span>
                     <i class="fa fa-pencil editable pencil" v-show="profileData.editable || profileData.editing"
                        v-on:click="showNameEditor"></i>
                 </div>
                 <div class="profile-subcaption singleline">
                     <span>{{ $profile->weixin or 'weixin id' }}</span>
                     <i class="fa fa-pencil editable pencil" v-show="profileData.editable || profileData.editing"
-                    ></i>
+                     v-on:click="showWeixinEditor"></i>
                 </div>
                 <div class="profile-address singleline margintop1">
                     <span>{{ $profile->address or 'your address' }}</span>
@@ -50,27 +50,15 @@
     </div>
 
     <div style="display: none">
-    <div id="nameFormPopover">
-            <name-form></name-form>
-    </div>
-    </div>
-    <div style="display: none">
-        <div style='font-size:0.75em'>
-            {!! Form::open(['url' => 'profile/edit', '@submit.prevent' => 'updateProfile', 'class' => 'pure-form pure-form-stacked']) !!}
-                <fieldset>
-                    {!! Form::label('name', 'Name', ['class' => 'control-label']) !!}
-                    <div class="pure-g">
-                        <div class="pure-u-sm-1-2">
-                            {!!  Form::text('firstName', null, ['class' => 'pure-u-23-24', 'placeholder' => 'First name', 'v-model' => 'nameFormData.firstName']) !!}
-                        </div>
-                        <div class="pure-u-sm-1-2">
-                            {!!  Form::text('lastName', null, ['class' => 'pure-u-23-24', 'placeholder' => 'Last name', 'v-model' => 'nameFormData.lastName']) !!}
-                        </div>
-                    </div>
-                    {!!  Form::submit('Save', ['class' => 'pure-button pure-button-primary margintop1']) !!}
-                </fieldset>
-
-            {!! Form::close() !!}
+        <div id="nameFormPopover">
+            <name-form :on-submit="update"></name-form>
+        </div>
+        <div id="addressFormPopover">
+            <address-form :on-submit="update"></address-form>
+        </div>
+        <div id="weixinFormPopover">
+            <weixin-form :on-submit="update"></weixin-form>
         </div>
     </div>
+
 </div>

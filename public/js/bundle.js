@@ -11641,25 +11641,22 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = {
+    props: ['onSubmit'],
+
     data: function data() {
         return {
-            lastName: '',
-            firstName: ''
+            city: '',
+            country: ''
         };
-    },
-
-
-    methods: {
-        update: function update(event) {}
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"smaller\">\n    <form @submit.prevent=\"update\" class=\"pure-form pure-form-stacked\">\n        <fieldset>\n        <label class=\"control-label\">Name</label>\n            <div class=\"pure-g\">\n                <div class=\"pure-u-sm-1-2\">\n                    <input type=\"text\" class=\"pure-u-23-24\" placeholder=\"First name\" v-model=\"firstName\">\n                </div>\n                <div class=\"pure-u-sm-1-2\">\n                    <input type=\"text\" class=\"pure-u-23-24\" placeholder=\"Last name\" v-model=\"lastName\">\n                </div>\n            </div>\n\n            <button type=\"submit\" class=\"pure-button pure-button-primary margintop1\">Save</button>\n        </fieldset> \n    </form>\n    \n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"smaller\">\n    <form @submit.prevent=\"onSubmit\" class=\"pure-form pure-form-stacked\">\n\n        <label for=\"country\">Country</label>\n        <input type=\"text\" v-model=\"country\">\n\n        <label for=\"city\">City</label>\n        <input type=\"text\" v-model=\"city\">\n\n        <button type=\"submit\" class=\"pure-button pure-button-primary margintop1\">Save</button>\n        \n    \n    </form>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/Shopus/resources/assets/js/components/NameForm.vue"
+  var id = "/home/vagrant/shopus/resources/assets/js/components/AddressForm.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n.smaller {\n    font-size: 0.75em;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -11671,6 +11668,73 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],30:[function(require,module,exports){
+var __vueify_style__ = require("vueify-insert-css").insert("\n.smaller {\n    font-size: 0.75em;\n};\n\nform {\n    border: none;\n}\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    props: ['onSubmit'],
+
+    data: function data() {
+        return {
+            lastName: '',
+            firstName: ''
+        };
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"smaller\">\n    <form @submit.prevent=\"onSubmit\" class=\"pure-form pure-form-stacked\">\n        <fieldset>\n            <label class=\"control-label\">Name</label>\n            <div class=\"pure-g\">\n                <div class=\"pure-u-sm-1-2\">\n                    <input type=\"text\" class=\"pure-u-23-24\" placeholder=\"First name\" v-model=\"firstName\">\n                </div>\n                <div class=\"pure-u-sm-1-2\">\n                    <input type=\"text\" class=\"pure-u-23-24\" placeholder=\"Last name\" v-model=\"lastName\">\n                </div>\n            </div>\n\n            <button type=\"submit\" class=\"pure-button pure-button-primary margintop1\">Save</button>\n        </fieldset> \n    </form>\n    \n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/home/vagrant/shopus/resources/assets/js/components/NameForm.vue"
+  module.hot.dispose(function () {
+    require("vueify-insert-css").cache["\n.smaller {\n    font-size: 0.75em;\n};\n\nform {\n    border: none;\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],31:[function(require,module,exports){
+var __vueify_style__ = require("vueify-insert-css").insert("\n.smaller {\n    font-size: 0.75em;\n}\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    props: ['onSubmit'],
+
+    data: function data() {
+        return {
+            weixin: ''
+        };
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"smaller\">\n    <form @submit.prevent=\"onSubmit\" class=\"pure-form pure-form-stacked\">\n        <label for=\"weixin\">Weixin ID</label>\n        <input type=\"text\" v-model=\"weixin\">\n\n        <button type=\"submit\" class=\"pure-button pure-button-primary margintop1\">Save</button>\n    </form>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/home/vagrant/shopus/resources/assets/js/components/WeixinForm.vue"
+  module.hot.dispose(function () {
+    require("vueify-insert-css").cache["\n.smaller {\n    font-size: 0.75em;\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],32:[function(require,module,exports){
 'use strict';
 
 var Vue = require('vue');
@@ -11678,6 +11742,8 @@ var Vue = require('vue');
 Vue.use(require('vue-resource'));
 
 var NameForm = require('./components/NameForm.vue');
+var AddressForm = require('./components/AddressForm.vue');
+var WeixinForm = require('./components/WeixinForm.vue');
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf_token"]').attr('content');
 
@@ -11704,19 +11770,17 @@ new Vue({
         },
 
         nameFormData: {
-            firstName: '',
-            lastName: '',
+            firstName: 'Qiang',
+            lastName: 'Guo',
             errors: ''
         }
 
     },
 
     components: {
-        'name-form': NameForm
-    },
-
-    ready: function ready() {
-        alert('Ready');
+        'name-form': NameForm,
+        'address-form': AddressForm,
+        'weixin-form': WeixinForm
     },
 
     methods: {
@@ -11728,17 +11792,16 @@ new Vue({
             this.profileData.editable = false;
         },
 
-        showNameEditor: function showNameEditor(event) {
+        triggerPopover: function triggerPopover(element, content) {
             var that = this;
-            $(event.target).webuiPopover({
+            element.webuiPopover({
                 placement: 'right',
                 dismissible: false,
                 width: '250px',
                 closeable: true,
+                trigger: 'manual',
                 html: true,
-                content: function content() {
-                    return $('#nameFormPopover');
-                },
+                content: content,
                 onShow: function onShow() {
                     that.profileData.editing = true;
                 },
@@ -11746,39 +11809,25 @@ new Vue({
                     that.profileData.editing = false;
                 }
             });
+
+            element.webuiPopover('show');
+        },
+
+        showNameEditor: function showNameEditor(event) {
+            this.triggerPopover($(event.target), $('#nameFormPopover'));
         },
 
         showAddressEditor: function showAddressEditor(event) {
-            var that = this;
-            $(event.target).webuiPopover({
-                placement: 'right',
-                dismissible: false,
-                width: '250px',
-                closeable: true,
-                content: function content() {
-                    return $('#popoverAddressForm').html();
-                },
-                onShow: function onShow() {
-                    that.profileData.editing = true;
-                },
-                onHide: function onHide() {
-                    that.profileData.editing = false;
-                }
-            });
+            this.triggerPopover($(event.target), $('#addressFormPopover'));
         },
 
-        // Save changes on server
-        updateProfile: function updateProfile(event) {
+        showWeixinEditor: function showWeixinEditor(event) {
+            this.triggerPopover($(event.target), $('#weixinFormPopover'));
+        },
+
+        update: function update() {
             alert('Hello');
-            this.$http.post('profile/edit', {
-                "firstName": this.nameFormData.firstName,
-                "lastName": this.nameFormData.lastName
-            }, function (data) {
-                console.log(data);
-            });
         },
-
-        updateAddress: function updateAddress(event) {},
 
         login: function login() {
             var re = /^\S+@\S+$/;
@@ -11815,6 +11864,6 @@ new Vue({
     }
 });
 
-},{"./components/NameForm.vue":29,"vue":27,"vue-resource":16}]},{},[30]);
+},{"./components/AddressForm.vue":29,"./components/NameForm.vue":30,"./components/WeixinForm.vue":31,"vue":27,"vue-resource":16}]},{},[32]);
 
 //# sourceMappingURL=bundle.js.map

@@ -1,8 +1,8 @@
 <template>
     <div class="smaller">
-        <form @submit.prevent="update" class="pure-form pure-form-stacked">
+        <form @submit.prevent="onSubmit" class="pure-form pure-form-stacked">
             <fieldset>
-            <label class="control-label">Name</label>
+                <label class="control-label">Name</label>
                 <div class="pure-g">
                     <div class="pure-u-sm-1-2">
                         <input type="text" class="pure-u-23-24" placeholder="First name" v-model="firstName"></input>
@@ -21,17 +21,13 @@
 
 <script>
     export default {
+        props: ['onSubmit'],
+
         data ()  {
             return {
                 lastName: '',
                 firstName: ''
             };
-        },
-
-        methods: {
-            update: function(event) {
-                
-            }
         }
     };
 </script>
@@ -39,5 +35,9 @@
 <style>
     .smaller {
         font-size: 0.75em;
+    };
+
+    form {
+        border: none;
     }
 </style>
