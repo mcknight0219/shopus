@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Storage;
 use Image;
 use Response;
+use Auth;
+use Log;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -15,12 +17,17 @@ use App\Product;
 
 class PhotoController extends Controller
 {
-    public function getProfilePhoto(Request $request, $userId)
+    public function getProfilePhoto(Request $request)
     {
-        $user = User::find($userId);
-        if( $user === null || strlen($user->profile->photo) === 0 ) {
+        $user = Auth::user();
+        if( $user === null ) {
             return Response::make(null, 404);
         }
+        $photo = $user->profile->photo;
+        if (strlen($photo) === 0) {
+            return Image::make(public_path() . '/img/ghost_person_200x200_v1.png')->response();
+        }
+
         return Image::make(Storage::disk('s3')->get($user->profile->photo))->response();    
     }
 

@@ -5,6 +5,7 @@ Vue.use(require('vue-resource'))
 var NameForm    = require('./components/NameForm.vue');
 var AddressForm = require('./components/AddressForm.vue');
 var WeixinForm  = require('./components/WeixinForm.vue');
+var UploadModal = require('./components/UploadModal.vue');
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf_token"]').attr('content');
 
@@ -23,26 +24,69 @@ new Vue({
         },
 
         profileData: {
-            weixin: '',
-            city: '',
-            country: '',
+            weixin: 'weixin id',
+            city: 'city',
+            country: 'country',
+            name: 'Your Name',
+            url: 'photo/profile',
+
             editable: false,
-            editing: false
+            editing: false,
+            showModal: false
         },
 
-        nameFormData: {
-            firstName: 'Qiang',
-            lastName: 'Guo',
-            errors: ''
-        },
+    },
 
-        
+    computed: {
+        address: function () {
+            return this.profileData.city + ' ' + this.profileData.country;
+        }
     },
 
     components: {
         'name-form': NameForm,
         'address-form': AddressForm,
-        'weixin-form': WeixinForm
+        'weixin-form': WeixinForm,
+        'modal': UploadModal
+    },
+
+    ready: function () {
+        this.$http.get('profile/get').then(function (response) { 
+            var data = response.data;
+            if (data['status'] === 'bad') {
+                return;
+            }
+            
+            if (data.firstName.length > 0 && data.lastName.length > 0) {
+                this.profileData.name = data.firstName + ' ' + data.lastName;
+            }
+            if (data.city.length > 0) {
+                this.profileData.city = data.city;
+            }
+            if (data.country.length > 0) {
+                this.profileData.country = data.country;
+            }
+            if (data.weixin.length > 0) {
+                this.profileData.weixin = data.weixin;
+            }
+
+        }, function (error) { 
+            // what should we do here ?
+        });
+    },
+
+    watch: { 
+        'profileData.showModal': function(val, oldVal) { 
+            if (oldVal && ! val) {
+                var i = this.profileData.url.indexOf('?');
+                var url = this.profileData.url;
+                if (i !== -1) {
+                    url = url.substring(0, i);
+                }
+
+                this.profileData.url = url + "?" + (new Date()).getTime();
+            }
+        }
     },
 
     methods: {
@@ -85,10 +129,6 @@ new Vue({
 
         showWeixinEditor: function(event) {
             this.triggerPopover($(event.target), $('#weixinFormPopover'));
-        },
-
-        update: function() {
-            alert('Hello');
         },
 
         login: function() {

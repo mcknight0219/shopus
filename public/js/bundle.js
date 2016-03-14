@@ -11641,22 +11641,57 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = {
-    props: ['onSubmit'],
+    props: {
+        profile: {
+            type: Object,
+            required: true,
+            twoWay: true
+        }
+    },
 
     data: function data() {
         return {
             city: '',
-            country: ''
+            country: '',
+            error: ''
         };
+    },
+
+
+    computed: {
+        data: function data() {
+            return {
+                country: this.country,
+                city: this.city
+            };
+        }
+    },
+
+    methods: {
+        update: function update() {
+            if (this.city.length === 0 || this.country.length === 0) {
+                this.error = 'Please enter a value';
+                return;
+            }
+
+            this.$http.post('profile/edit', this.data).then(function (response) {
+                this.error = '';
+                $('#addresscell').next().webuiPopover('hide');
+                this.profile.city = this.city;
+                this.profile.country = this.country;
+            }, function (error) {
+                this.error = 'Hmm, please try again later, will ya ?';
+            });
+        }
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"smaller\">\n    <form @submit.prevent=\"onSubmit\" class=\"pure-form pure-form-stacked\">\n\n        <label for=\"country\">Country</label>\n        <input type=\"text\" v-model=\"country\">\n\n        <label for=\"city\">City</label>\n        <input type=\"text\" v-model=\"city\">\n\n        <button type=\"submit\" class=\"pure-button pure-button-primary margintop1\">Save</button>\n        \n    \n    </form>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"smaller\">\n    <form @submit.prevent=\"update\" class=\"pure-form pure-form-stacked\">\n        <div class=\"error\" v-show=\"error\">{{ error }}</div>\n\n        <label for=\"country\">Country</label>\n        <input type=\"text\" v-model=\"country\">\n\n        <label for=\"city\">City</label>\n        <input type=\"text\" v-model=\"city\">\n\n        <button type=\"submit\" class=\"pure-button pure-button-primary margintop1\">Save</button>\n        \n    \n    </form>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/shopus/resources/assets/js/components/AddressForm.vue"
+  var id = "/home/vagrant/Shopus/resources/assets/js/components/AddressForm.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n.smaller {\n    font-size: 0.75em;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -11668,31 +11703,66 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],30:[function(require,module,exports){
-var __vueify_style__ = require("vueify-insert-css").insert("\n.smaller {\n    font-size: 0.75em;\n};\n\nform {\n    border: none;\n}\n")
+var __vueify_style__ = require("vueify-insert-css").insert("\n.smaller {\n    font-size: 0.75em;\n};\n\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = {
-    props: ['onSubmit'],
+    props: {
+        profile: {
+            type: Object,
+            required: true,
+            twoWay: true
+        }
+    },
 
     data: function data() {
         return {
             lastName: '',
-            firstName: ''
+            firstName: '',
+            error: ''
         };
+    },
+
+
+    computed: {
+        data: function data() {
+            return {
+                lastName: this.lastName,
+                firstName: this.firstName
+            };
+        }
+    },
+
+    methods: {
+        update: function update() {
+            // reset everything
+            if (this.lastName.length === 0 || this.firstName.length === 0) {
+                this.error = 'Please enter a value';
+                return;
+            }
+
+            this.$http.post('profile/edit', this.data).then(function (response) {
+                this.error = '';
+                $('#namecell').next().webuiPopover('hide');
+                this.profile.name = this.lastName + ' ' + this.firstName;
+            }, function (error) {
+                this.error = 'Hmm, try again later, will ya ?';
+            });
+        }
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"smaller\">\n    <form @submit.prevent=\"onSubmit\" class=\"pure-form pure-form-stacked\">\n        <fieldset>\n            <label class=\"control-label\">Name</label>\n            <div class=\"pure-g\">\n                <div class=\"pure-u-sm-1-2\">\n                    <input type=\"text\" class=\"pure-u-23-24\" placeholder=\"First name\" v-model=\"firstName\">\n                </div>\n                <div class=\"pure-u-sm-1-2\">\n                    <input type=\"text\" class=\"pure-u-23-24\" placeholder=\"Last name\" v-model=\"lastName\">\n                </div>\n            </div>\n\n            <button type=\"submit\" class=\"pure-button pure-button-primary margintop1\">Save</button>\n        </fieldset> \n    </form>\n    \n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"smaller\">\n    <form @submit.prevent=\"update\" class=\"pure-form pure-form-stacked\">\n        <fieldset>\n            <label class=\"control-label\">Name</label>\n            <div class=\"pure-g\">\n                <div class=\"error pure-u-1\" v-show=\"error\">{{ error }}</div>\n\n                <div class=\"pure-u-sm-1-2\">\n                    <input type=\"text\" class=\"pure-u-23-24\" placeholder=\"First name\" v-model=\"firstName\">\n                </div>\n                <div class=\"pure-u-sm-1-2\">\n                    <input type=\"text\" class=\"pure-u-23-24\" placeholder=\"Last name\" v-model=\"lastName\">\n                </div>\n            </div>\n\n            <button type=\"submit\" class=\"pure-button pure-button-primary margintop1\">Save</button>\n        </fieldset> \n    </form>\n    \n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/shopus/resources/assets/js/components/NameForm.vue"
+  var id = "/home/vagrant/Shopus/resources/assets/js/components/NameForm.vue"
   module.hot.dispose(function () {
-    require("vueify-insert-css").cache["\n.smaller {\n    font-size: 0.75em;\n};\n\nform {\n    border: none;\n}\n"] = false
+    require("vueify-insert-css").cache["\n.smaller {\n    font-size: 0.75em;\n};\n\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -11702,6 +11772,79 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],31:[function(require,module,exports){
+var __vueify_style__ = require("vueify-insert-css").insert("\nh4 {\n    margin-bottom: 5px;\n}\n\n.file-selector { \n    margin-bottom: 25px;\n}\n\n.margindown { \n    margin-bottom: 15px;\n}\n\n.modal-mask { \n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .5);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n\n.modal-wrapper { \n    display: table-cell;\n    vertical-align: middle;\n}\n\n.modal-container { \n    font-size: 0.75em;\n    width: 300px;\n    margin: 0 auto;\n    padding: 20px 30px;\n    background-color: #fff;\n    border-radius: 2px;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n}\n\n.modal-enter, .modal-leave { \n    opacity: 0;\n}\n\n.modal-enter .modal-container,\n.modal-leave .modal-container { \n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    props: {
+        show: {
+            type: Boolean,
+            required: true,
+            twoWay: true
+        }
+    },
+
+    data: function data() {
+        return {
+            file: null,
+            image: 'photo/profile', // for preview
+            error: ''
+        };
+    },
+
+
+    methods: {
+        upload: function upload() {
+            if (!this.file) {
+                this.error = 'Please choose your best photo !';
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append('photo', this.file);
+            this.$http.post('profile/edit', formData).then(function (response) {
+                this.error = '';
+                this.show = false;
+            }, function (response) {
+                this.error = "Oops ! something is wrong with our stupid server";
+            });
+        },
+
+        onFileChange: function onFileChange(e) {
+            e.preventDefault();
+            var files = this.$els.avatar.files;
+            this.file = files[0];
+
+            var reader = new FileReader();
+            var vm = this;
+            reader.onload = function (e) {
+                vm.image = e.target.result;
+            };
+            reader.readAsDataURL(files[0]);
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"modal-mask\" v-show=\"show\" transition=\"modal\">\n    <div class=\"modal-wrapper\">\n        <div class=\"modal-container\">\n            <h4>Upload your photo customer will see</h4>\n            <form @submit.prevent=\"upload\" class=\"pure-form\">\n                <input v-el:avatar=\"\" type=\"file\" class=\"file-selector\" @change=\"onFileChange\">\n                <img class=\"pure-img margindown\" :src=\"image\" alt=\"\" width=\"200\" height=\"200\">\n\n                <button class=\"pure-button pure-button-primary\">Save</button>\n                <button class=\"pure-button\" @click=\"show = false\">Cancel</button>\n            </form>\n        </div>\n    </div>\n</div>  \n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/home/vagrant/Shopus/resources/assets/js/components/UploadModal.vue"
+  module.hot.dispose(function () {
+    require("vueify-insert-css").cache["\nh4 {\n    margin-bottom: 5px;\n}\n\n.file-selector { \n    margin-bottom: 25px;\n}\n\n.margindown { \n    margin-bottom: 15px;\n}\n\n.modal-mask { \n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .5);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n\n.modal-wrapper { \n    display: table-cell;\n    vertical-align: middle;\n}\n\n.modal-container { \n    font-size: 0.75em;\n    width: 300px;\n    margin: 0 auto;\n    padding: 20px 30px;\n    background-color: #fff;\n    border-radius: 2px;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n}\n\n.modal-enter, .modal-leave { \n    opacity: 0;\n}\n\n.modal-enter .modal-container,\n.modal-leave .modal-container { \n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],32:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n.smaller {\n    font-size: 0.75em;\n}\n")
 'use strict';
 
@@ -11709,21 +11852,54 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = {
-    props: ['onSubmit'],
+    props: {
+        profile: {
+            type: Object,
+            required: true,
+            twoWay: true
+        }
+    },
 
     data: function data() {
         return {
-            weixin: ''
+            weixin: '',
+            error: ''
         };
+    },
+
+
+    computed: {
+        data: function data() {
+            return {
+                weixin: this.weixin
+            };
+        }
+    },
+
+    methods: {
+        update: function update() {
+            if (this.weixin.length === 0) {
+                this.error = "Please enter a value";
+                return;
+            }
+
+            this.$http.post('profile/edit', this.data).then(function (response) {
+                this.error = '';
+                this.profile.weixin = this.weixin;
+                $('#weixincell').next().webuiPopover('hide');
+            }, function (error) {
+                this.error = "Hmm, please try again later, will ya ?";
+            });
+        }
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"smaller\">\n    <form @submit.prevent=\"onSubmit\" class=\"pure-form pure-form-stacked\">\n        <label for=\"weixin\">Weixin ID</label>\n        <input type=\"text\" v-model=\"weixin\">\n\n        <button type=\"submit\" class=\"pure-button pure-button-primary margintop1\">Save</button>\n    </form>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"smaller\">\n    <form @submit.prevent=\"update\" class=\"pure-form pure-form-stacked\">\n        <div class=\"error\">{{ error }}</div>\n\n        <label for=\"weixin\">Weixin ID</label>\n        <input type=\"text\" v-model=\"weixin\">\n\n        <button type=\"submit\" class=\"pure-button pure-button-primary margintop1\">Save</button>\n    </form>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/shopus/resources/assets/js/components/WeixinForm.vue"
+  var id = "/home/vagrant/Shopus/resources/assets/js/components/WeixinForm.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n.smaller {\n    font-size: 0.75em;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -11734,7 +11910,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],32:[function(require,module,exports){
+},{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],33:[function(require,module,exports){
 'use strict';
 
 var Vue = require('vue');
@@ -11744,6 +11920,7 @@ Vue.use(require('vue-resource'));
 var NameForm = require('./components/NameForm.vue');
 var AddressForm = require('./components/AddressForm.vue');
 var WeixinForm = require('./components/WeixinForm.vue');
+var UploadModal = require('./components/UploadModal.vue');
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf_token"]').attr('content');
 
@@ -11762,25 +11939,68 @@ new Vue({
         },
 
         profileData: {
-            weixin: '',
-            city: '',
-            country: '',
-            editable: false,
-            editing: false
-        },
+            weixin: 'weixin id',
+            city: 'city',
+            country: 'country',
+            name: 'Your Name',
+            url: 'photo/profile',
 
-        nameFormData: {
-            firstName: 'Qiang',
-            lastName: 'Guo',
-            errors: ''
+            editable: false,
+            editing: false,
+            showModal: false
         }
 
+    },
+
+    computed: {
+        address: function address() {
+            return this.profileData.city + ' ' + this.profileData.country;
+        }
     },
 
     components: {
         'name-form': NameForm,
         'address-form': AddressForm,
-        'weixin-form': WeixinForm
+        'weixin-form': WeixinForm,
+        'modal': UploadModal
+    },
+
+    ready: function ready() {
+        this.$http.get('profile/get').then(function (response) {
+            var data = response.data;
+            if (data['status'] === 'bad') {
+                return;
+            }
+
+            if (data.firstName.length > 0 && data.lastName.length > 0) {
+                this.profileData.name = data.firstName + ' ' + data.lastName;
+            }
+            if (data.city.length > 0) {
+                this.profileData.city = data.city;
+            }
+            if (data.country.length > 0) {
+                this.profileData.country = data.country;
+            }
+            if (data.weixin.length > 0) {
+                this.profileData.weixin = data.weixin;
+            }
+        }, function (error) {
+            // what should we do here ?
+        });
+    },
+
+    watch: {
+        'profileData.showModal': function profileDataShowModal(val, oldVal) {
+            if (oldVal && !val) {
+                var i = this.profileData.url.indexOf('?');
+                var url = this.profileData.url;
+                if (i !== -1) {
+                    url = url.substring(0, i);
+                }
+
+                this.profileData.url = url + "?" + new Date().getTime();
+            }
+        }
     },
 
     methods: {
@@ -11825,10 +12045,6 @@ new Vue({
             this.triggerPopover($(event.target), $('#weixinFormPopover'));
         },
 
-        update: function update() {
-            alert('Hello');
-        },
-
         login: function login() {
             var re = /^\S+@\S+$/;
             if (this.loginData.email === '' || this.loginData.email.match(re) === null) {
@@ -11864,6 +12080,6 @@ new Vue({
     }
 });
 
-},{"./components/AddressForm.vue":29,"./components/NameForm.vue":30,"./components/WeixinForm.vue":31,"vue":27,"vue-resource":16}]},{},[32]);
+},{"./components/AddressForm.vue":29,"./components/NameForm.vue":30,"./components/UploadModal.vue":31,"./components/WeixinForm.vue":32,"vue":27,"vue-resource":16}]},{},[33]);
 
 //# sourceMappingURL=bundle.js.map

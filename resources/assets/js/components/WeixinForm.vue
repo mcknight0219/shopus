@@ -1,6 +1,8 @@
 <template>
     <div class="smaller">
-        <form @submit.prevent="onSubmit" class="pure-form pure-form-stacked">
+        <form @submit.prevent="update" class="pure-form pure-form-stacked">
+            <div class="error">{{ error }}</div>
+
             <label for="weixin">Weixin ID</label>
             <input type="text" v-model="weixin"></input>
 
@@ -11,12 +13,44 @@
 
 <script>
     export default {
-        props: ['onSubmit'],
+        props: { 
+            profile: { 
+                type: Object,
+                required: true,
+                twoWay: true
+            }
+        },
 
         data () {
             return {
-                weixin: ''
+                weixin: '',
+                error: ''
             };
+        },
+
+        computed: { 
+            data: function () { 
+                return { 
+                    weixin: this.weixin
+                };
+            }
+        },
+
+        methods: { 
+            update: function () { 
+                if (this.weixin.length === 0) { 
+                    this.error = "Please enter a value";
+                    return;
+                }
+
+                this.$http.post('profile/edit', this.data).then(function (response) { 
+                    this.error = '';
+                    this.profile.weixin = this.weixin;
+                    $('#weixincell').next().webuiPopover('hide');                    
+                }, function (error) { 
+                    this.error = "Hmm, please try again later, will ya ?"; 
+                }); 
+            }
         }
     }
 </script>

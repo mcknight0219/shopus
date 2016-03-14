@@ -1,34 +1,30 @@
-<div class="pure-g margintop2">
+<div class="pure-g margintop2" v-on:mouseenter="enableProfileEdit" v-on:mouseleave="disableProfileEdit">
     <div class="pure-u-1 pure-u-sm-1-3">
         <div style="position: relative; z-index: 1">
-            @if (isset($profile->user))
                 <img class="pure-img"
-                     src={{ action('PhotoController@getProfilePhoto', $profile->user->id) }} alt=""></img>
-            @else
-                <img class="pure-img"
-                     src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png"
-                     width="200" height="200">
-            @endif
-            <button style="display: block; position: absolute; top: 0; left: 0; bottom: 0;width: 100%; max-width: 200px; background: rgba(200,200,200,0.65); border: 0">
-                <span style="color: white"><i class="fa fa-plus" style="color:white"></i> Add a photo</span>
+                     v-bind:src="profileData.url" alt="" width="200" height="200"></img>
+            <button @click="profileData.showModal=true" style="display: block; position: absolute; top: 0; left: 0; bottom: 0;width: 100%; max-width: 200px; background: rgba(200,200,200,0.65); border: 0">
+                <span v-show="profileData.editable" style="color: white"><i class="fa fa-plus-circle" style="color:white"></i> Add a photo</span>
             </button>
+            <modal :show.sync="profileData.showModal"></modal>
         </div>
     </div>
+    
     <div class="pure-u-1 pure-u-sm-2-3">
-        <div class="pure-u-1" v-on:mouseenter="enableProfileEdit" v-on:mouseleave="disableProfileEdit">
+        <div class="pure-u-1" >
             <div class="profile-column">
                 <div class="profile-caption singleline">
-                    <span id="namecell">{{ $profile->name or 'Your Name' }}</span>
+                    <span id="namecell">@{{ profileData.name }}</span>
                     <i class="fa fa-pencil editable pencil" v-show="profileData.editable || profileData.editing"
                        v-on:click="showNameEditor"></i>
                 </div>
                 <div class="profile-subcaption singleline">
-                    <span>{{ $profile->weixin or 'weixin id' }}</span>
+                    <span id="weixincell">@{{ profileData.weixin }}</span>
                     <i class="fa fa-pencil editable pencil" v-show="profileData.editable || profileData.editing"
                      v-on:click="showWeixinEditor"></i>
                 </div>
                 <div class="profile-address singleline margintop1">
-                    <span>{{ $profile->address or 'your address' }}</span>
+                    <span id="addresscell">@{{ address }}</span>
                     <i class="fa fa-pencil editable pencil" v-show="profileData.editable || profileData.editing"
                        v-on:click="showAddressEditor"></i>
                 </div>
@@ -51,13 +47,13 @@
 
     <div style="display: none">
         <div id="nameFormPopover">
-            <name-form :on-submit="update"></name-form>
+            <name-form :profile.sync="profileData"></name-form>
         </div>
         <div id="addressFormPopover">
-            <address-form :on-submit="update"></address-form>
+            <address-form :profile.sync="profileData"></address-form>
         </div>
         <div id="weixinFormPopover">
-            <weixin-form :on-submit="update"></weixin-form>
+            <weixin-form :profile.sync="profileData"></weixin-form>
         </div>
     </div>
 

@@ -18,30 +18,19 @@ use App\Profile;
 
 class ProfileController extends Controller
 {
-    public function getPhoto(Request $request, $userId)
+    public function getProfile(Request $request)
     {
-        $user = User::find($userId);
-        if( $user === null || strlen($user->profile->photo) === 0 ) {
-            return Response::make(null, 404);
+        if (! $request->ajax()) { 
+            return; // ignore
         }
-        return Image::make(Storage::disk('s3')->get($user->profile->photo))->response();    
-    }    
-
-    /**
-     * Show the profile card of user
-     *     
-     * @param  Request $request
-     * @param  String  $userId  
-     * @return Response
-     */
-    public function getProfile(Request $request, $userId)
-    {
-        $user = User::find($userId);
-        if( $user === null ) {
-            return Response::make(null, 404);
+        $user = Auth::user(); 
+        if (! $user || ! $user->profile) {
+            return Response::json([
+                'status' => 'bad'
+            ]);
         }
 
-        return view('profile')->with('profile', $user->profile);
+        return Response::json($user->profile->toArray());
     }
 
     public function postEditProfile(Request $request)
@@ -50,21 +39,34 @@ class ProfileController extends Controller
             return;
         }
 
-        if ($request->hasFile('photo')) {
-
-        }
-
         $profile = Auth::user()->profile;
         if (! $profile) {
-            $profile = Profile::create($request->all());
-        } else {
-            foreach($request->all() as $key => $val) {
-                $profile[$key] = $val;
+            $profile = new Profile($request->all());
+            $profile->user_id = Auth::user()->id;
+        }
+
+        // Upload profile photo
+        if ($request->hasFile('photo')) {
+            if ($request->file('photo')->isValid()) {
+                $content = file_get_contents($request->file('photo'));
+                $name = md5($content);
+                $profile->photo = $name;
+                $profile->save();
+
+                Storage::disk('s3')->put($name, $content);
+
+                return Response::json(['status' => 'ok']);
+            } else { 
+                return Response::json(['status' => 'bad', 'errormsg' => 'file is not valid']);
             }
         }
 
+        // update data 
+        foreach($request->all() as $key => $val) {
+                $profile[$key] = $val;
+        }
+
         try {
-            $profile->user_id = Auth::user()->id;
             $profile->save();
             return Response::json([
                 'status' => 'ok'

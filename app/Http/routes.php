@@ -31,15 +31,12 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('login',            'Auth\AuthController@postLogin');
     Route::get ('logout',           'Auth\AuthController@getLogout');
 
-    // Profile facing public
-    Route::get('profile/{id}',          'ProfileController@getProfile')
-        ->where('id', '[0-9]+');
-    Route::get ('profile/photo/{id}',   'PhotoController@getProfilePhoto')
-        ->where('id', '[0-9]+');
+    Route::get ('photo/profile',   'PhotoController@getProfilePhoto');
 
     // for ajax updating profile.
     // TODO create api route group
     Route::post('profile/edit',     'ProfileController@postEditProfile');
+    Route::get ('profile/get',      'ProfileController@getProfile');
 });
 
 Route::group(['middleware' => ['web', 'auth']], function () {
