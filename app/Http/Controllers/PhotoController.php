@@ -23,6 +23,11 @@ class PhotoController extends Controller
         if( $user === null ) {
             return Response::make(null, 404);
         }
+
+        if (! $user->profile) {
+            return Image::make(public_path() . '/img/ghost_person_200x200_v1.png')->response();
+        }
+
         $photo = $user->profile->photo;
         if (strlen($photo) === 0) {
             return Image::make(public_path() . '/img/ghost_person_200x200_v1.png')->response();

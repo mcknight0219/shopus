@@ -13,14 +13,14 @@ class QrCodeService
     /**
      * Create permanent ticket
      */
-    public function createTicket($sceneId)
+    public function createTicket($sceneStr)
     {
         try {
             return $this->httpService->request('POST', 'qrcode/create', [
                 'form_params' => [
                     'action_name'   => 'QR_LIMIT_SCENE',
                     'action_info'   => [
-                        'scene' => ['scene_id' => $sceneId]
+                        'scene' => ['scene_str' => $sceneStr]
                     ]
                 ]
             ]);

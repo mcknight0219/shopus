@@ -8,7 +8,7 @@ class Subscriber extends Model
 {
     protected $table = 'subscribers';
 
-    protected $fillable = ['openId'];
+    protected $fillable = ['openId', 'weixinId'];
 
     protected $attriubtes = [
         'unsubscribed' => false
@@ -31,6 +31,32 @@ class Subscriber extends Model
      */
     public function vendor()
     {
+        foreach (Profile::all() as $profile) {
+            if ($this->weixinId && $this->weixinId === $profile->weixin) {
+                return true;
+            }
+        }   
 
+        return false;     
+    }
+
+    /**
+     * Determine if a weixin user has subscribed  
+     *
+     * @return Boolean
+     **/
+    static public function isSubscribed($weixin)
+    {
+        if (strlen($weixin) === 0) {
+            return false;
+        }
+
+        foreach (Subscriber::all() as $subscriber) {
+            if ($subscriber->weixinId && $subscriber->weixinId === $weixin) {
+                return true;
+            }            
+        }
+        
+        return false;
     }
 }

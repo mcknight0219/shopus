@@ -11691,7 +11691,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/Shopus/resources/assets/js/components/AddressForm.vue"
+  var id = "/home/vagrant/shopus/resources/assets/js/components/AddressForm.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n.smaller {\n    font-size: 0.75em;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -11760,7 +11760,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/Shopus/resources/assets/js/components/NameForm.vue"
+  var id = "/home/vagrant/shopus/resources/assets/js/components/NameForm.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n.smaller {\n    font-size: 0.75em;\n};\n\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -11833,7 +11833,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/Shopus/resources/assets/js/components/UploadModal.vue"
+  var id = "/home/vagrant/shopus/resources/assets/js/components/UploadModal.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\nh4 {\n    margin-bottom: 5px;\n}\n\n.file-selector { \n    margin-bottom: 25px;\n}\n\n.margindown { \n    margin-bottom: 15px;\n}\n\n.modal-mask { \n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .5);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n\n.modal-wrapper { \n    display: table-cell;\n    vertical-align: middle;\n}\n\n.modal-container { \n    font-size: 0.75em;\n    width: 300px;\n    margin: 0 auto;\n    padding: 20px 30px;\n    background-color: #fff;\n    border-radius: 2px;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n}\n\n.modal-enter, .modal-leave { \n    opacity: 0;\n}\n\n.modal-enter .modal-container,\n.modal-leave .modal-container { \n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -11899,7 +11899,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/Shopus/resources/assets/js/components/WeixinForm.vue"
+  var id = "/home/vagrant/shopus/resources/assets/js/components/WeixinForm.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n.smaller {\n    font-size: 0.75em;\n}\n"] = false
     document.head.removeChild(__vueify_style__)

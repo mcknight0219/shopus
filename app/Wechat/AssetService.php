@@ -8,7 +8,6 @@ use Log;
 // weixin will store and deliver them as long as we have MediaId 
 class AssetService
 {
-    const ERROR_RESPONSE_ARRAY = array();
     const ERROR_RESPONSE_SCALAR = '';
 
     /**
@@ -56,7 +55,7 @@ class AssetService
             return $batch;
         } catch (\Exception $e) {
             $this->logError($e);
-            return self::ERROR_RESPONSE_ARRAY;
+            return [];
         }
     }
 

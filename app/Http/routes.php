@@ -37,14 +37,14 @@ Route::group(['middleware' => ['web']], function () {
     // TODO create api route group
     Route::post('profile/edit',     'ProfileController@postEditProfile');
     Route::get ('profile/get',      'ProfileController@getProfile');
+
+    // add product throught ajax
+    Route::post('product/add',      'ProductController@postAddProduct');
+    Route::post('product/edit',     'ProductController@postEditProduct');
 });
 
 Route::group(['middleware' => ['web', 'auth']], function () {
-
     // Product management
-    Route::get ('product/add',     'ProductController@getAddProduct');
-    Route::post('product/add',     'ProductController@postAddProduct');
-    Route::post('product/photo',   'ProductController@postProductPhotoAsync');
     Route::get ('product/{id}',    'ProductController@showProduct')->where('id', '[0-9]+');
     Route::get ('product/{id}/photo', 'PhotoController@getProductPhoto')->where('id', '[0-9]+');
     

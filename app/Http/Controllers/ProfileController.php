@@ -15,6 +15,7 @@ use App\Http\Controllers\Controller;
 
 use App\User;
 use App\Profile;
+use App\Subscriber;
 
 class ProfileController extends Controller
 {
@@ -30,6 +31,9 @@ class ProfileController extends Controller
             ]);
         }
 
+        $data = $user->profile->toArray();
+        $data['subscribed'] = Subscriber::isSubscribed($data['weixin']);
+        
         return Response::json($user->profile->toArray());
     }
 

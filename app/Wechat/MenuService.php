@@ -27,7 +27,6 @@ class MenuService
     {
         try {
             $info = $this->httpService->request('GET', 'get_current_selfmenu_info', []);
-            if ($info['is_menu_open'] === 1)
         } catch (\Exception $e) {
             Log::error("Menu service: {$e->getMessage()}");
         }

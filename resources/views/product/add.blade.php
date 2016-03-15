@@ -31,22 +31,10 @@
         {!! Form::textarea('description', null, ['size' => '19x3', 'class' => 'longinput']) !!}
     </div>
 
-    <div class="pure-control-group">
-        {!! Form::label('photo', 'Photos:') !!}
-        {!! Form::select('phototype', ['Front' => 'Front', 'Back' => 'Back', 'Top' => 'Top', 'Bottom' => 'Bottom', 'Custom1' => 'Custom1', 'Custom2' => 'Custom2'], 'Front') !!}
-        <div class="uploadcell pure-button">
-            <span class="centertext">Choose File</span>
-            {!! Form::file('photo', ['class' => 'uploadbutton', 'id' => 'fileSelector']) !!}
-        </div>
-    </div>
-    {{-- The progress bar --}}
-    <div class="pure-control-group narrowgap">
-        {!! Form::label('', '') !!}
-        <progress class="progressbar" value="0" max="100" id="uploadProgressbar" hidden></progress>
-    </div>
-
+    <div class=""></div>
+    
     <div class="pure-controls">
-    {!! Form::button('Publish', ['class' => 'borderedbutton']) !!}
+    {!! Form::button('Save', ['class' => 'borderedbutton']) !!}
     </div>
 </fieldset>
 {!! Form::close() !!}

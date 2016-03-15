@@ -32,7 +32,9 @@ new Vue({
 
             editable: false,
             editing: false,
-            showModal: false
+            showModal: false,
+
+            subscribed: false
         },
 
     },
@@ -40,6 +42,10 @@ new Vue({
     computed: {
         address: function () {
             return this.profileData.city + ' ' + this.profileData.country;
+        },
+
+        showQR: function () {
+            return this.profileData.weixin !== 'weixin id' && ! this.profileData.subscribed;
         }
     },
 
@@ -70,6 +76,8 @@ new Vue({
                 this.profileData.weixin = data.weixin;
             }
 
+            // check if user has subscribed to our offical account
+            this.profileData.subscribed = data.subscribed;
         }, function (error) { 
             // what should we do here ?
         });
