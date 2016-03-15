@@ -11634,6 +11634,54 @@ exports.insert = function (css) {
 }
 
 },{}],29:[function(require,module,exports){
+var __vueify_style__ = require("vueify-insert-css").insert("\n.modal-mask {\n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .5);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n\n.moda-wrapper {\n    display: table-cell;\n    vertical-align: middle;\n}\n\n.modal-container { \n\n}\n\n.moda-enter, .modal-leave { \n    opacity: 0;\n}\n\n.modal-enter .modal-container,\n.modal-leave .modal-container { \n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    props: {
+        show: {
+            type: Boolean,
+            required: true,
+            twoWay: true
+        }
+    },
+
+    data: function data() {
+        return {
+            brand: '',
+            name: '',
+            descripton: '',
+            price: '',
+            publish: false
+        };
+    },
+
+
+    methods: {
+        upload: function upload() {}
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"modal-mask\" v-show=\"show\" transition=\"modal\">\n    <div class=\"modal-wrapper\">\n        <div class=\"modal-container\">\n            <div class=\"pure-g\">\n                <form @submit.prevent=\"upload\" class=\"pure-form pure-form-stacked\">\n                    <fieldset>\n                        <legend>Add a product</legend>\n                        \n                    </fieldset>\n                </form>\n            </div>\n        </div>\n    </div>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/home/user/development/Shopus/resources/assets/js/components/AddProductModal.vue"
+  module.hot.dispose(function () {
+    require("vueify-insert-css").cache["\n.modal-mask {\n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .5);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n\n.moda-wrapper {\n    display: table-cell;\n    vertical-align: middle;\n}\n\n.modal-container { \n\n}\n\n.moda-enter, .modal-leave { \n    opacity: 0;\n}\n\n.modal-enter .modal-container,\n.modal-leave .modal-container { \n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],30:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n.smaller {\n    font-size: 0.75em;\n}\n")
 'use strict';
 
@@ -11691,7 +11739,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/shopus/resources/assets/js/components/AddressForm.vue"
+  var id = "/home/user/development/Shopus/resources/assets/js/components/AddressForm.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n.smaller {\n    font-size: 0.75em;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -11702,7 +11750,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],30:[function(require,module,exports){
+},{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],31:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n.smaller {\n    font-size: 0.75em;\n};\n\n")
 'use strict';
 
@@ -11760,7 +11808,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/shopus/resources/assets/js/components/NameForm.vue"
+  var id = "/home/user/development/Shopus/resources/assets/js/components/NameForm.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n.smaller {\n    font-size: 0.75em;\n};\n\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -11771,7 +11819,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],31:[function(require,module,exports){
+},{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],32:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\nh4 {\n    margin-bottom: 5px;\n}\n\n.file-selector { \n    margin-bottom: 25px;\n}\n\n.margindown { \n    margin-bottom: 15px;\n}\n\n.modal-mask { \n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .5);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n\n.modal-wrapper { \n    display: table-cell;\n    vertical-align: middle;\n}\n\n.modal-container { \n    font-size: 0.75em;\n    width: 300px;\n    margin: 0 auto;\n    padding: 20px 30px;\n    background-color: #fff;\n    border-radius: 2px;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n}\n\n.modal-enter, .modal-leave { \n    opacity: 0;\n}\n\n.modal-enter .modal-container,\n.modal-leave .modal-container { \n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n")
 'use strict';
 
@@ -11833,7 +11881,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/shopus/resources/assets/js/components/UploadModal.vue"
+  var id = "/home/user/development/Shopus/resources/assets/js/components/UploadModal.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\nh4 {\n    margin-bottom: 5px;\n}\n\n.file-selector { \n    margin-bottom: 25px;\n}\n\n.margindown { \n    margin-bottom: 15px;\n}\n\n.modal-mask { \n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .5);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n\n.modal-wrapper { \n    display: table-cell;\n    vertical-align: middle;\n}\n\n.modal-container { \n    font-size: 0.75em;\n    width: 300px;\n    margin: 0 auto;\n    padding: 20px 30px;\n    background-color: #fff;\n    border-radius: 2px;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n}\n\n.modal-enter, .modal-leave { \n    opacity: 0;\n}\n\n.modal-enter .modal-container,\n.modal-leave .modal-container { \n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -11844,7 +11892,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],32:[function(require,module,exports){
+},{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],33:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n.smaller {\n    font-size: 0.75em;\n}\n")
 'use strict';
 
@@ -11899,7 +11947,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/shopus/resources/assets/js/components/WeixinForm.vue"
+  var id = "/home/user/development/Shopus/resources/assets/js/components/WeixinForm.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n.smaller {\n    font-size: 0.75em;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -11910,7 +11958,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],33:[function(require,module,exports){
+},{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],34:[function(require,module,exports){
 'use strict';
 
 var Vue = require('vue');
@@ -11921,6 +11969,7 @@ var NameForm = require('./components/NameForm.vue');
 var AddressForm = require('./components/AddressForm.vue');
 var WeixinForm = require('./components/WeixinForm.vue');
 var UploadModal = require('./components/UploadModal.vue');
+var AddProductModal = require('./components/AddProductModal.vue');
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf_token"]').attr('content');
 
@@ -11944,17 +11993,24 @@ new Vue({
             country: 'country',
             name: 'Your Name',
             url: 'photo/profile',
-
+            subscribed: false,
             editable: false,
             editing: false,
             showModal: false
-        }
+        },
 
+        cmsData: {
+            showAddProductModal: false
+        }
     },
 
     computed: {
         address: function address() {
             return this.profileData.city + ' ' + this.profileData.country;
+        },
+
+        showQR: function showQR() {
+            return this.profileData.weixin !== 'weixin id' && !this.profileData.subscribed;
         }
     },
 
@@ -11962,7 +12018,8 @@ new Vue({
         'name-form': NameForm,
         'address-form': AddressForm,
         'weixin-form': WeixinForm,
-        'modal': UploadModal
+        'modal': UploadModal,
+        'add-product': AddProductModal
     },
 
     ready: function ready() {
@@ -11984,6 +12041,9 @@ new Vue({
             if (data.weixin.length > 0) {
                 this.profileData.weixin = data.weixin;
             }
+
+            // check if user has subscribed to our offical account
+            this.profileData.subscribed = data.subscribed;
         }, function (error) {
             // what should we do here ?
         });
@@ -12000,6 +12060,11 @@ new Vue({
 
                 this.profileData.url = url + "?" + new Date().getTime();
             }
+        },
+
+        'cmsData.addShowProductModal': function cmsDataAddShowProductModal(val, oldVal) {
+            // Modal closed, need to update product info
+            if (oldVal && !val) {}
         }
     },
 
@@ -12080,6 +12145,6 @@ new Vue({
     }
 });
 
-},{"./components/AddressForm.vue":29,"./components/NameForm.vue":30,"./components/UploadModal.vue":31,"./components/WeixinForm.vue":32,"vue":27,"vue-resource":16}]},{},[33]);
+},{"./components/AddProductModal.vue":29,"./components/AddressForm.vue":30,"./components/NameForm.vue":31,"./components/UploadModal.vue":32,"./components/WeixinForm.vue":33,"vue":27,"vue-resource":16}]},{},[34]);
 
 //# sourceMappingURL=bundle.js.map

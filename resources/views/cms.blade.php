@@ -16,10 +16,9 @@
                     <div class="pure-u-1">
                         <div class="left headtitle">Products</div>
                         <div class="right">
-                            <a href="/product/add">
-                                <i class="fa fa-plus controlwidget"></i>
-                            </a>
+                            <i @click="cmsData.showAddProductModal = true" class="fa fa-plus controlwidget"></i>
                         </div>
+                        <add-product show.sync="cmsData.showAddProductModal"></add-product>
                     </div>
                 </div>
 

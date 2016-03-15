@@ -2,13 +2,14 @@
     <div class="modal-mask" v-show="show" transition="modal">
         <div class="modal-wrapper">
             <div class="modal-container">
-
                 <div class="pure-g">
-                    <form @submit.prevent="upload">
+                    <form @submit.prevent="upload" class="pure-form pure-form-stacked">
+                        <fieldset>
+                            <legend>Add a product</legend>
+                            
+                        </fieldset>
                     </form>
                 </div>
-
-
             </div>
         </div>
     </div>

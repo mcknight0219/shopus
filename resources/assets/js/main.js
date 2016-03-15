@@ -6,6 +6,7 @@ var NameForm    = require('./components/NameForm.vue');
 var AddressForm = require('./components/AddressForm.vue');
 var WeixinForm  = require('./components/WeixinForm.vue');
 var UploadModal = require('./components/UploadModal.vue');
+var AddProductModal = require('./components/AddProductModal.vue');
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf_token"]').attr('content');
 
@@ -29,14 +30,15 @@ new Vue({
             country: 'country',
             name: 'Your Name',
             url: 'photo/profile',
-
+            subscribed: false,
             editable: false,
             editing: false,
             showModal: false,
-
-            subscribed: false
         },
 
+        cmsData: { 
+            showAddProductModal: false
+        }
     },
 
     computed: {
@@ -53,7 +55,8 @@ new Vue({
         'name-form': NameForm,
         'address-form': AddressForm,
         'weixin-form': WeixinForm,
-        'modal': UploadModal
+        'modal': UploadModal,
+        'add-product': AddProductModal
     },
 
     ready: function () {
@@ -93,6 +96,13 @@ new Vue({
                 }
 
                 this.profileData.url = url + "?" + (new Date()).getTime();
+            }
+        },
+
+        'cmsData.addShowProductModal': function(val, oldVal) { 
+            // Modal closed, need to update product info
+            if (oldVal && ! val) { 
+            
             }
         }
     },
