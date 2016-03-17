@@ -11634,7 +11634,7 @@ exports.insert = function (css) {
 }
 
 },{}],29:[function(require,module,exports){
-var __vueify_style__ = require("vueify-insert-css").insert("\n.modal-mask {\n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .5);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n\n.moda-wrapper {\n    display: table-cell;\n    vertical-align: middle;\n    position: relative;\n}\n\n.modal-container { \n    width: 450px;\n    margin: 0 auto;\n    padding: 20px 30px;\n    background-color: #fff;\n    border-radius: 2px;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n}\n\n.moda-enter, .modal-leave { \n    opacity: 0;\n}\n\n.modal-enter .modal-container,\n.modal-leave .modal-container { \n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n\n.divider {\n    border-left:1px solid black; \n    border-right:1px solid #16222c; \n    height:275px;\n    position:absolute;\n    right:218px;\n    top:70px; \n}\n")
+var __vueify_style__ = require("vueify-insert-css").insert("\n.modal-mask {\n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .5);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n\n.moda-wrapper {\n    display: table-cell;\n    vertical-align: middle;\n}\n\n.modal-container { \n    width: 450px;\n    margin: 0 auto;\n    padding: 20px 30px;\n    background-color: #fff;\n    border-radius: 2px;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n    position: relative;\n}\n\n.moda-enter, .modal-leave { \n    opacity: 0;\n}\n\n.modal-enter .modal-container,\n.modal-leave .modal-container { \n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n\n.divider {\n    border-left:1px solid silver; \n    border-right:1px solid silver; \n    height:275px;\n    position:absolute;\n    right:218px;\n    top:70px; \n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -11662,17 +11662,21 @@ exports.default = {
 
     methods: {
         upload: function upload() {}
+    },
+
+    components: {
+        'product-photo': require('./ProductPhotoUploader.vue')
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"modal-mask\" v-show=\"show\" transition=\"modal\">\n    <div class=\"modal-wrapper\">\n        <div class=\"modal-container\">\n                <form @submit.prevent=\"upload\" class=\"pure-form pure-form-stacked\">\n                    <h2><b>Add product</b></h2>                                \n\n                    <div class=\"pure-g\">\n                        <div class=\"pure-u-2-3\">\n                            <div class=\"pure-u-2-5\">\n                                <label for=\"name\">Name</label>\n                                <input type=\"text\" class=\"pure-u-23-24\">\n                            </div>\n                            <div class=\"pure-u-2-5\">\n                                <label for=\"brand\">Brand</label>\n                                <input type=\"text\" class=\"pure-u-23-24\">\n                            </div>\n                            <div class=\"pure-u-1-5\">\n                                <label for=\"price\">Price</label>\n                                <input type=\"text\" class=\"pure-u-23-24\">\n                            </div>\n\n                            <div class=\"pure-u-1\">\n                                <label for=\"description\">Description</label>\n                                <textarea id=\"product-description\" name=\"description\" cols=\"30\" rows=\"5\"></textarea>\n                            </div>\n\n                            <div class=\"pure-u-1\">\n                                <label for=\"publish-checkbox\" class=\"pure-checkbox\">\n                                    <input type=\"checkbox\"> Publish right now !\n                                </label>\n                            </div>\n                        </div>\n                        \n                        <div class=\"pure-u-1-3\">\n                            <div class=\"divider\"></div>\n                        </div>\n\n                    </div>\n                    \n                    <button class=\"pure-button pure-button-primary\" type=\"submit\">Save</button>\n                    <button class=\"pure-button\" @click=\"show=false\">Cancel</button>\n                </form>\n        </div>\n    </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"modal-mask\" v-show=\"show\" transition=\"modal\">\n    <div class=\"modal-wrapper\">\n        <div class=\"modal-container\">\n                <form @submit.prevent=\"upload\" class=\"pure-form pure-form-stacked\">\n                    <h2><b>Add product</b></h2>                                \n\n                    <div class=\"pure-g\">\n                        <div class=\"pure-u-2-3\">\n                            <div class=\"pure-u-2-5\">\n                                <label for=\"name\">Name</label>\n                                <input type=\"text\" class=\"pure-u-23-24\">\n                            </div>\n                            <div class=\"pure-u-2-5\">\n                                <label for=\"brand\">Brand</label>\n                                <input type=\"text\" class=\"pure-u-23-24\">\n                            </div>\n                            <div class=\"pure-u-1-5\">\n                                <label for=\"price\">Price</label>\n                                <input type=\"text\" class=\"pure-u-23-24\">\n                            </div>\n\n                            <div class=\"pure-u-1\">\n                                <label for=\"description\">Description</label>\n                                <textarea id=\"product-description\" name=\"description\" cols=\"30\" rows=\"5\"></textarea>\n                            </div>\n\n                            <div class=\"pure-u-1\">\n                                <label for=\"publish-checkbox\" class=\"pure-checkbox\">\n                                    <input type=\"checkbox\"> Publish right now !\n                                </label>\n                            </div>\n                        </div>\n                        \n                        <div class=\"pure-u-1-3\">\n                            <div class=\"divider\"></div>\n                            <product-photo :name=\"front\"></product-photo>\n                        </div>\n\n                    </div>\n                    \n                    <button class=\"pure-button pure-button-primary\" type=\"submit\">Save</button>\n                    <button class=\"pure-button\" @click=\"show=false\">Cancel</button>\n                </form>\n        </div>\n    </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/shopus/resources/assets/js/components/AddProductModal.vue"
+  var id = "/home/vagrant/Shopus/resources/assets/js/components/AddProductModal.vue"
   module.hot.dispose(function () {
-    require("vueify-insert-css").cache["\n.modal-mask {\n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .5);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n\n.moda-wrapper {\n    display: table-cell;\n    vertical-align: middle;\n    position: relative;\n}\n\n.modal-container { \n    width: 450px;\n    margin: 0 auto;\n    padding: 20px 30px;\n    background-color: #fff;\n    border-radius: 2px;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n}\n\n.moda-enter, .modal-leave { \n    opacity: 0;\n}\n\n.modal-enter .modal-container,\n.modal-leave .modal-container { \n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n\n.divider {\n    border-left:1px solid black; \n    border-right:1px solid #16222c; \n    height:275px;\n    position:absolute;\n    right:218px;\n    top:70px; \n}\n"] = false
+    require("vueify-insert-css").cache["\n.modal-mask {\n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .5);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n\n.moda-wrapper {\n    display: table-cell;\n    vertical-align: middle;\n}\n\n.modal-container { \n    width: 450px;\n    margin: 0 auto;\n    padding: 20px 30px;\n    background-color: #fff;\n    border-radius: 2px;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n    position: relative;\n}\n\n.moda-enter, .modal-leave { \n    opacity: 0;\n}\n\n.modal-enter .modal-container,\n.modal-leave .modal-container { \n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n\n.divider {\n    border-left:1px solid silver; \n    border-right:1px solid silver; \n    height:275px;\n    position:absolute;\n    right:218px;\n    top:70px; \n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -11681,7 +11685,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],30:[function(require,module,exports){
+},{"./ProductPhotoUploader.vue":32,"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],30:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n.smaller {\n    font-size: 0.75em;\n}\n")
 'use strict';
 
@@ -11739,7 +11743,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/shopus/resources/assets/js/components/AddressForm.vue"
+  var id = "/home/vagrant/Shopus/resources/assets/js/components/AddressForm.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n.smaller {\n    font-size: 0.75em;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -11808,7 +11812,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/shopus/resources/assets/js/components/NameForm.vue"
+  var id = "/home/vagrant/Shopus/resources/assets/js/components/NameForm.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n.smaller {\n    font-size: 0.75em;\n};\n\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -11820,6 +11824,39 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],32:[function(require,module,exports){
+var __vueify_style__ = require("vueify-insert-css").insert("\n.input { \n    display: none;\n}\n\n.image-upload img { \n    cursor: pointer;\n}\n")
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    props: {
+        name: {
+            type: String,
+            required: true,
+            twoWay: false
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"image-upload\">\n    <label for=\"front-file-input\">\n        <img src=\"http://goo.gl/pB9rpQ\" width=\"60px\">\n    </label>\n    <input type=\"file\" name=\"front-file-input\">\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/home/vagrant/Shopus/resources/assets/js/components/ProductPhotoUploader.vue"
+  module.hot.dispose(function () {
+    require("vueify-insert-css").cache["\n.input { \n    display: none;\n}\n\n.image-upload img { \n    cursor: pointer;\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],33:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\nh4 {\n    margin-bottom: 5px;\n}\n\n.file-selector { \n    margin-bottom: 25px;\n}\n\n.margindown { \n    margin-bottom: 15px;\n}\n\n.modal-mask { \n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .5);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n\n.modal-wrapper { \n    display: table-cell;\n    vertical-align: middle;\n}\n\n.modal-container { \n    font-size: 0.75em;\n    width: 300px;\n    margin: 0 auto;\n    padding: 20px 30px;\n    background-color: #fff;\n    border-radius: 2px;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n}\n\n.modal-enter, .modal-leave { \n    opacity: 0;\n}\n\n.modal-enter .modal-container,\n.modal-leave .modal-container { \n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n")
 'use strict';
 
@@ -11881,7 +11918,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/shopus/resources/assets/js/components/UploadModal.vue"
+  var id = "/home/vagrant/Shopus/resources/assets/js/components/UploadModal.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\nh4 {\n    margin-bottom: 5px;\n}\n\n.file-selector { \n    margin-bottom: 25px;\n}\n\n.margindown { \n    margin-bottom: 15px;\n}\n\n.modal-mask { \n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .5);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n\n.modal-wrapper { \n    display: table-cell;\n    vertical-align: middle;\n}\n\n.modal-container { \n    font-size: 0.75em;\n    width: 300px;\n    margin: 0 auto;\n    padding: 20px 30px;\n    background-color: #fff;\n    border-radius: 2px;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n}\n\n.modal-enter, .modal-leave { \n    opacity: 0;\n}\n\n.modal-enter .modal-container,\n.modal-leave .modal-container { \n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -11892,7 +11929,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],33:[function(require,module,exports){
+},{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],34:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n.smaller {\n    font-size: 0.75em;\n}\n")
 'use strict';
 
@@ -11947,7 +11984,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/shopus/resources/assets/js/components/WeixinForm.vue"
+  var id = "/home/vagrant/Shopus/resources/assets/js/components/WeixinForm.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n.smaller {\n    font-size: 0.75em;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -11958,7 +11995,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],34:[function(require,module,exports){
+},{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],35:[function(require,module,exports){
 'use strict';
 
 var Vue = require('vue');
@@ -11970,6 +12007,7 @@ var AddressForm = require('./components/AddressForm.vue');
 var WeixinForm = require('./components/WeixinForm.vue');
 var UploadModal = require('./components/UploadModal.vue');
 var AddProductModal = require('./components/AddProductModal.vue');
+var ProductPhoto = require('./components/ProductPhotoUploader.vue');
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf_token"]').attr('content');
 
@@ -12019,7 +12057,8 @@ new Vue({
         'address-form': AddressForm,
         'weixin-form': WeixinForm,
         'modal': UploadModal,
-        'add-product': AddProductModal
+        'add-product': AddProductModal,
+        'product-photo': ProductPhoto
     },
 
     ready: function ready() {
@@ -12145,6 +12184,6 @@ new Vue({
     }
 });
 
-},{"./components/AddProductModal.vue":29,"./components/AddressForm.vue":30,"./components/NameForm.vue":31,"./components/UploadModal.vue":32,"./components/WeixinForm.vue":33,"vue":27,"vue-resource":16}]},{},[34]);
+},{"./components/AddProductModal.vue":29,"./components/AddressForm.vue":30,"./components/NameForm.vue":31,"./components/ProductPhotoUploader.vue":32,"./components/UploadModal.vue":33,"./components/WeixinForm.vue":34,"vue":27,"vue-resource":16}]},{},[35]);
 
 //# sourceMappingURL=bundle.js.map

@@ -34,6 +34,7 @@
                             
                             <div class="pure-u-1-3">
                                 <div class="divider"></div>
+                                <product-photo :name="front"></product-photo>
                             </div>
 
                         </div>
@@ -69,6 +70,10 @@
         methods: { 
             upload: function () { 
             }
+        },
+
+        components: { 
+            'product-photo': require('./ProductPhotoUploader.vue') 
         }
     }
 </script>
@@ -113,8 +118,8 @@
     }
 
     .divider {
-        border-left:1px solid black; 
-        border-right:1px solid #16222c; 
+        border-left:1px solid silver; 
+        border-right:1px solid silver; 
         height:275px;
         position:absolute;
         right:218px;
