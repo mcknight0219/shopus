@@ -11634,7 +11634,7 @@ exports.insert = function (css) {
 }
 
 },{}],29:[function(require,module,exports){
-var __vueify_style__ = require("vueify-insert-css").insert("\n.modal-mask {\n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .5);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n\n.moda-wrapper {\n    display: table-cell;\n    vertical-align: middle;\n}\n\n.modal-container { \n\n}\n\n.moda-enter, .modal-leave { \n    opacity: 0;\n}\n\n.modal-enter .modal-container,\n.modal-leave .modal-container { \n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n")
+var __vueify_style__ = require("vueify-insert-css").insert("\n.modal-mask {\n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .5);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n\n.moda-wrapper {\n    display: table-cell;\n    vertical-align: middle;\n    position: relative;\n}\n\n.modal-container { \n    width: 450px;\n    margin: 0 auto;\n    padding: 20px 30px;\n    background-color: #fff;\n    border-radius: 2px;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n}\n\n.moda-enter, .modal-leave { \n    opacity: 0;\n}\n\n.modal-enter .modal-container,\n.modal-leave .modal-container { \n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n\n.divider {\n    border-left:1px solid black; \n    border-right:1px solid #16222c; \n    height:275px;\n    position:absolute;\n    right:218px;\n    top:70px; \n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -11665,14 +11665,14 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"modal-mask\" v-show=\"show\" transition=\"modal\">\n    <div class=\"modal-wrapper\">\n        <div class=\"modal-container\">\n            <div class=\"pure-g\">\n                <form @submit.prevent=\"upload\" class=\"pure-form pure-form-stacked\">\n                    <fieldset>\n                        <legend>Add a product</legend>\n                        \n                    </fieldset>\n                </form>\n            </div>\n        </div>\n    </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"modal-mask\" v-show=\"show\" transition=\"modal\">\n    <div class=\"modal-wrapper\">\n        <div class=\"modal-container\">\n                <form @submit.prevent=\"upload\" class=\"pure-form pure-form-stacked\">\n                    <h2><b>Add product</b></h2>                                \n\n                    <div class=\"pure-g\">\n                        <div class=\"pure-u-2-3\">\n                            <div class=\"pure-u-2-5\">\n                                <label for=\"name\">Name</label>\n                                <input type=\"text\" class=\"pure-u-23-24\">\n                            </div>\n                            <div class=\"pure-u-2-5\">\n                                <label for=\"brand\">Brand</label>\n                                <input type=\"text\" class=\"pure-u-23-24\">\n                            </div>\n                            <div class=\"pure-u-1-5\">\n                                <label for=\"price\">Price</label>\n                                <input type=\"text\" class=\"pure-u-23-24\">\n                            </div>\n\n                            <div class=\"pure-u-1\">\n                                <label for=\"description\">Description</label>\n                                <textarea id=\"product-description\" name=\"description\" cols=\"30\" rows=\"5\"></textarea>\n                            </div>\n\n                            <div class=\"pure-u-1\">\n                                <label for=\"publish-checkbox\" class=\"pure-checkbox\">\n                                    <input type=\"checkbox\"> Publish right now !\n                                </label>\n                            </div>\n                        </div>\n                        \n                        <div class=\"pure-u-1-3\">\n                            <div class=\"divider\"></div>\n                        </div>\n\n                    </div>\n                    \n                    <button class=\"pure-button pure-button-primary\" type=\"submit\">Save</button>\n                    <button class=\"pure-button\" @click=\"show=false\">Cancel</button>\n                </form>\n        </div>\n    </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/user/development/Shopus/resources/assets/js/components/AddProductModal.vue"
+  var id = "/home/vagrant/shopus/resources/assets/js/components/AddProductModal.vue"
   module.hot.dispose(function () {
-    require("vueify-insert-css").cache["\n.modal-mask {\n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .5);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n\n.moda-wrapper {\n    display: table-cell;\n    vertical-align: middle;\n}\n\n.modal-container { \n\n}\n\n.moda-enter, .modal-leave { \n    opacity: 0;\n}\n\n.modal-enter .modal-container,\n.modal-leave .modal-container { \n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n"] = false
+    require("vueify-insert-css").cache["\n.modal-mask {\n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .5);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n\n.moda-wrapper {\n    display: table-cell;\n    vertical-align: middle;\n    position: relative;\n}\n\n.modal-container { \n    width: 450px;\n    margin: 0 auto;\n    padding: 20px 30px;\n    background-color: #fff;\n    border-radius: 2px;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n}\n\n.moda-enter, .modal-leave { \n    opacity: 0;\n}\n\n.modal-enter .modal-container,\n.modal-leave .modal-container { \n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n\n.divider {\n    border-left:1px solid black; \n    border-right:1px solid #16222c; \n    height:275px;\n    position:absolute;\n    right:218px;\n    top:70px; \n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -11739,7 +11739,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/user/development/Shopus/resources/assets/js/components/AddressForm.vue"
+  var id = "/home/vagrant/shopus/resources/assets/js/components/AddressForm.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n.smaller {\n    font-size: 0.75em;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -11808,7 +11808,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/user/development/Shopus/resources/assets/js/components/NameForm.vue"
+  var id = "/home/vagrant/shopus/resources/assets/js/components/NameForm.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n.smaller {\n    font-size: 0.75em;\n};\n\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -11881,7 +11881,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/user/development/Shopus/resources/assets/js/components/UploadModal.vue"
+  var id = "/home/vagrant/shopus/resources/assets/js/components/UploadModal.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\nh4 {\n    margin-bottom: 5px;\n}\n\n.file-selector { \n    margin-bottom: 25px;\n}\n\n.margindown { \n    margin-bottom: 15px;\n}\n\n.modal-mask { \n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .5);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n\n.modal-wrapper { \n    display: table-cell;\n    vertical-align: middle;\n}\n\n.modal-container { \n    font-size: 0.75em;\n    width: 300px;\n    margin: 0 auto;\n    padding: 20px 30px;\n    background-color: #fff;\n    border-radius: 2px;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n}\n\n.modal-enter, .modal-leave { \n    opacity: 0;\n}\n\n.modal-enter .modal-container,\n.modal-leave .modal-container { \n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -11947,7 +11947,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/user/development/Shopus/resources/assets/js/components/WeixinForm.vue"
+  var id = "/home/vagrant/shopus/resources/assets/js/components/WeixinForm.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n.smaller {\n    font-size: 0.75em;\n}\n"] = false
     document.head.removeChild(__vueify_style__)

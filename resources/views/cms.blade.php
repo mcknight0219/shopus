@@ -18,7 +18,8 @@
                         <div class="right">
                             <i @click="cmsData.showAddProductModal = true" class="fa fa-plus controlwidget"></i>
                         </div>
-                        <add-product show.sync="cmsData.showAddProductModal"></add-product>
+
+                        <add-product :show.sync="cmsData.showAddProductModal"></add-product>
                     </div>
                 </div>
 
