@@ -4,7 +4,6 @@
             <div class="modal-container">
                     <form @submit.prevent="upload" class="pure-form pure-form-stacked">
                         <h2><b>Add product</b></h2>                                
-
                         <div class="pure-g">
                             <div class="pure-u-2-3">
                                 <div class="pure-u-2-5">
@@ -34,7 +33,7 @@
                             
                             <div class="pure-u-1-3">
                                 <div class="divider"></div>
-                                <product-photo :name="front"></product-photo>
+                                <product-photo name="front"></product-photo>
                             </div>
 
                         </div>
@@ -97,7 +96,7 @@
     }
 
     .modal-container { 
-        width: 450px;
+        width: 650px;
         margin: 0 auto;
         padding: 20px 30px;
         background-color: #fff;

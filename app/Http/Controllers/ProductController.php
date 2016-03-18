@@ -2,21 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use Illuminate\Http\Request;
+
 use Log;
-use Response;
-use Session;
-use Redirect;
-use Storage;
 use Auth;
+use Storage;
+use Session;
+use Response;
+use Redirect;
+
 use App\Product;
 
 class ProductController extends Controller
 {
+    /**
+     * Asynchronously add a new product
+     *
+     * @return Response
+     */    
     public function postAddProduct(Request $request)
     {
         if (! $request->ajax()) {
@@ -24,19 +30,34 @@ class ProductController extends Controller
         }
 
         $product = new Product($request->all());
-        $prodcut->brandId = $request->input('brand');
+        $product->currency = $request->get('currency');
+        $product->user_id  = Auth::user()->id; 
+        $product->savePhoto($request);
         $product->save();
 
         return Response::json(['status' => 'ok'], 201);
     }
 
-    public function postEditProduct(Request $request)
+    /**
+     * Asynchronously edit the details of a product
+     *
+     * @param  Integer  $productId
+     * @return Response
+     */
+    public function postEditProduct(Request $request, $productId)
     {
-
     }
 
+    /**
+     * Get the product detail page. Editing is available for product's owner
+     *
+     * @param  Integer $productId
+     * @reutrn Response
+     */
     public function showProduct($productId)
     {
         return view('product.show')->with('product', Product::find($productId));
     }
+
+    
 }

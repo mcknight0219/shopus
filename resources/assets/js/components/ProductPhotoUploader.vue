@@ -1,9 +1,11 @@
 <template>
 <div class="image-upload">
     <label for="front-file-input">
-        <img src="http://goo.gl/pB9rpQ" width="60px"/>
+        <img src="http://lcsinfo.com/wp-content/uploads/2012/06/product-placeholder.png" width="55px"/>
     </label>
-    <input type="file" name="front-file-input"/>
+    <input type="file" name="front-file-input" style="display: none"/>
+
+    <div class="caption">{{ name }}</div>
 </div>
 </template>
 
@@ -26,5 +28,9 @@
 
     .image-upload img { 
         cursor: pointer;
+    }
+
+    .caption { 
+        margin-top: 3px;
     }
 </style>

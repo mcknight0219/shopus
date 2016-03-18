@@ -7,7 +7,6 @@ var AddressForm = require('./components/AddressForm.vue');
 var WeixinForm  = require('./components/WeixinForm.vue');
 var UploadModal = require('./components/UploadModal.vue');
 var AddProductModal = require('./components/AddProductModal.vue');
-var ProductPhoto = require('./components/ProductPhotoUploader.vue');
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf_token"]').attr('content');
 
@@ -57,8 +56,7 @@ new Vue({
         'address-form': AddressForm,
         'weixin-form': WeixinForm,
         'modal': UploadModal,
-        'add-product': AddProductModal,
-        'product-photo': ProductPhoto
+        'add-product': AddProductModal
     },
 
     ready: function () {
