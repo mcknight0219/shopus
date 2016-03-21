@@ -29,6 +29,23 @@ class Product extends Model
     }
 
     /**
+     * Get the front photo for the product. Front
+     * photo is always available
+     * 
+     * @return App\ProductPhoto
+     */
+    public function front()
+    {
+        foreach ($this->photos as $photo) {
+            if ($photo->type === 'front') {
+                return $photo;
+            }
+        }
+
+        return null;
+    }    
+
+    /**
      * Sanitize the input currency value
      *
      * @param String $value

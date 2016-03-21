@@ -90,11 +90,15 @@
 
         methods: { 
             upload: function () {
+                var vm = this;
                 this.isUploading = true;
-
-                this.error = this.validateInput();
-                if (this.error.length > 0) {
-                    return this.restore();
+                var errMsg = this.validateInput();
+                if (errMsg.length > 0) {
+                    setTimeout(function() { 
+                        vm.isUploading = false;
+                        vm.error = errMsg;
+                    }, 2000);
+                    return;
                 }
 
                 var formData = new FormData();
@@ -105,7 +109,7 @@
                 formData.append('description', this.description);
                 formData.append('publish',  this.publish);
 
-                var vm = this;
+                
                 ['front', 'back', 'custom1', 'custom2'].forEach(function (typeName) { 
                     if (vm.files[typeName] instanceof File) { 
                         formData.append(typeName, vm.files[typeName]);
@@ -127,12 +131,13 @@
 
             validateInput: function () {
                 var vm = this;
-                ['name', 'brand', 'price', 'description'].forEach(function(attr) { 
-                    if (vm[attr].length === 0) { 
+                var props = ['name', 'brand', 'price', 'description'];
+                for (var i = 0; i <= props.length - 1; i++) {
+                    if(vm[props[i]].length === 0) {
                         return '请输入商品的信息';
                     }
-                });
-
+                }
+                
                 if (vm.files.front === null) {
                     return '一张正脸都不给看嘛';
                 }
@@ -146,7 +151,7 @@
              */
             close: function () { 
                 this.restore();
-                
+                this.error = '';
                 this.show = false;
             },
 

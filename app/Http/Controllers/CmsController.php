@@ -20,7 +20,7 @@ class CmsController extends Controller
             if ($profile === null) {
                 $profile = new Profile;
             }
-            return view('cms')->with('profile', $profile);
+            return view('cms', ['profile' => $profile, 'products' => $user->products]);
         } else {
             return view('cms');
         }  

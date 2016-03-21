@@ -56,9 +56,9 @@ class ProductController extends Controller
      * @param  Integer $productId
      * @reutrn Response
      */
-    public function showProduct($productId)
+    public function showEditProduct(Request $request, $productId)
     {
-        return view('product.show')->with('product', Product::find($productId));
+        return view('product.edit')->with('product', Product::find($productId));
     }
 
     

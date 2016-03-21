@@ -40,20 +40,16 @@ Route::group(['middleware' => ['web']], function () {
 
     // add product throught ajax
     Route::post('product/add',      'ProductController@postAddProduct');
-    Route::post('product/edit',     'ProductController@postEditProduct');
 });
 
 Route::group(['middleware' => ['web', 'auth']], function () {
     // Product management
-    Route::get ('product/{id}',    'ProductController@showProduct')->where('id', '[0-9]+');
-    Route::get ('product/{id}/photo', 'PhotoController@getProductPhoto')->where('id', '[0-9]+');
+    Route::get ('product/edit/{id}',    'ProductController@showEditProduct')->where('id', '[0-9]+');
 });
 
 // Admin only pages
 Route::group(['middleware' => ['web', 'auth', 'admin']], function () {
-    Route::get ('brand',            'BrandController@getBrand');
-    Route::post('brand/{id}/edit',  'BrandController@postBrandAsync')->where('id', '[0-9]+');
-    Route::get ('brand/{id}/logo',  'BrandController@getBrandLogo')->where('id', '[0-9]+');
+   
 });
 
 

@@ -24,17 +24,23 @@
                 </div>
 
                 <div class="margintop2"></div>
-                <div class="productcell">
+
+                @foreach ($products as $product)
+                    <div class="productcell">
+                    <a href={{ 'product/edit/' . $product->id }}></a>
                     <img class="productphoto"
-                         src="http://s7d9.scene7.com/is/image/TheBay/888067642803_main?$COACHMAIN$&wid=325&hei=325&fit=fit,1">
+                         src={{ is_null($product->front) ? '' : $product->front->location }}>
                     <div class="productcontent">
                         <div class="titlestack">
-                            <div class="title singleline">COACH</div>
-                            <div class="caption singleline">Prairie Satchel In Pebble Leather</div>
+                            <div class="title singleline">{{ $product->name }}</div>
+                            <div class="caption singleline">{{ $product->description}}</div>
                         </div>
                     </div>
                 </div>
+                @endforeach
 
+                
+{{-- 
                 <div class="productcell">
                     <img class="productphoto"
                          src="http://img1.cohimg.net/is/image/Coach/35983_lisad_a0?fmt=jpeg&wid=1034&qlt=75,1&op_sharpen=1&resMode=bicub&op_usm=1,1,6,0&iccEmbed=0">
@@ -45,9 +51,11 @@
                         </div>
                     </div>
                 </div>
+--}}
             </div>
             <div class="pure-u-1-6"></div>
         </div>
+
     @else
 
     @endif
