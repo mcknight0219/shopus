@@ -47,7 +47,6 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     // Product management
     Route::get ('product/{id}',    'ProductController@showProduct')->where('id', '[0-9]+');
     Route::get ('product/{id}/photo', 'PhotoController@getProductPhoto')->where('id', '[0-9]+');
-    
 });
 
 // Admin only pages

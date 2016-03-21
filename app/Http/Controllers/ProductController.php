@@ -1,20 +1,17 @@
 <?php
-
 namespace App\Http\Controllers;
-
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-
-use Illuminate\Http\Request;
 
 use Log;
 use Auth;
-use Storage;
-use Session;
 use Response;
 use Redirect;
 
 use App\Product;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class ProductController extends Controller
 {
@@ -32,8 +29,13 @@ class ProductController extends Controller
         $product = new Product($request->all());
         $product->currency = $request->get('currency');
         $product->user_id  = Auth::user()->id; 
-        $product->savePhoto($request);
         $product->save();
+        
+        $product->savePhotos($request);
+
+        if ($request->get('publish', false)) { 
+            // deal with publising 
+        }
 
         return Response::json(['status' => 'ok'], 201);
     }

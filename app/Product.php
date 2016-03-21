@@ -2,15 +2,20 @@
 
 namespace App;
 
+use Log;
 use Auth;
+use Storage;
 use App\Brand;
+use App\ProductPhoto;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
     protected $fillable = [
-        'name', 'price', 'description'
+        'name', 'price', 'description', 'brand', 'currency'
     ];
 
     /**
@@ -24,30 +29,13 @@ class Product extends Model
     }
 
     /**
-     * Convert brand name to brand id
-     *     
-     * @param String $value
-     */
-    public function setBrandIdAttribute($value)
-    {
-        $brand = Brand::where('name', $value)->first();
-        if( $brand === null ) {
-            $brand =new Brand(['name' => $value]);
-            $brand->save();
-        }
-        $this->attributes['brand_id'] = $brand->id;
-    }
-
-    /**
      * Sanitize the input currency value
      *
      * @param String $value
      */
     public function setCurrencyAttribute($value)
     {
-        $collection = collection(['cad', 'usd', 'yuan']);
-        $value = $collection->has(strtolower($value)) ? strtolower($value) : 'yuan';
-
+        $value = collect(['cad', 'usd', 'yuan'])->has(strtolower($value)) ? strtolower($value) : 'yuan';
         $this->attributes['currency'] = $value;
     }
 
@@ -57,7 +45,25 @@ class Product extends Model
      * @param   Illuminate\Http\Request $request
      * @return  App\Product
      */
-    public static function savePhotos(Request $request)
+    public function savePhotos(Request $request)
     {
+        collect(['front', 'back', 'custom1', 'custom2'])->map(function($name) use ($request) { 
+            if (!$request->hasFile($name) || !$request->file($name)->isValid()) {
+                return;
+            }
+            
+            $content = file_get_contents($request->file($name));
+            $name = md5($content);
+            try {
+                $photo = new ProductPhoto;
+                $photo->type = $name;
+                $photo->product_id = $this->attributes['id'];
+                $photo->location = $name;
+                Storage::disk('s3')->put($name, $content);
+                $photo->save();
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
+            }
+        });
     }
 }

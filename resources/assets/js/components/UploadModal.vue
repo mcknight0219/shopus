@@ -97,7 +97,6 @@
     }
 
     .modal-container { 
-        font-size: 0.75em;
         width: 300px;
         margin: 0 auto;
         padding: 20px 30px;
