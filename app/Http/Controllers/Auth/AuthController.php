@@ -70,6 +70,10 @@ class AuthController extends Controller
             $user = new User($input);
             $user->password = password_hash($password, PASSWORD_BCRYPT);
             $user->save();
+            // Creating empty profile on registration saves a lot of sanity checking
+            $profile = new Profile;
+            $profile->user_id = $user->id;
+            $profile->save();
 
             Auth::login($user);
             return redirect()->action('CmsController@index');

@@ -23,7 +23,7 @@
                 </div>
 
                 <div class="margintop2">
-                    <div v-for="product in products">
+                    <div v-for="product in cmsData.products">
                         <product-cell :product.sync="product"></product-cell>
                     </div>
                 </div>
@@ -46,7 +46,9 @@
         </div>
 
     @else
-
+{{-- Landing page here --}}
     @endif
-
+@stop
+@section('script')
+        <script src="js/cms.js"></script>
 @stop

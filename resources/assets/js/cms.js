@@ -1,5 +1,4 @@
 var Vue = require('vue');
-
 Vue.use(require('vue-resource'));
 Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf_token"]').attr('content');
 
@@ -14,16 +13,6 @@ new Vue({
     el: '#app',
 
     data: {
-        loginData: {
-            email: '',
-            password: ''
-        },
-
-        registerData: {
-            email: '',
-            password: ''
-        },
-
         profileData: {
             weixin: 'weixin id',
             city: 'city',
@@ -37,7 +26,8 @@ new Vue({
         },
 
         cmsData: { 
-            showAddProductModal: false
+            showAddProductModal: false,
+            products: []
         }
     },
 
@@ -61,10 +51,11 @@ new Vue({
     },
 
     ready: function () {
+        var vm = this;
+
         this.$http.get('profile/get').then(function (response) { 
-            console.log(response);
             var data = response.data;
-            if (data['status'] === 'bad') {
+            if (data.status() !== 200) {
                 return;
             }
             
@@ -88,9 +79,9 @@ new Vue({
         });
 
         this.$http.get('product/all', function (response) {
-            
+            vm.cmsData.products = response.data();
         }, function (error) {
-
+            console.log(error);
         });
     },
 
@@ -105,6 +96,11 @@ new Vue({
 
                 this.profileData.url = url + "?" + (new Date()).getTime();
             }
+        },
+
+        // Watch if user has been entered anew
+        'profileData.weixin': function(val, oldVal) {
+
         },
 
         'cmsData.addShowProductModal': function(val, oldVal) { 
@@ -155,40 +151,6 @@ new Vue({
 
         showWeixinEditor: function(event) {
             this.triggerPopover($(event.target), $('#weixinFormPopover'));
-        },
-
-        login: function() {
-            var re = /^\S+@\S+$/;
-            if (this.loginData.email === '' || this.loginData.email.match(re) === null) {
-                this.notify($('#email'), 'bottom', 'Email entered is not correct');
-            } else if (this.loginData.password === '') {
-                this.notify($('#password'), 'bottom', 'Password must not be empty');
-            } else {
-                $('#loginForm').submit();
-            }
-        },
-
-        register: function() {
-            var re = /^\S+@\S+$/;
-            if (this.registerData.email === '' || this.registerData.email.match(re) === null) {
-                this.notify($('#email'), 'bottom', 'Email entered is not correct');
-            } else if (this.registerData.password === '') {
-                this.notify($('#password'), 'bottom', 'Password must not be empty');
-            } else {
-                $('#registerForm').submit();
-            }
-        },
-
-
-        notify: function($element, $placement, $content) {
-            $element.webuiPopover({
-                content: $content,
-                placement: $placement,
-                trigger: 'manual',
-                dismissible: true,
-                autoHide: 3500
-            });
-            $element.webuiPopover('show');
         }
     }
 });

@@ -29,7 +29,7 @@
     <div class="container pure-g">
         <div class="content pure-u-1">
             <div id="app">
-            @yield('content')
+                @yield('content')
             </div>
         </div>
     </div>
@@ -44,6 +44,7 @@
 
     <script src="https://cdn.jsdelivr.net/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.webui-popover/1.2.1/jquery.webui-popover.min.js"></script>
-    <script src="/js/bundle.js"></script> 
+    
+    @yield ('script')
 </body>
 </html>

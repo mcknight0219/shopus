@@ -18,9 +18,11 @@ elixir(function(mix) {
 });
 
 elixir(function(mix) {
-    mix.browserify([
-        'main.js'
-    ]);
+    mix.browserify(['cms.js'], 'public/js/cms.js');
+
+    mix.browserify(['login.js'], 'public/js/login.js');
+
+    mix.browserify(['register.js'], 'public/js/register.js');
 });
 
 elixir(function(mix) {

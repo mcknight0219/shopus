@@ -23,15 +23,9 @@ class ProductController extends Controller
      */    
     public function postAddProduct(Request $request)
     {
-        if (! $request->ajax()) {
-            return redirect('/');
-        }
-
         $product = new Product($request->all());
-        $product->currency = $request->get('currency');
-        $product->user_id  = Auth::user()->id; 
+        $product->user_id = Auth::user()->id; 
         $product->save();
-        
         $product->savePhotos($request);
 
         if ($request->get('publish', false)) { 
@@ -60,13 +54,13 @@ class ProductController extends Controller
     public function getAllProduct(Request $request)
     {
         return response()->json(
-            collect(Auth::user()->products())->map(function ($product) {
+            collect(Auth::user()->products())->map(function($product) {
                 $photos = collect($product->photos())->reduce(function ($carry, $photo) {
                     $carry[$photo->type] = $photo->location;
                     return $carry;
                 }, []);
-                return array_merge($product->toArray(), $photos);
-            })
+                return array_merge($product->toArray(), $photos->toArray());
+            })->jsonSerialize()
         );      
     }
 }

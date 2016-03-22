@@ -25,5 +25,9 @@
         {!! Form::submit('LOG IN', ['class' => 'borderedbutton', 'tabindex' => '3']) !!}
     </div>
     {!! Form::close() !!}
-    <div class="pure-u-1-4"></div>     
-@endsection
+    <div class="pure-u-1-4"></div> 
+@stop
+
+@section('script')
+    <script src="js/login.js"></script>
+@stop

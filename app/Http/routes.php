@@ -35,11 +35,11 @@ Route::group(['middleware' => ['web']], function () {
 
     });
 
-Route::group(['middleware' => ['web', 'auth']], function () {
+Route::group(['middleware' => ['api', 'auth']], function () {
     Route::get ('profile/get',      'ProfileController@getProfile');
     Route::post('profile/edit',     'ProfileController@postEditProfile');
 
-    Route::post('product/edit/{id}',    'ProductController@postEditProduct')->where('id', '[0-9]+');
+    Route::post('product/edit/{id}','ProductController@postEditProduct')->where('id', '[0-9]+');
     Route::post('product/add',      'ProductController@postAddProduct');
     Route::get ('product/all',      'ProductController@getAllProduct');
 
