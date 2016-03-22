@@ -1,14 +1,14 @@
 var Vue = require('vue');
 
-Vue.use(require('vue-resource'))
+Vue.use(require('vue-resource'));
+Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf_token"]').attr('content');
 
 var NameForm    = require('./components/NameForm.vue');
 var AddressForm = require('./components/AddressForm.vue');
 var WeixinForm  = require('./components/WeixinForm.vue');
 var UploadModal = require('./components/UploadModal.vue');
 var AddProductModal = require('./components/AddProductModal.vue');
-
-Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf_token"]').attr('content');
+var ProductCell = require('./components/ProductCell.vue');
 
 new Vue({
     el: '#app',
@@ -56,11 +56,13 @@ new Vue({
         'address-form': AddressForm,
         'weixin-form': WeixinForm,
         'modal': UploadModal,
-        'add-product': AddProductModal
+        'add-product': AddProductModal,
+        'product-cell': ProductCell
     },
 
     ready: function () {
         this.$http.get('profile/get').then(function (response) { 
+            console.log(response);
             var data = response.data;
             if (data['status'] === 'bad') {
                 return;
@@ -83,6 +85,12 @@ new Vue({
             this.profileData.subscribed = data.subscribed;
         }, function (error) { 
             // what should we do here ?
+        });
+
+        this.$http.get('product/all', function (response) {
+            
+        }, function (error) {
+
         });
     },
 

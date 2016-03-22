@@ -16,4 +16,8 @@ class AddCurrencyColumnToProductsTable extends Migration
             $table->enum('currency', ['cad', 'usd', 'yuan']);
         });
     }
+
+    public function down()
+    {
+    }
 }

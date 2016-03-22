@@ -1,7 +1,6 @@
 @extends('layouts.master')
 
 @section('content')
-
     @if( Auth::user() )
         <div class="pure-g">
             <div class="pure-u-1-6"></div>
@@ -23,21 +22,11 @@
                     </div>
                 </div>
 
-                <div class="margintop2"></div>
-
-                @foreach ($products as $product)
-                    <div class="productcell">
-                    <a href={{ 'product/edit/' . $product->id }}></a>
-                    <img class="productphoto"
-                         src={{ is_null($product->front) ? '' : $product->front->location }}>
-                    <div class="productcontent">
-                        <div class="titlestack">
-                            <div class="title singleline">{{ $product->name }}</div>
-                            <div class="caption singleline">{{ $product->description}}</div>
-                        </div>
+                <div class="margintop2">
+                    <div v-for="product in products">
+                        <product-cell :product.sync="product"></product-cell>
                     </div>
                 </div>
-                @endforeach
 
                 
 {{-- 

@@ -33,18 +33,16 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get ('photo/profile',   'PhotoController@getProfilePhoto');
 
-    // for ajax updating profile.
-    // TODO create api route group
-    Route::post('profile/edit',     'ProfileController@postEditProfile');
-    Route::get ('profile/get',      'ProfileController@getProfile');
-
-    // add product throught ajax
-    Route::post('product/add',      'ProductController@postAddProduct');
-});
+    });
 
 Route::group(['middleware' => ['web', 'auth']], function () {
-    // Product management
-    Route::get ('product/edit/{id}',    'ProductController@showEditProduct')->where('id', '[0-9]+');
+    Route::get ('profile/get',      'ProfileController@getProfile');
+    Route::post('profile/edit',     'ProfileController@postEditProfile');
+
+    Route::post('product/edit/{id}',    'ProductController@postEditProduct')->where('id', '[0-9]+');
+    Route::post('product/add',      'ProductController@postAddProduct');
+    Route::get ('product/all',      'ProductController@getAllProduct');
+
 });
 
 // Admin only pages

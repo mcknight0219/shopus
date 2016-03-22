@@ -18,6 +18,7 @@ class ProductController extends Controller
     /**
      * Asynchronously add a new product
      *
+     * @param Illuminate\Http\Request $request
      * @return Response
      */    
     public function postAddProduct(Request $request)
@@ -43,6 +44,7 @@ class ProductController extends Controller
     /**
      * Asynchronously edit the details of a product
      *
+     * @param Illuminate\Http\Request $request
      * @param  Integer  $productId
      * @return Response
      */
@@ -51,15 +53,20 @@ class ProductController extends Controller
     }
 
     /**
-     * Get the product detail page. Editing is available for product's owner
+     * Asynchronously get all products that user own
      *
-     * @param  Integer $productId
-     * @reutrn Response
+     * @param Illuminate\Http\Request $request
      */
-    public function showEditProduct(Request $request, $productId)
+    public function getAllProduct(Request $request)
     {
-        return view('product.edit')->with('product', Product::find($productId));
+        return response()->json(
+            collect(Auth::user()->products())->map(function ($product) {
+                $photos = collect($product->photos())->reduce(function ($carry, $photo) {
+                    $carry[$photo->type] = $photo->location;
+                    return $carry;
+                }, []);
+                return array_merge($product->toArray(), $photos);
+            })
+        );      
     }
-
-    
 }

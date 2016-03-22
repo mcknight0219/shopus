@@ -17,7 +17,11 @@ class Authenticate
     public function handle($request, Closure $next)
     {
         if( !Auth::user() ) {
-            return redirect('/');
+            if ($request->ajax()) { 
+                return response()->json(['errmsg' => 'Authorized ajax call is denied'], 401);
+            } else {
+                return redirect('/');
+            }
         }
         return $next($request);
     }

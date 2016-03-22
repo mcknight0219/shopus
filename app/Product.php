@@ -70,17 +70,27 @@ class Product extends Model
             }
             
             $content = file_get_contents($request->file($name));
-            $name = md5($content);
+            $hash = md5($content);
             try {
                 $photo = new ProductPhoto;
                 $photo->type = $name;
                 $photo->product_id = $this->attributes['id'];
-                $photo->location = $name;
-                Storage::disk('s3')->put($name, $content);
+                $photo->location = $hash;
+                Storage::disk('s3')->put($hash, $content);
                 $photo->save();
             } catch (\Exception $e) {
                 Log::error($e->getMessage());
             }
         });
+    }
+
+    /**
+     * Before deleting product, need to first remove photos
+     * to satisfy foreign key constraint.
+     *
+     */
+    public function deletePhotos()
+    {
+            
     }
 }
