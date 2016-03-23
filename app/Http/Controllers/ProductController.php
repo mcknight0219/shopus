@@ -54,12 +54,8 @@ class ProductController extends Controller
     public function getAllProduct(Request $request)
     {
         return response()->json(
-            collect(Auth::user()->products())->map(function($product) {
-                $photos = collect($product->photos())->reduce(function ($carry, $photo) {
-                    $carry[$photo->type] = $photo->location;
-                    return $carry;
-                }, []);
-                return array_merge($product->toArray(), $photos->toArray());
+            collect(Auth::user()->products)->map(function($product) {
+                return $product;
             })->jsonSerialize()
         );      
     }

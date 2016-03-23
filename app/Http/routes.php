@@ -22,23 +22,22 @@ Route::group(['domain' => $domain ,'middleware' => ['weixin']], function () {
 });
 
 Route::group(['middleware' => ['web']], function () {
+Route::get ('/',            'CmsController@index')->name('cms');
+Route::get ('register',     'Auth\AuthController@getRegister');
+Route::post('register',     'Auth\AuthController@postRegister');
+Route::get ('login',        'Auth\AuthController@getLogin');
+Route::post('login',        'Auth\AuthController@postLogin');
+Route::get ('logout',       'Auth\AuthController@getLogout');
+});
 
-    // Account management
-    Route::get ('/',                'CmsController@index')->name('cms');
-    Route::get ('register',         'Auth\AuthController@getRegister');
-    Route::post('register',         'Auth\AuthController@postRegister');
-    Route::get ('login',            'Auth\AuthController@getLogin');
-    Route::post('login',            'Auth\AuthController@postLogin');
-    Route::get ('logout',           'Auth\AuthController@getLogout');
+Route::group(['middleware' => ['web', 'auth']], function () {
+    Route::get ('photo/profile',        'PhotoController@getProfilePhoto');
+    Route::get ('photo/product/{id}/{type?}',   'PhotoController@getProductPhoto')->where(['id' => '[0-9]+', 'type' => 'front|back|custom1|custom2']);
+});
 
-    Route::get ('photo/profile',   'PhotoController@getProfilePhoto');
-
-    });
-
-Route::group(['middleware' => ['api', 'auth']], function () {
+Route::group(['middleware' => ['web', 'auth', 'api']], function () {
     Route::get ('profile/get',      'ProfileController@getProfile');
     Route::post('profile/edit',     'ProfileController@postEditProfile');
-
     Route::post('product/edit/{id}','ProductController@postEditProduct')->where('id', '[0-9]+');
     Route::post('product/add',      'ProductController@postAddProduct');
     Route::get ('product/all',      'ProductController@getAllProduct');

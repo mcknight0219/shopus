@@ -54,11 +54,11 @@ new Vue({
         var vm = this;
 
         this.$http.get('profile/get').then(function (response) { 
-            var data = response.data;
-            if (data.status() !== 200) {
+            if (response.status !== 200) {
                 return;
             }
-            
+
+            var data = response.data;
             if (data.firstName.length > 0 && data.lastName.length > 0) {
                 this.profileData.name = data.firstName + ' ' + data.lastName;
             }
@@ -78,10 +78,8 @@ new Vue({
             // what should we do here ?
         });
 
-        this.$http.get('product/all', function (response) {
-            vm.cmsData.products = response.data();
-        }, function (error) {
-            console.log(error);
+        this.$http.get('product/all').then(function (response) {
+            vm.cmsData.products = response.data;
         });
     },
 

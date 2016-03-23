@@ -27,20 +27,6 @@
                         <product-cell :product.sync="product"></product-cell>
                     </div>
                 </div>
-
-                
-{{-- 
-                <div class="productcell">
-                    <img class="productphoto"
-                         src="http://img1.cohimg.net/is/image/Coach/35983_lisad_a0?fmt=jpeg&wid=1034&qlt=75,1&op_sharpen=1&resMode=bicub&op_usm=1,1,6,0&iccEmbed=0">
-                    <div class="productcontent">
-                        <div class="titlestack">
-                            <div class="title singleline">COACH</div>
-                            <div class="caption singleline">EDIE shoulder bag 28</div>
-                        </div>
-                    </div>
-                </div>
---}}
             </div>
             <div class="pure-u-1-6"></div>
         </div>

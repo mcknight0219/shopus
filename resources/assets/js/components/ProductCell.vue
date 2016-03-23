@@ -1,10 +1,10 @@
 <template>
     <div class="productcell">
-        <img :src="product.front" class="productphoto">
+        <img :src="src" class="productphoto">
         <div class="productcontent">
             <div class="titlestack">
                 <div class="title singleline">{{ product.name }}</div>
-                <div class="caption singleline">{{ product.description }}</div>
+                <div class="caption singleline nowrap">{{ product.description }}</div>
             </div>
         </div>
     </div>    
@@ -20,6 +20,12 @@
             }
         },
 
+        computed: {
+            src: function () {
+                return "photo/product/" + this.product.id + '/front';
+            }
+        },
+
         data () {
             return {
 
@@ -29,5 +35,7 @@
 </script>
 
 <style>
-    
+    .nowrap {
+        white-space: nowrap;
+    }
 </style>

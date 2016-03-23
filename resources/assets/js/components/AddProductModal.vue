@@ -197,6 +197,7 @@
     }
 
     .product-modal-container { 
+        font-size: .8em;
         width: 650px;
         margin: 0 auto;
         padding: 20px 30px;
