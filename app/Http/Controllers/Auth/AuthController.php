@@ -1,12 +1,13 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
 
-use App\User;
-use Validator;
-use Session;
 use Auth;
+use Session;
+use Validator;
+use App\User;
+use App\Profile;
 use App\Http\Controllers\Controller;
+
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
