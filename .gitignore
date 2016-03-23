@@ -11,11 +11,9 @@ composer.lock
 .DS_Store
 *.map
 /.phpcomplete_extended
-/public/js
 /public/tmp
 *.swp
 public/img/ca.svg
 public/img/cn.svg
 public/img/us.svg
 public/img/100x100.png
-public/css

@@ -1,0 +1,251 @@
+html, button, input, select, textarea, .pure-g [class*="pure-u"] {
+  font-family: Arvo, Lato, Trebuchet MS, Droid Sans; }
+
+body {
+  color: #000;
+  font-size: 18px;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 16px; }
+
+h1, h2, h4, h5, h6, .title {
+  font-family: Arvo, Lato, Trebuchet MS, Droid Sans;
+  font-weight: normal; }
+
+a, .linkcolor {
+  color: #ff0000;
+  text-decoration: none; }
+
+.nav a {
+  text-decoration: none;
+  display: inline-block;
+  margin: 0 1em 0 0; }
+
+.nav {
+  padding: 1em 0px 0.5em;
+  margin-bottom: 2em;
+  border-bottom: 1px solid #eee; }
+
+.footer {
+  text-align: center;
+  padding-top: 55px;
+  padding-bottom: 44px; }
+
+.footer a {
+  color: #aaa;
+  text-decoration: underline; }
+
+.left {
+  float: left !important; }
+
+.right {
+  float: right !important; }
+
+.clear {
+  clear: both !important; }
+
+.margintop1 {
+  margin-top: 1em !important; }
+
+.margintop2 {
+  margin-top: 2em !important; }
+
+.marginleft1 {
+  margin-left: 1em; }
+
+.marginrigt1 {
+  margin-right: 1em; }
+
+.marginbottom1 {
+  margin-bottom: -1px; }
+
+.inlineblock {
+  display: inline-block !important; }
+
+.centertext {
+  text-align: center; }
+
+.bigg {
+  font-size: 2em; }
+
+.controlwidget {
+  color: #ff0000;
+  padding: 0 0.5em 0 0.5em;
+  cursor: pointer; }
+
+.borderedbutton {
+  font-family: Arvo, Lato, Trebuchet MS, Droid Sans;
+  color: #ff0000;
+  border-color: #ff0000;
+  display: inline-block;
+  border: 1px solid;
+  border-radius: 8px;
+  padding: 7px 16px 8px 16px;
+  background-color: transparent;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none; }
+
+.profilebutton
+.borderedbutton:active {
+  background-color: #ff0000;
+  color: #ffffff; }
+
+.borderedbutton:focus {
+  outline: 0; }
+
+.navlink {
+  font-family: Arvo, Lato, Trebuchet MS, Droid Sans;
+  text-transform: capitalize; }
+
+.search_container {
+  position: relative; }
+
+#productsearch {
+  width: 160px;
+  font-size: 0.74em;
+  padding: 0.25em 2em; }
+
+.alert {
+  text-align: center !important; }
+
+.alert {
+  color: #fc1b0f;
+  border-color: #fc1b0f; }
+
+.profile-column {
+  margin-left: 15px; }
+
+.profile-address {
+  text-align: left;
+  font-size: 0.95em;
+  color: grey; }
+
+.profile-caption {
+  text-align: left;
+  font-size: 1.6em; }
+
+.profile-subcaption {
+  text-align: left;
+  font-size: 1em; }
+
+.headtitle {
+  font-size: 1.3em;
+  font-weight: bold; }
+
+.productcell {
+  display: block;
+  height: 100px;
+  position: relative;
+  color: #000;
+  text-decoration: none;
+  cursor: pointer; }
+
+.productcell:hover {
+  background-color: #fef8f2; }
+
+.editable:hover {
+  cursor: text; }
+
+.pencil {
+  color: red; }
+
+.pencil:hover {
+  background: lightgray; }
+
+.productphoto {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  top: 0;
+  left: 0; }
+
+.productphoto img {
+  width: 100px; }
+
+.productphoto input.selector {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  cursor: pointer;
+  opacity: 0;
+  width: 100%;
+  filter: alpha(opacity=0); }
+
+.productcontent {
+  position: absolute;
+  left: 110px;
+  width: calc(100% - 100px); }
+
+.titlestack {
+  position: relative;
+  top: 20%;
+  max-height: 100%; }
+
+.singleline {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0.075em 0 0.075em 0; }
+
+.tinytext {
+  font-size: 0.75em; }
+
+.titlestack > .title {
+  color: #000;
+  font-weight: normal;
+  margin: 0.075em; }
+
+.titlestack > .title::first-letter {
+  font-size: 120%; }
+
+.caption {
+  color: #808080;
+  font-size: 0.85em;
+  font-weight: normal; }
+
+.uploadcell {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 70%; }
+
+.uploadcell:hover {
+  cursor: pointer; }
+
+.uploadcell input.uploadbutton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  cursor: pointer;
+  opacity: 0;
+  width: 100%;
+  filter: alpha(opacity=0); }
+
+.uploadcell span {
+  font-size: 0.85em; }
+
+.progressbar {
+  display: inline-block;
+  height: 3px;
+  width: 250px;
+  color: #ff0000; }
+
+.narrowgap {
+  margin-top: -20px !important; }
+
+textarea {
+  resize: none; }
+
+.longinput {
+  width: 250px; }
+
+.error {
+  color: red; }
+
+/*# sourceMappingURL=main.css.map */
