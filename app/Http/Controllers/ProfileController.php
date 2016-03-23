@@ -25,7 +25,7 @@ class ProfileController extends Controller
         // Upload profile photo
         if ($request->hasFile('photo')) {
             $respArr = $profile->savePhoto($request->file('photo')) ?
-                ['status' => ok] : ['status' => 'bad', 'errormsg' => 'file is not valid'];
+                ['status' => 'ok'] : ['status' => 'bad', 'errormsg' => 'file is not valid'];
             return response()->json($respArr);
         }
 
