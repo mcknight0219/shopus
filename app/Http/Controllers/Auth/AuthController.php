@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Auth;
+use Session;
 use App\User;
 use Validator;
-use Session;
-use Auth;
-use App\Http\Controllers\Controller;
+use App\Profile;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {

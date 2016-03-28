@@ -18,16 +18,16 @@ if( env('APP_ENV') === 'production' ) {
 
 // The single point of entry for wechat interface
 Route::group(['domain' => $domain ,'middleware' => ['weixin']], function () {
-        Route::controller('/', 'MainController');
+    Route::controller('/', 'MainController');
 });
 
 Route::group(['middleware' => ['web']], function () {
-Route::get ('/',            'CmsController@index')->name('cms');
-Route::get ('register',     'Auth\AuthController@getRegister');
-Route::post('register',     'Auth\AuthController@postRegister');
-Route::get ('login',        'Auth\AuthController@getLogin');
-Route::post('login',        'Auth\AuthController@postLogin');
-Route::get ('logout',       'Auth\AuthController@getLogout');
+    Route::get ('/',            'CmsController@index')->name('cms');
+    Route::get ('register',     'Auth\AuthController@getRegister');
+    Route::post('register',     'Auth\AuthController@postRegister');
+    Route::get ('login',        'Auth\AuthController@getLogin');
+    Route::post('login',        'Auth\AuthController@postLogin');
+    Route::get ('logout',       'Auth\AuthController@getLogout');
 });
 
 Route::group(['middleware' => ['web', 'auth']], function () {
@@ -38,6 +38,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 Route::group(['middleware' => ['web', 'auth', 'api']], function () {
     Route::get ('profile/get',      'ProfileController@getProfile');
     Route::post('profile/edit',     'ProfileController@postEditProfile');
+    Route::get ('profile/qr',       'ProfileController@getQrPhoto');
     Route::post('product/edit/{id}','ProductController@postEditProduct')->where('id', '[0-9]+');
     Route::post('product/add',      'ProductController@postAddProduct');
     Route::get ('product/all',      'ProductController@getAllProduct');

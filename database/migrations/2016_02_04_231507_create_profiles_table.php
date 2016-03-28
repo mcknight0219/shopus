@@ -17,7 +17,7 @@ class CreateProfilesTable extends Migration
             // foreign key
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->string('weixin')->unique();
+            $table->string('weixin');
             $table->string('firstName');
             $table->string('lastName');
             $table->string('country');

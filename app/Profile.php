@@ -51,4 +51,9 @@ class Profile extends Model
     {
         return !is_null(Subscriber::where('weixinId', $this->weixin)->get());    
     }
+
+    public function needRemindSubscribe()
+    {
+        return ! is_null($profile->weixin) && ! $profile->subscribed;
+    }
 }

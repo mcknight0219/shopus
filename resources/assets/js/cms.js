@@ -23,6 +23,7 @@ new Vue({
             editable: false,
             editing: false,
             showModal: false,
+            qr: ''
         },
 
         cmsData: { 
@@ -34,10 +35,6 @@ new Vue({
     computed: {
         address: function () {
             return this.profileData.city + ' ' + this.profileData.country;
-        },
-
-        showQR: function () {
-            return this.profileData.weixin !== 'weixin id' && ! this.profileData.subscribed;
         }
     },
 
@@ -71,9 +68,9 @@ new Vue({
             if (data.weixin.length > 0) {
                 this.profileData.weixin = data.weixin;
             }
-
-            // check if user has subscribed to our offical account
-            this.profileData.subscribed = data.subscribed;
+            if (data.qrphoto.length > 0) {
+                this.profileData.qr = data.qrphoto;
+            }
         }, function (error) { 
             // what should we do here ?
         });
@@ -98,7 +95,14 @@ new Vue({
 
         // Watch if user has been entered anew
         'profileData.weixin': function(val, oldVal) {
+            if (oldVal === 'weixin id' && val !== oldVal) {
+                var vm = this;
+                this.$http.get('profile/qr').then(function (response) {
+                    vm.profileData.qr = response.data.qrphoto;
+                }, function (error) {
 
+                });
+            }
         },
 
         'cmsData.addShowProductModal': function(val, oldVal) { 

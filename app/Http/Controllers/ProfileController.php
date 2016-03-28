@@ -1,24 +1,41 @@
 <?php
-namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+namespace App\Http\Controllers;
 
 use Auth;
 use Image;
 use Storage;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-
 use App\User;
+use App\Http\Requests;
+use Wechat\QrTicketService;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ProfileController extends Controller
 {
     public function getProfile(Request $request)
     {
         $user = Auth::user(); 
-        return response()->json(array_merge($user->profile->toArray(), ['subscribed' => $user->subscribed]));
+        return response()->json(array_merge($user->profile->toArray(), ['subscribed' => $user->subscribed, 'qrphoto' => $this->qrPhoto()]));
     }
 
+    /**
+     * Only accessed first time user entered weixin id
+     * 
+     * @param  Request $request 
+     * @return Illuminate\Http\Response           
+     */
+    public function getQrPhoto(Request $request)
+    {
+        return response()->json(['status' => 'ok', 'qrphoto' => $this->qrPhoto()]);
+    }
+
+    /**
+     * Edit the profile attributes asynchronously
+     * 
+     * @param  Request $request 
+     * @return Illuminate\Http\Response 
+     */
     public function postEditProfile(Request $request)
     {
         $profile = Auth::user()->profile;
@@ -43,5 +60,23 @@ class ProfileController extends Controller
                 'error_msg' => $e->getMessage()
             ]);
         }
+    }
+
+    protected function qrPhoto() {
+        $profile = Auth::user();
+        /**
+         * If user hasn't entered his weixin or has already subscribed
+         * to the offical account, return empty string.
+         */
+        if (! $profile->needRemindSubscribe()) {
+            return '';
+        }
+
+        if (! is_null($url = QrTicket::where('scene', Auth::user()->profile->id)->select('url')->first())) {
+            return $url;
+        } 
+
+        // Create a  Qr ticket through QrTicketService
+        return with(new QrTicketService)->createTicket($profile->id);
     }
 }

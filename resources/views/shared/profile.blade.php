@@ -57,11 +57,7 @@
     </div>
 </div>
 
-<div class="pure-g margintop1" v-show="false">
-    <div class="pure-u-1-3">
-        <img src="http://www.qrstuff.com/images/sample.png" alt="" width="150px" height="150px">
-    </div>
-    <div class="pure-u-2-3">
-        <p class="centertext">扫一扫，添加我们的公众号。就可以开卖你的商品了 ！</p>   
-    </div>
+<div class="qr-node" v-show="true">
+    <img :src="profileData.qr" width="120px" height="120px">
+    <p class="centertext">扫一扫，添加我们的公众号。就可以开卖你的商品了 ！</p>   
 </div>
