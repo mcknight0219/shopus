@@ -22,4 +22,16 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 
         return $app;
     }
+
+    protected function mockStorage()
+    {
+        Storage::extend('mock', function () {
+            return \Mockery::mock(\Illuminate\Contracts\Filesystem\Filesystem::class);
+        });
+
+        Config::set('filesystems.disks.mock', ['driver' => 'mock']);
+        Config::set('filesystems.default', 'mock');
+
+        return Storage::disk(); 
+    }
 }

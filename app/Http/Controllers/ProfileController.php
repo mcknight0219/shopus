@@ -37,7 +37,7 @@ class ProfileController extends Controller
      * @return Illuminate\Http\Response 
      */
     public function postEditProfile(Request $request)
-    {
+    { 
         $profile = Auth::user()->profile;
         // Upload profile photo
         if ($request->hasFile('photo')) {
@@ -45,6 +45,7 @@ class ProfileController extends Controller
                 ['status' => 'ok'] : ['status' => 'bad', 'errormsg' => 'file is not valid'];
             return response()->json($respArr);
         }
+
 
         try {
             foreach($request->all() as $key => $val) {

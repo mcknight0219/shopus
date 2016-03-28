@@ -34,7 +34,7 @@ class Profile extends Model
             $name = md5($content);
             $this->photo = $name;
             $this->save();
-            Storage::disk('s3')->put($name, $content);
+            Storage::disk()->put($name, $content);
             return true;
         } catch (\Exception $e) {
             Log::error('Failed saving photo to user\'s profile');

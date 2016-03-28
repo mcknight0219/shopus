@@ -76,7 +76,7 @@ class Product extends Model
                 $photo->type = $name;
                 $photo->product_id = $this->attributes['id'];
                 $photo->location = $hash;
-                Storage::disk('s3')->put($hash, $content);
+                Storage::disk()->put($hash, $content);
                 $photo->save();
             } catch (\Exception $e) {
                 Log::error($e->getMessage());
