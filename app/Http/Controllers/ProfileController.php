@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use Image;
 use Storage;
 use App\User;
@@ -15,7 +14,7 @@ class ProfileController extends Controller
 {
     public function getProfile(Request $request)
     {
-        $user = Auth::user(); 
+        $user = auth()->user(); 
         return response()->json(array_merge($user->profile->toArray(), ['subscribed' => $user->subscribed, 'qrphoto' => $this->qrPhoto()]));
     }
 
@@ -38,14 +37,13 @@ class ProfileController extends Controller
      */
     public function postEditProfile(Request $request)
     { 
-        $profile = Auth::user()->profile;
+        $profile = auth()->user()->profile;
         // Upload profile photo
         if ($request->hasFile('photo')) {
             $respArr = $profile->savePhoto($request->file('photo')) ?
                 ['status' => 'ok'] : ['status' => 'bad', 'errormsg' => 'file is not valid'];
             return response()->json($respArr);
         }
-
 
         try {
             foreach($request->all() as $key => $val) {
@@ -64,7 +62,7 @@ class ProfileController extends Controller
     }
 
     protected function qrPhoto() {
-        $profile = Auth::user();
+        $profile = auth()->user()->profile;
         /**
          * If user hasn't entered his weixin or has already subscribed
          * to the offical account, return empty string.
@@ -73,7 +71,7 @@ class ProfileController extends Controller
             return '';
         }
 
-        if (! is_null($url = QrTicket::where('scene', Auth::user()->profile->id)->select('url')->first())) {
+        if (! is_null($url = QrTicket::where('scene', $profile->id)->select('url')->first())) {
             return $url;
         } 
 

@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use DB;
 use Log;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use App\MessageFactory;
 use App\GrandDispatcher;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class MainController extends Controller
 {
@@ -30,14 +28,13 @@ class MainController extends Controller
      */
     public function postIndex(Request $request) 
     {
+        Log::info('dumping body: '.$request->getContent());
         if ($request->post()) {
             $body = $request->getContent();
             $xml = simplexml_load_string($body, 'SimpleXMLElement', LIBXML_NOCDATA);
             $attrs = json_decode(json_encode((array)$xml), TRUE);
 			try {
-				$msg = (new MessageFactory)->create($attrs['MsgType'], $attrs);
-				$action = GrandDispatcher::handle($msg);
-				
+				$action = GrandDispatcher::handle(with(new MessageFactory)->create($attrs['MsgType'], $attrs));
 			} catch(Exception $e) {
 				
 			}

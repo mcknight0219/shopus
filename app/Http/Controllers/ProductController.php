@@ -1,17 +1,13 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Log;
-use Auth;
-use Response;
-use Redirect;
-
 use App\Product;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use App\Http\Controllers\Controller;
 
 class ProductController extends Controller
 {
@@ -32,7 +28,7 @@ class ProductController extends Controller
             // deal with publising 
         }
 
-        return Response::json(['status' => 'ok'], 201);
+        return response()->json(['status' => 'ok'], 201);
     }
 
     /**
@@ -54,7 +50,7 @@ class ProductController extends Controller
     public function getAllProduct(Request $request)
     {
         return response()->json(
-            collect(Auth::user()->products)->map(function($product) {
+            collect(auth()->user()->products)->map(function($product) {
                 return $product;
             })->jsonSerialize()
         );      

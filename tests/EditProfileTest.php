@@ -1,9 +1,11 @@
 <?php
 
 use App\Profile;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Symfony\Component\HttpFoundation\File\UploadedFile as SymfonyUploadedFile;
 
 class EditProfileTest extends TestCase
 {
@@ -38,29 +40,5 @@ class EditProfileTest extends TestCase
         $this->assertEquals('weixin id',    $updated->weixin);
         $this->assertEquals('canada',       $updated->country);
         $this->assertEquals('toronto',      $updated->city);
-    }
-
-    public function testEditProfileUpdatePhoto()
-    {
-        $user = factory(App\User::class)->create();
-        $profile = factory(App\Profile::class)->create([
-           'user_id' => $user->id 
-        ]);
-
-        $this->mockStorage()->shouldReceive('put')->once()->andReturn(null);
-
-        $profilePhoto = Mockery::mock('Symfony\Component\HttpFoundation\File\UploadedFile', [
-           
-        ]);
-
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\File\UploadedFile', $profilePhoto);
-
-        $this->actingAs($user)->json('POST', '/profile/edit', 
-            [
-                'photo' => $profilePhoto
-            ], 
-            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
-        )
-        ->seeJson(['status' => 'ok']);
     }
 }

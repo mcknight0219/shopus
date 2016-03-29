@@ -1,17 +1,17 @@
 <?php
+
 namespace App\Models\Actions;
 
-use App\MessageFactory;
 use Log;
-
 use App\Models\Action;
+use App\MessageFactory;
 use App\Models\Subscriber;
 
 class SubscribeAction extends Action
 {
     public function execute()
     {
-        $user = Subscriber::where('openId', $this->message->fromUser)->get();
+        $user = Subscriber::where('openId', $this->message->fromUser)->first();
         if( $user === null ) {
             $user = Subscriber;
             $user->openId = $this->message->fromUserName;
@@ -25,7 +25,7 @@ class SubscribeAction extends Action
             Log::error('Cannot save subscriber ' . $this->message->fromUser);
         }
 
-        $msg = (new MessageFactory)->create('outbound', [
+        $msg = with(new MessageFactory)->create('outbound', [
             'FromUserName'  => '',
             'ToUserName'    => $this->message->fromUserName,
             'CreateTime'    => time(),
