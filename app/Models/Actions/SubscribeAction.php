@@ -3,9 +3,9 @@
 namespace App\Models\Actions;
 
 use Log;
+use App\Subscriber;
 use App\Models\Action;
 use App\MessageFactory;
-use App\Models\Subscriber;
 
 class SubscribeAction extends Action
 {

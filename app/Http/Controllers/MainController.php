@@ -28,15 +28,16 @@ class MainController extends Controller
      */
     public function postIndex(Request $request) 
     {
-        Log::info('dumping body: '.$request->getContent());
-        if ($request->post()) {
-            $body = $request->getContent();
-            $xml = simplexml_load_string($body, 'SimpleXMLElement', LIBXML_NOCDATA);
+        if ($request->isMethod('post')) {
+            $xml = simplexml_load_string($request->getContent(), 'SimpleXMLElement', LIBXML_NOCDATA);
             $attrs = json_decode(json_encode((array)$xml), TRUE);
 			try {
-				$action = GrandDispatcher::handle(with(new MessageFactory)->create($attrs['MsgType'], $attrs));
+                return with(new GrandDispatcher)
+                    ->handle(with(new MessageFactory)->create($attrs['MsgType'], $attrs))
+                    ->execute()
+                    ->response();
 			} catch(Exception $e) {
-				
+			    Log::error('Failure at processing message: '.$e->getMessage());	
 			}
         }
     }

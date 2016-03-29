@@ -19,5 +19,5 @@ abstract class Action
 
     abstract public function execute();
 
-    abstract public function getActionType();
+    abstract public function actionType();
 }

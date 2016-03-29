@@ -17,7 +17,7 @@ if( env('APP_ENV') === 'production' ) {
 } 
 
 // The single point of entry for wechat interface
-Route::group(['domain' => $domain , function () {
+Route::group(['domain' => $domain], function () {
     Route::controller('/', 'MainController');
 });
 

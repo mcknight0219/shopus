@@ -20,9 +20,8 @@ class GrandDispatcher
 	
 		if( $msg->msgType === 'event' ) {
             return $this->handleEventMessage($msg);
-        } else {
-            return $this->handleIncomingMessage($msg);
-        }
+        } 
+        return $this->handleIncomingMessage($msg);
 	}
 	
 	protected function handleEventMessage($msg)

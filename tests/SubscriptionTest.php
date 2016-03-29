@@ -13,5 +13,8 @@ class SubscriptionTest extends TestCase
      */
     public function testSubscribeToOfficialAccount()
     {
+        $xml = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[FromUser]]></FromUserName><CreateTime>123456789</CreateTime><MsgType><![CDATA[event]]></MsgType><Event><![CDATA[subscribe]]></Event></xml>";
+        $this->action('POST', 'MainController@postIndex', [], [], [], [], [], $xml);
+        $this->assertResponseOk();
     }
 }
