@@ -17,14 +17,23 @@ class Outbound extends Model
         return $this->morphOne('App\Models\Message', 'messageable');
     }
 
-    // Turn message to xml string so we can send them as response
+    /**
+     * If the message is considered unique. Outbound message is always unique.
+     *
+     * @return bool
+     */
+    public function unique()
+    {
+        return true;
+    }
+
     public function toXml()
     {
         $xml = new SimpleXMLElementEx('<xml/>');
 
 		$xml->addChildCData('ToUserName', 	$this->message->toUserName);
 		$xml->addChildCData('FromUserName',	$this->message->fromUserName);
-		$xml->addChild('CreateTime', strtotime($this->message->createTime));
+		$xml->addChild('CreateTime', $this->message->createTime);
 		$xml->addChildCData('MsgType', $this->message->msgType);
 
         // add specific tags according to msg type.

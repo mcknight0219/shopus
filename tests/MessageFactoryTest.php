@@ -13,15 +13,7 @@ use App\Exceptions\MessageFactoryException;
 
 class MessageFactoryTest extends TestCase
 {
-
     use DatabaseTransactions;
-
-    public function testCreateUnknownType()
-    {
-        $this->setExpectedException(MessageFactoryException::class);
-        $factory = new MessageFactory;
-        $factory->create('unknown', []); 
-    }
 
     public function testCreateOutboundText()
     {
@@ -33,7 +25,7 @@ class MessageFactoryTest extends TestCase
             'Content'       => '你好'
         ];
 
-        $m = (new MessageFactory)->create('outbound', $attributes);
+        $m = (new MessageFactory)->create($attributes, 'outbound');
         $this->assertNotNull($m);
         $this->assertInstanceOf('App\Models\Message', $m);
         $this->assertInstanceOf('App\Models\Outbound', $m->messageable);
@@ -53,7 +45,7 @@ class MessageFactoryTest extends TestCase
             'MediaId'       => 'media_id'
         ];
 
-        $m = (new MessageFactory)->create('outbound', $attributes);
+        $m = (new MessageFactory)->create($attributes, 'outbound');
         $this->assertNotNull($m);
         $this->assertInstanceOf('App\Models\Message', $m);
         $this->assertInstanceOf('App\Models\Outbound', $m->messageable);
@@ -73,7 +65,7 @@ class MessageFactoryTest extends TestCase
             'Content'       => '你好'
         ];
 
-        $m = (new MessageFactory)->create('outbound', $attributes);
+        $m = (new MessageFactory)->create($attributes,'outbound');
         $o = $m->messageable;
         $this->assertInstanceOf('App\Models\Message', $o->message);
         $this->assertEquals($attributes['MsgType'], $m->msgType);
@@ -89,7 +81,7 @@ class MessageFactoryTest extends TestCase
             'Content'       => '你好'
         ];
 
-        $m = (new MessageFactory)->create('outbound', $attributes);
+        $m = (new MessageFactory)->create($attributes, 'outbound');
         $o = $m->messageable;
         $xmlStr = $o->toXml();
         $xml = simplexml_load_string($xmlStr, 'SimpleXMLElement', LIBXML_NOCDATA);
@@ -108,7 +100,7 @@ class MessageFactoryTest extends TestCase
             'MsgType'       => 'news'
         ];
 
-        $m = (new MessageFactory)->create('outbound', $attributes);
+        $m = (new MessageFactory)->create($attributes, 'outbound');
         $this->assertEquals('news', $m->msgType);
 
         $o = $m->messageable;
@@ -133,7 +125,7 @@ class MessageFactoryTest extends TestCase
             'CreateTime'    => 12345678,
             'MsgType'       => 'news'
         ];
-        $m = (new MessageFactory)->create('outbound', $attributes);
+        $m = (new MessageFactory)->create($attributes, 'outbound');
         $o = $m->messageable;
 
         $o->addArticle('title1', 'description1', 'picurl1', 'url');
@@ -155,7 +147,7 @@ class MessageFactoryTest extends TestCase
             'CreateTime'    => 12345678,
             'MsgType'       => 'news'
         ];
-        $m = (new MessageFactory)->create('outbound', $attributes);
+        $m = (new MessageFactory)->create($attributes, 'outbound');
         $o = $m->messageable;
         $o->addArticle('title1', 'description1', 'picurl1', 'url1');
         $o->addArticle('title2', 'description2', 'picurl2', 'url2');
@@ -186,7 +178,7 @@ class MessageFactoryTest extends TestCase
             'Event'         => 'subscribe'
         ];
 
-        $factory->create('event', $attributes);
+        $factory->create($attributes, 'event');
         $m = Message::where('msgType', 'event')->first();
         $this->assertNotNull($m);
         $this->assertInstanceOf('App\Models\Message', $m);
@@ -212,7 +204,7 @@ class MessageFactoryTest extends TestCase
             'Precision'     => 119.385040
         ];
 
-        $factory->create('event', $attributes);
+        $factory->create($attributes, 'event');
         $m = Message::where('msgType', 'event')->first();
         $this->assertInstanceOf('App\Models\Message', $m);
         $this->assertInstanceOf('App\Models\Event', $m->messageable);
@@ -238,7 +230,7 @@ class MessageFactoryTest extends TestCase
             'MsgId'         => 123456
         ];
 
-        $factory->create('inbound', $attributes);
+        $factory->create($attributes, 'inbound');
         $m = Message::where('msgType', 'text')->first();
         
         $this->assertNotNull($m);
@@ -251,8 +243,6 @@ class MessageFactoryTest extends TestCase
         $this->assertEquals($attributes['MsgId'], $m->messageable->msgId);
         $content = $m->messageable->content;
         $this->assertEquals($attributes['Content'], $content['Content']);
-
-        $this->assertEquals(date('Y-m-d H:i:s', $attributes['CreateTime']), $m->createTime);
     }
 
     public function testCreateInboundImage()
@@ -268,7 +258,7 @@ class MessageFactoryTest extends TestCase
             'MsgId'         => 111111
         ];
 
-        $factory->create('inbound', $attributes);
+        $factory->create($attributes, 'inbound');
         $m = Message::where('msgType', 'image')->first();
 
         $this->assertNotNull($m);

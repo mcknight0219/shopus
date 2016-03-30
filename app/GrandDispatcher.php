@@ -2,68 +2,46 @@
 
 namespace App;
 
-use DB;
-use Log;
 use App\Models\Message;
-use App\Models\Actions\NoopAction;
-use App\Models\Actions\SubscribeAction;
 
-// A central place to handle received message 
 class GrandDispatcher 
 {
+    /**
+     * All messages will go through this dispatcher in order to be processed
+     *
+     * @param \App\Models\Message $msg
+     */
 	public function handle(Message $msg)
 	{
-		// If message is redundant, we do nothing
-		if( $this->_checkRedundant($msg) ) {
-			return new NoopAction;
-		}
-	
-		if( $msg->msgType === 'event' ) {
-            return $this->handleEventMessage($msg);
-        } 
-        return $this->handleIncomingMessage($msg);
-	}
-	
-	protected function handleEventMessage($msg)
-	{
-        switch ($msg->messageable->event) {
-            case 'subscribe':
-                $action = new SubscribeAction; break;
-            case 'unsubscribe':
-                $action = new UnsubscribeAction; break;
-            case 'click':
-                $action = new MenuClickAction; break;
-            case 'VIEW':
-                $action = new MenuViewAction; break;
-            case 'SCAN':
-            case 'LOCATION':
-                return new NoopAction;
-        }
-
-        $action->setMessage($msg);
-        return $action;
-	}
-	
-	protected function handleIncomingMessage($msg)
-	{
-		
-	}
-
-	protected function _checkRedundant(Message $msg)
-	{
-		$klass = get_class($msg->messageable);
-		// Inbound message is distinguished by msgId.
-		// Event message can be differed by FromUserName + CreateTime
-		if( $klass === 'Inbound' ) {
-			$result = Inbound::where('msgId', $msg->messageable->msgId)->get();
-			return $result !== null;
-		} else if( $klass === 'Event' ) {
-			$result = Message::where('FromUserName', $msg->fromUserName)
-				->where('CreateTime', $msg->createTime)
-				->get();
-			return $result !== null;
-		} else {
-			return false;
+		if ($msg->unique()) {
+            call_user_func([$this, Str::lower(get_class($msg))], $msg);
 		}
 	}
+
+    /**
+     * Fire up Event to handle event messages
+     *
+     * @param \App\Models\Message $msg
+     */
+	protected function event($msg)
+	{
+    }
+
+	/**
+     * Fire up Event to handle user sent messages
+     *
+     * @param \App\Models\Message $msg
+     */
+	protected function inbound($msg)
+	{
+    }
+
+    /**
+     * Fire up Event to send out messages to users
+     *
+     * @param \App\Models\Message $msg
+     */
+    protected function outbound($msg)
+    {
+    }
 }

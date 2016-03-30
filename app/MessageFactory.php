@@ -17,25 +17,20 @@ class MessageFactory
     protected $common= ['toUserName', 'fromUserName', 'createTime', 'msgType'];
 
     /**
-     * Create a message from raw xml input
+     * Create a message from array of attributes
      *
-     * @param String $xmlStr
+     * @param Array  $fields
      * @param String $kind
      */
-    public function create($xmlStr, $kind)
+    public function create($fields, $kind)
     {
         $factoryMethod = collect([
             'inbound'   => 'createInbound',
             'outbound'  => 'createOutbound',
             'event'     => 'createEvent'
-        ])->get($kind, 'inbound');
+        ])->get($kind, 'createOutbound');
 
-        return $this->$factoryMethod(
-            json_decode(
-                json_encode((array)simplexml_load_string($xmlStr, 'SimpleXMLElement', LIBXML_NOCDATA)),
-                true
-            )
-        );
+        return $this->$factoryMethod($fields);
     }
 
     /**
@@ -47,7 +42,7 @@ class MessageFactory
     protected function createBasic(Array $fields)
     {
         $message = new Message;
-        collec($this->common)->map(function ($name) use ($message, $fields) {
+        collect($this->common)->map(function ($name) use ($message, $fields) {
             $message->$name = $fields[ucfirst($name)];
         });
 
@@ -68,7 +63,7 @@ class MessageFactory
         $inbound = new Inbound;
         $inbound->msgId = $fields['MsgId'];
         $inbound->content = collect($fields)
-            ->filter(function ($name) { return ! in_array($name, array_merge($this->common, ['MsgId'])); })
+            ->filter(function ($val, $name) { return ! in_array(Str::camel($name), array_merge($this->common, ['msgId'])); })
             ->toJson();
         $inbound->save();
         $inbound->message()->save($basic);
@@ -88,7 +83,7 @@ class MessageFactory
 
         $outbound = new Outbound;
         $outbound->content = collect($fields)
-            ->filter(function ($name) { return ! in_array($name, $this->common); })
+            ->filter(function ($val, $name) { return ! in_array(Str::camel($name), $this->common); })
             ->toJson();
         $outbound->save();
 
@@ -110,10 +105,10 @@ class MessageFactory
         $event = new Event;
         $extra = collect($fields)->diff($this->common);
         $event->event       = Str::lower($extra->get('Event'));
-        $event->eventKey    = $extra->get('EventKey');
         $event->ticket      = $extra->get('Ticket');
+        $event->eventKey    = $extra->get('EventKey');
         if ($extra->has('Latitude')) {
-            $event->eventKey = implode(';', $extra->except('Latitude', 'Longitude', 'Precision')-values()->toArray());
+            $event->eventKey = implode(';', $extra->only('Latitude', 'Longitude', 'Precision')->values()->toArray());
         }
         $event->save();
 

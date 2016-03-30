@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use Log;
-use DB;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -19,5 +17,4 @@ class Message extends Model
     {
         return $this->morphTo();
     }
-    
-}
+  }

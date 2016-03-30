@@ -13,6 +13,17 @@ class Event extends Model
     {
         return $this->morphOne('App\Models\Message', 'messageable');
     }
+
+    /**
+     * If this is a unique message. For event message, we could
+     * use the combination of fromUser and createTime.
+     *
+     * @retun bool
+     */
+    public function unique()
+    {
+        return 1 === static::where('fromUserName', $msg->fromUserName)->where('createTime', $msg->createTime)->get()->count();    
+    }
 	
 	// Some subscription event are sent with qr scan information
 	public function isQRScanned()

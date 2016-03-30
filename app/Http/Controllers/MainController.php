@@ -29,9 +29,14 @@ class MainController extends Controller
     public function postIndex(Request $request) 
     {
         if ($request->isMethod('post')) {
-			try {
+            try {
+                $attributes = json_decode(
+                    json_encode((array)simplexml_load_string($request->getContent(), 'SimpleXMLElement', LIBXML_NOCDATA)),
+                    true
+                );
+
                 return with(new GrandDispatcher)
-                    ->handle(with(new MessageFactory)->create($request->getContent(), 'inbound'))
+                    ->handle(with(new MessageFactory)->create($attributes, 'inbound'))
                     ->execute()
                     ->response();
 			} catch(Exception $e) {
