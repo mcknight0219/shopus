@@ -7,7 +7,6 @@ use App\Http\Requests;
 use App\MessageFactory;
 use App\GrandDispatcher;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class MainController extends Controller
 {
@@ -23,17 +22,16 @@ class MainController extends Controller
 
     /**
      * Receive normal user message and save them in database
+     *
      * @param  Request $request 
      * @return Response
      */
     public function postIndex(Request $request) 
     {
         if ($request->isMethod('post')) {
-            $xml = simplexml_load_string($request->getContent(), 'SimpleXMLElement', LIBXML_NOCDATA);
-            $attrs = json_decode(json_encode((array)$xml), TRUE);
 			try {
                 return with(new GrandDispatcher)
-                    ->handle(with(new MessageFactory)->create($attrs['MsgType'], $attrs))
+                    ->handle(with(new MessageFactory)->create($request->getContent(), 'inbound'))
                     ->execute()
                     ->response();
 			} catch(Exception $e) {
