@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Models\Subscriber;
 use App\Events\WechatUserUnsubscribed;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -26,6 +27,6 @@ class ForgetUser
      */
     public function handle(WechatUserUnsubscribed $event)
     {
-        //
+        Subscriber::where('openId', $event->fromUserName)->first()->unsubscribed = true;
     }
 }

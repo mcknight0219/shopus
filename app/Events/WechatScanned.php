@@ -7,18 +7,15 @@ use App\Models\Message;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class WechatUserSubscribed extends Event
+class WechatScanned extends Event
 {
     use SerializesModels;
 
-    /**
-     * @var \App\Models\Message
-     */
     public $message;
-
     /**
      * Create a new event instance.
      *
+     * @param \App\Models\Message $message
      * @return void
      */
     public function __construct(Message $message)

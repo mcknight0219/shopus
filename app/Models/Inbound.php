@@ -23,7 +23,7 @@ class Inbound extends Model
      */
     public function unique()
     {
-        return 1 === static::where('msgId', $msg->messageable->msgId)->get()->count();
+        return 1 === static::where('msgId', $this->messageable->msgId)->get()->count();
     }
     public function getContentAttribute($value)
     {

@@ -23,3 +23,9 @@ $factory->define(App\Profile::class, function (Faker\Generator $faker) {
 
     ];
 });
+
+$factory->define(App\Models\Subscriber, function (Faker\Generate $facker) {
+    return [
+        'openId' => 123456
+    ] 
+});

@@ -19,6 +19,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\WechatUserUnsubscribed' => [
             'App\Listeners\ForgetUser'
         ],
+        'App\Events\WechatScanned' => [
+            'App\Listeners\BackfillVendor'
+        ]
     ];
 
     /**

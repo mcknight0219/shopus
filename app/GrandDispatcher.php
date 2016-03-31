@@ -2,21 +2,54 @@
 
 namespace App;
 
+use Event;
 use App\Models\Message;
+use Illuminate\Support\Str;
 
 class GrandDispatcher 
 {
+    /**
+     * @var
+     */
+    protected $response = null;
+
     /**
      * All messages will go through this dispatcher in order to be processed
      *
      * @param \App\Models\Message $msg
      */
-	public function handle(Message $msg)
+	public function dispatch(Message $msg)
 	{
-		if ($msg->unique()) {
-            call_user_func([$this, Str::lower(get_class($msg))], $msg);
-		}
+		if ($msg->messageable->unique()) {
+            call_user_func([$this, $this->translateToMethod(get_class($msg->messageable))], $msg);
+        }
+
+        return $this;
 	}
+
+    /**
+     * Map the message class to instance method that handles it
+     *
+     * @param str $klass
+     * @return str
+     */
+    protected function translateToMethod($klass)
+    {
+        return end((explode('\\', Str::lower($klass))));
+    }
+
+    /**
+     * 
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getResponse()
+    {
+        if ($this->response instanceof Message) {
+            return $this->response->toXml();
+        } 
+        return $this->response ?: 'success'; 
+    }
 
     /**
      * Fire up Event to handle event messages
@@ -24,7 +57,14 @@ class GrandDispatcher
      * @param \App\Models\Message $msg
      */
 	protected function event($msg)
-	{
+    {
+        $eventName = collect([
+            'subscribe'     => 'App\Events\WechatUserSubscribed',
+            'unsubscribe'   => 'App\Events\WechatUserUnsubscribed',
+            'scan'          => 'App\Events\WechatScanned'
+        ])->get(Str::lower($msg->messageable->event));
+        
+        Event::fire(new $eventName($msg));
     }
 
 	/**
@@ -37,11 +77,12 @@ class GrandDispatcher
     }
 
     /**
-     * Fire up Event to send out messages to users
+     * After event is handled, a response can be sent back to weixin side
      *
-     * @param \App\Models\Message $msg
+     * @param mixed $msg
      */
-    protected function outbound($msg)
+    protected function setRespondMessage($msg)
     {
+        $this->response = $msg;
     }
 }

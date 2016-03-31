@@ -36,9 +36,8 @@ class MainController extends Controller
                 );
 
                 return with(new GrandDispatcher)
-                    ->handle(with(new MessageFactory)->create($attributes, 'inbound'))
-                    ->execute()
-                    ->response();
+                    ->dispatch(with(new MessageFactory)->create($attributes, $this->getKind($attributes)))
+                    ->getResponse();
 			} catch(Exception $e) {
 			    Log::error('Failure at processing message: '.$e->getMessage());	
 			}
@@ -68,5 +67,17 @@ class MainController extends Controller
         $tmpStr = sha1($tmpStr);
 
         return $tmpStr === $signature;
+    }
+
+    /**
+     * Get the message kind
+     *
+     * @param Array $attributes
+     * @return string
+     */
+    protected function getKind($attributes)
+    {
+        //Only event and inbound message could possibly go through MainController.
+        return $attributes['MsgType'] === 'event' ? 'event' : 'inbound';
     }
 }

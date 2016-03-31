@@ -1,8 +1,9 @@
 <?php
-namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+namespace App\Models;
+
 use App\Profile;
+use Illuminate\Database\Eloquent\Model;
 
 class Subscriber extends Model
 {
@@ -31,13 +32,7 @@ class Subscriber extends Model
      */
     public function vendor()
     {
-        foreach (Profile::all() as $profile) {
-            if ($this->weixinId && $this->weixinId === $profile->weixin) {
-                return true;
-            }
-        }   
-
-        return false;     
+        return ! is_null($this->weixinId);    
     }
 
     /**
@@ -45,18 +40,8 @@ class Subscriber extends Model
      *
      * @return Boolean
      **/
-    static public function isSubscribed($weixin)
+    static public function isSubscribed($weixinId)
     {
-        if (strlen($weixin) === 0) {
-            return false;
-        }
-
-        foreach (Subscriber::all() as $subscriber) {
-            if ($subscriber->weixinId && $subscriber->weixinId === $weixin) {
-                return true;
-            }            
-        }
-        
-        return false;
+        return ! static::where('weixinId', $weixinId)->get()->isEmpty();
     }
 }

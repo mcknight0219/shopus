@@ -22,7 +22,7 @@ class Event extends Model
      */
     public function unique()
     {
-        return 1 === static::where('fromUserName', $msg->fromUserName)->where('createTime', $msg->createTime)->get()->count();    
+        return 1 === Message::where('fromUserName', $this->message->fromUserName)->where('createTime', $this->message->createTime)->get()->count();    
     }
 	
 	// Some subscription event are sent with qr scan information
