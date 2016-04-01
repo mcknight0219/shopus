@@ -29,8 +29,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('App\Wechat\HttpServiceInterface', function($app) {
-            $client = new Client(['base_uri' => 'https://api.weixin.qq.com/cgi-bin/']);
-            return new WechatHttpService($client);
+            return new WechatHttpService(new Client(['base_uri' => 'https://api.weixin.qq.com/cgi-bin/']));
         });
 
         $this->app->singleton('CustomMessageService', function($app) {

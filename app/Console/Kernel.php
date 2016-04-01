@@ -13,7 +13,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\RefreshToken::class,
+        Commands\Inspire::class,
+        Commands\CrawlCategory::class,
+        Commands\CrawlSKU::class
     ];
 
     /**
@@ -24,7 +26,5 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('refreshToken')
-                  ->cron('0 */2 * * *');    // run every two hours
     }
 }

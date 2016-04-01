@@ -48,6 +48,15 @@ class WechatHttpService implements HttpServiceInterface
         return $code === 40014 || $code === 42001;
     }
 
+    /**
+     * Request that automatically validate access_token and refresh it when necessary
+     *
+     * @param string $method
+     * @param string $path
+     * @param array  $body
+     * @param bool   $retry
+     * @return Illuminate\Support\Collection
+     */
     public function request($method, $path, $body = [], $retry = true)
     {
         $this->token() === '' && $this->refresh();
@@ -56,9 +65,11 @@ class WechatHttpService implements HttpServiceInterface
         }
 
         $body = array_merge($body, ['query' => ['ACCESS_TOKEN' => $this->token()]]);
-        $response = json_decode(
-            $this->client->request($method, $path, $body)->getBody(),
-            true
+        $response = collec(
+            json_decode(
+                $this->client->request($method, $path, $body)->getBody(),
+                true
+            )
         );
         if (array_key_exists('errcode', $response) && $response['errcode'] !== 0) {
             if ($this->expired($response['errcode'])) {
