@@ -11,18 +11,18 @@ class Subscriber extends Model
 
     protected $fillable = ['openId', 'weixinId'];
 
-    protected $attriubtes = [
+    protected $attributes = [
         'unsubscribed' => false
     ];
     
     /**
-     * If user has unsubscribed from our service
+     * If user is subscribed from our service
      *
      * @return Boolean 
      */
-    public function unsubscribed()
+    public function subscribed()
     {
-        return $this->unsubscribed;
+        return ! $this->unsubscribed;
     }
 
     /**
