@@ -11,13 +11,12 @@ class WechatUserUnsubscribed extends Event
 {
     use SerializesModels;
 
-    protected $message;
+    public $message;
 
     /**
      * Create a new event instance.
      *
      * @param  \App\Models\Message $message
-     * @return void
      */
     public function __construct(Message $message)
     {

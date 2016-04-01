@@ -18,14 +18,14 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Profile::class, function (Faker\Generator $faker) {
+$factory->define(App\Profile::class, function () {
     return [
 
     ];
 });
 
-$factory->define(App\Models\Subscriber, function (Faker\Generate $facker) {
+$factory->define(App\Models\Subscriber::class, function (Faker\Generator $faker) {
     return [
-        'openId' => 123456
-    ] 
+        'openId'        => '1234567',
+    ];
 });

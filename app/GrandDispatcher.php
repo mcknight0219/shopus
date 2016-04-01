@@ -17,6 +17,7 @@ class GrandDispatcher
      * All messages will go through this dispatcher in order to be processed
      *
      * @param \App\Models\Message $msg
+     * @return \App\GrandDispatcher
      */
 	public function dispatch(Message $msg)
 	{
@@ -30,12 +31,12 @@ class GrandDispatcher
     /**
      * Map the message class to instance method that handles it
      *
-     * @param str $klass
+     * @param str $class
      * @return str
      */
-    protected function translateToMethod($klass)
+    protected function translateToMethod($class)
     {
-        return end((explode('\\', Str::lower($klass))));
+        return end((explode('\\', Str::lower($class))));
     }
 
     /**

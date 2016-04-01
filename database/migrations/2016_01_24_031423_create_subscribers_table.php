@@ -14,7 +14,7 @@ class CreateSubscribersTable extends Migration
     {
         Schema::create('subscribers', function(Blueprint $table) {
 			$table->increments('id');
-			$table->integer('openId')->nullable();
+			$table->integer('openId');
             $table->string('weixinId')->nullable();
 			$table->boolean('unsubscribed');
 			$table->timestamps();
