@@ -4,6 +4,7 @@ namespace App\Wechat;
 
 use Cache;
 use Carbon\Carbon;
+use GuzzleHttp\Client;
 use App\Wechat\Exception\AccessTokenException;
 use App\Wechat\Exception\RequestFailureException;
 
@@ -43,7 +44,7 @@ class WechatHttpService implements HttpServiceInterface
     public function requestToken()
     {
         return collect(
-            json_decode($this->client->request('GET', 'token', [
+            json_decode(with(new Client(['base_uri' => 'https://api.weixin.qq.com/cgi-bin/']))->request('GET', 'token', [
                 'query' => [
                     'grant_type' => 'client_credential',
                     'appid' => env('WECHAT_APP_ID'),
