@@ -61,9 +61,9 @@ class SubscriptionTest extends TestCase
      */
     public function testVendorSubscribeFirstAndScan()
     {
-        $this->trigger("<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[1234567]]></FromUserName><CreateTime>123456789</CreateTime><MsgType><![CDATA[event]]></MsgType><Event><![CDATA[subscribe]]></Event><EventKey><![CDATA[qrscene_regular]]></EventKey><Ticket><![CDATA[Ticket]]></Ticket></xml>")        
+        $this->trigger("<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[1234567]]></FromUserName><CreateTime>123456789</CreateTime><MsgType><![CDATA[event]]></MsgType><Event><![CDATA[subscribe]]></Event><EventKey><![CDATA[qrscene_regular]]></EventKey><Ticket><![CDATA[Ticket]]></Ticket></xml>");        
         $this->assertResponseOk();
-        $this->see('sucess');
+        $this->see('success');
     }
 
     protected function trigger($xml)

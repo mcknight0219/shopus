@@ -1,51 +1,74 @@
 <?php
+
 namespace App\Wechat;
 
 use Cache;
 use Carbon\Carbon;
-use Log;
 use App\Wechat\Exception\AccessTokenException;
 use App\Wechat\Exception\RequestFailureException;
 
 class WechatHttpService implements HttpServiceInterface
 {
-    const CACHE_KEY = 'WechatHttpService::access_token';
+    /**
+     * @var string Access token cache key
+     */
+    protected $cacheKey = 'WechatHttpService::access_token';
 
     /**
-     * @var Http client
+     * @var \GuzzleHttp\Client
      */
     protected $client;
 
+    /**
+     * WechatHttpService constructor.
+     *
+     * @param \GuzzleHttp\Client $client
+     */
     public function __construct($client)
     {
         $this->client =  $client;
     }
 
+    /**
+     * Read token that is cache already. Return empty string  
+     * if none set or has already expired.
+     *
+     * @return string
+     */
     public function token()
     {
-        return Cache::get(self::CACHE_KEY, '');
+        return Cache::get($this->cacheKey, '');
     }
 
-    public function refresh()
+    public function requestToken()
     {
-        $response = json_decode($this->client->request('GET', 'token', [
-           'query' => [
-               'grant_type' => 'client_crdential',
-               'appid'      => env('WECHAT_APPID'),
-               'secret'     => env('WECHAT_APP_SECRET')
-           ]
-        ])->getBody(), true);
-        if (array_key_exists('access_token', $response)) {
-            $expireAt = Carbon::now()->second($response['expires_in']);
-            Cache::put(self::CACHE_KEY, $response['access_token'], $expireAt);
-        } else {
-            Log::error(__FUNCTION__ . " {$response['errmsg']}");
+        return collect(
+            json_decode($this->client->request('GET', 'token', [
+                'query' => [
+                    'grant_type' => 'client_credential',
+                    'appid' => env('WECHAT_APPID'),
+                    'secret' => env('WECHAT_APP_SECRET')
+                ]
+            ])->getBody(), true)
+        )->get('access_token', '');
+    }
+
+    /**
+     * Put request token in cache if not already
+     *
+     * @param string $token
+     */
+    protected function rememberInCache($token)
+    {
+        if (! Cache::has($this->cacheKey)) {
+            // Access token is valid for two hours
+            Cache::put($this->cacheKey, $token, Carbon::now()->second(2 * 3600));
         }
     }
 
-    protected function expired($code)
+    protected function filter($code)
     {
-        return $code === 40014 || $code === 42001;
+        return $code === 40001 || $code === 42001 || $code === 40014;
     }
 
     /**
@@ -55,35 +78,36 @@ class WechatHttpService implements HttpServiceInterface
      * @param string $path
      * @param array  $body
      * @param bool   $retry
-     * @return Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection
+     *
+     * @throws AccessTokenException
+     * @throws RequestFailureException
      */
     public function request($method, $path, $body = [], $retry = true)
     {
-        $this->token() === '' && $this->refresh();
-        if ($this->token() === '') {
+        $token = $this->token() ?: $this->requestToken();
+        if (! $token) {
             throw new AccessTokenException;
         }
+        $this->rememberInCache($token);
 
-        $body = array_merge($body, ['query' => ['ACCESS_TOKEN' => $this->token()]]);
-        $response = collec(
+        $body['query'] = ['ACCESS_TOKEN' => $token];
+        $resp = collect(
             json_decode(
                 $this->client->request($method, $path, $body)->getBody(),
                 true
             )
         );
-        if (array_key_exists('errcode', $response) && $response['errcode'] !== 0) {
-            if ($this->expired($response['errcode'])) {
-                Cache::forget(self::CACHE_KEY);
-                if ($retry) {
-                    return $this->request($method, $path, $body, false);
-                }
-            } else {
-                Log::error(__FUNCTION__ . " {$response['errmsg']}");
-                throw new RequestFailureException;
+
+        if ($this->filter($resp->get('errcode'))) {
+            if ($retry) {
+                Cache::forget($this->cacheKey);
+                unset($body['query']);
+                return $this->request($method, $path, $body, false);
             }
-        } else {
-            return $response;
+            throw new AccessTokenException;
         }
+        return $resp;
     }
 
 }

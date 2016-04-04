@@ -34,11 +34,8 @@ class WechatHttpServiceTest extends TestCase
 
         $service = new WechatHttpService($client);
         // check if cache is set after refresh
-        $service->refresh();
-        $this->assertEmpty($service->token());
-
-        $service->refresh();
-        $this->assertEquals(123456, $service->token());
+        $this->assertEmpty($service->requestToken());
+        $this->assertEquals(123456, $service->requestToken());
     }
 
     public function testRequestSuccess()
@@ -83,26 +80,8 @@ class WechatHttpServiceTest extends TestCase
         $service->request('GET', '/', []);
     }
 
-    public function testRequestGeneralFailure()
-    {
-        $this->setExpectedException(RequestFailureException::class);
-        $mock = new MockHandler([
-            new Response(200, ['Content-Type' => 'application/json'], json_encode([
-                'access_token' => 123456,
-                'expires_in'   => 7200
-            ])),
-            new Response(200, ['Content-Type' => 'application/json'], json_encode([
-                'errcode'   => 40002,
-                'errmsg'    => 'invalid grant type'
-            ]))
-        ]);
-        $handler = HandlerStack::create($mock);
-        $client = new Client(['handler' => $handler]);
-        $service = new WechatHttpService($client);
-        $service->request('GET', '/', []);
-    }
 
-    public function testRrefreshTokenAfterExpiry()
+    public function testRefreshTokenAfterExpiry()
     {
         $mock = new MockHandler([
             new Response(200, ['Content-Type' => 'application/json'], json_encode([
@@ -125,7 +104,7 @@ class WechatHttpServiceTest extends TestCase
         $handler = HandlerStack::create($mock);
         $client = new Client(['handler' => $handler]);
         $service = new WechatHttpService($client);
-        $service->request('GET', '/', []);
+        $resp = $service->request('GET', '/', []);
     }
 
     public function testServiceProvider()

@@ -6,7 +6,7 @@ interface HttpServiceInterface
     /**
      * Request or refresh access token
      */
-    public function refresh();
+    public function requestToken();
 
     /**
      * Get the current valid access token

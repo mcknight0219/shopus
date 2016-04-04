@@ -2,31 +2,41 @@
 
 namespace App\Listeners;
 
-use App\Events\CateogryFound;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Event;
+use App\Events\CategoryFound;
+use App\Wechat\Store\Category;
+
 
 class GetSubcategory
 {
     /**
      * Create the event listener.
-     *
-     * @return void
      */
     public function __construct()
     {
-        //
     }
 
     /**
      * Handle the event.
      *
-     * @param  CateogryFound  $event
+     * @param  \App\Events\CategoryFound  $event
      * @return void
      */
-    public function handle(CateogryFound $event)
+    public function handle(CategoryFound $event)
     {
-        app()->make('App\Wechat\HttpServiceInterface')
-            ->request('POST', 'merchant/category/getsub', [cate_id => $event->catetory])    
+        $result = app()->make('App\Wechat\HttpServiceInterface')
+            ->request('POST', 'merchant/category/getsub', [cate_id => $event->catetory]);
+
+        if ($result->get('errmsg') === 'success') {
+            collect($result->get('cate_list'))->each(function ($cate) use ($event) {
+                Category::create([
+                    'id'        => $cate['id'],
+                    'name'      => $cate['name'],
+                    'parent'    => $event->category
+                ]);
+                Event::fire(new CategoryFound(['id' => $cate['id']]));
+            });
+        }
+
     }
 }

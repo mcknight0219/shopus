@@ -6,18 +6,18 @@ use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class CateogryFound extends Event
+class CategoryFound extends Event
 {
     use SerializesModels;
 
     /**
      * @var integer
      */
-    public $cateory;
+    public $category;
     /**
      * Create a new event instance.
      *
-     * @return void
+     * @param array $payload
      */
     public function __construct(Array $payload)
     {
