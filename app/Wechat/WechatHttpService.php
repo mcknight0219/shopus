@@ -46,7 +46,7 @@ class WechatHttpService implements HttpServiceInterface
             json_decode($this->client->request('GET', 'token', [
                 'query' => [
                     'grant_type' => 'client_credential',
-                    'appid' => env('WECHAT_APPID'),
+                    'appid' => env('WECHAT_APP_ID'),
                     'secret' => env('WECHAT_APP_SECRET')
                 ]
             ])->getBody(), true)
