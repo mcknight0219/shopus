@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Log;
 use Storage;
 use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -20,7 +21,7 @@ class Profile extends Model
     /**
      * Save the profile photo
      * 
-     * @param  Symfony\Component\HttpFoundation\File\UploadedFile $file
+     * @param  \Symfony\Component\HttpFoundation\File\UploadedFile $file
      * @return Boolean 
      */
     public function savePhoto(UploadedFile $file)
@@ -41,7 +42,7 @@ class Profile extends Model
     }
 
     /**
-     * Check if user has subscribed to our offical account
+     * Check if user has subscribed to our official account
      * 
      * @return Boolean 
      */
@@ -52,6 +53,6 @@ class Profile extends Model
 
     public function needRemindSubscribe()
     {
-        return ! is_null($profile->weixin) && ! $profile->subscribed;
+        return ! is_null($this->weixin) && ! $this->subscribed;
     }
 }

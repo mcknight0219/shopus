@@ -25,7 +25,7 @@ class GetSubcategory
     public function handle(CategoryFound $event)
     {
         $result = app()->make('App\Wechat\HttpServiceInterface')
-            ->request('POST', 'merchant/category/getsub', [cate_id => $event->catetory]);
+            ->request('POST', 'merchant/category/getsub', ['cate_id' => $event->category]);
 
         if ($result->get('errmsg') === 'success') {
             collect($result->get('cate_list'))->each(function ($cate) use ($event) {

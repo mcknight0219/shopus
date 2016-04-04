@@ -22,7 +22,7 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\WechatScanned' => [
             'App\Listeners\BackfillVendor'
         ],
-        'App\Events\CateogryFound' => [
+        'App\Events\CategoryFound' => [
             'App\Listeners\GetSubcategory'
         ]
     ];

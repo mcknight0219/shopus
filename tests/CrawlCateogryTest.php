@@ -6,13 +6,17 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CrawlCateogryTest extends TestCase
 {
+    use DatabaseTransactions;
+
     /**
-     * A basic test example.
+     * Test the firing of various events
      *
      * @return void
      */
-    public function testExample()
+    public function testCrawlCategoryEvent()
     {
-        $this->assertTrue(true);
+        $this->expectsEvents(App\Events\CategoryFound::class);
+
+
     }
 }
