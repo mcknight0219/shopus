@@ -25,7 +25,7 @@ class GetSubcategory
     public function handle(CategoryFound $event)
     {
         $result = app()->make('StoreApi')
-            ->request('POST', 'merchant/category/getproperty', ['form_params' => ['cate_id' => 537876929]]);
+            ->request('POST', 'merchant/express/add', ['form_params' => []]);
         var_dump('Hello' . $result);
 
         if ($result->get('errmsg') === 'success') {

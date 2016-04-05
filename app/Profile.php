@@ -4,6 +4,7 @@ namespace App;
 
 use Log;
 use Storage;
+use App\Models\Subscriber;
 use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -31,12 +32,12 @@ class Profile extends Model
         }
 
         try {
-            $this->photo = $file->hashName();
+            $this->photo = md5_file($file->getRealPath());
             $this->save();
-            Storage::disk()->put($this->photo, $file);
+            Storage::disk()->put($this->photo, file_get_contents($file->getRealPath()));
             return true;
         } catch (\Exception $e) {
-            Log::error('Failed saving photo to user\'s profile');
+            Log::error('Failed saving photo to user\'s profile: ' . $e->getMessage());
             return false;
         }
     }
@@ -48,7 +49,7 @@ class Profile extends Model
      */
     public function subscribed()
     {
-        return !is_null(Subscriber::where('weixinId', $this->weixin)->get());    
+        return !is_null(Subscriber::where('weixinId', $this->weixin)->first());
     }
 
     public function needRemindSubscribe()

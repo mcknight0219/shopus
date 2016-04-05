@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Store's api is inconveniently different
         $this->app->singleton('StoreApi', function ($app) {
-            return new WechatHttpService(new Client(['base_uri' => 'https://api.weixin.qq.com']));
+            return new WechatHttpService(new Client(['base_uri' => 'https://api.weixin.qq.com/']));
         });
 
         $this->app->singleton('CustomMessageService', function ($app) {
