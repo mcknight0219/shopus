@@ -15,8 +15,6 @@ class CrawlCateogryTest extends TestCase
      */
     public function testCrawlCategoryEvent()
     {
-        $this->expectsEvents(App\Events\CategoryFound::class);
-
 
     }
 }

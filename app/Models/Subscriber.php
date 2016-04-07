@@ -9,7 +9,7 @@ class Subscriber extends Model
 {
     protected $table = 'subscribers';
 
-    protected $fillable = ['openId', 'weixinId'];
+    protected $fillable = ['openId'];
 
     protected $attributes = [
         'unsubscribed' => false
@@ -25,23 +25,4 @@ class Subscriber extends Model
         return ! $this->unsubscribed;
     }
 
-    /**
-     * Check if this subscriber is a vendor
-     * 
-     * @return Boolean
-     */
-    public function vendor()
-    {
-        return ! is_null($this->weixinId);    
-    }
-
-    /**
-     * Determine if a weixin user has subscribed  
-     *
-     * @return Boolean
-     **/
-    static public function isSubscribed($weixinId)
-    {
-        return ! static::where('weixinId', $weixinId)->get()->isEmpty();
-    }
 }

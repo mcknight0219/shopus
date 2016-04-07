@@ -11642,7 +11642,6 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf_token"]').attr('con
 
 var NameForm = require('./components/NameForm.vue');
 var AddressForm = require('./components/AddressForm.vue');
-var WeixinForm = require('./components/WeixinForm.vue');
 var UploadModal = require('./components/UploadModal.vue');
 var AddProductModal = require('./components/AddProductModal.vue');
 var ProductCell = require('./components/ProductCell.vue');
@@ -11652,7 +11651,6 @@ new Vue({
 
     data: {
         profileData: {
-            weixin: 'weixin id',
             city: 'city',
             country: 'country',
             name: 'Your Name',
@@ -11660,7 +11658,8 @@ new Vue({
             subscribed: false,
             editable: false,
             editing: false,
-            showModal: false
+            showModal: false,
+            qr: ''
         },
 
         cmsData: {
@@ -11672,17 +11671,12 @@ new Vue({
     computed: {
         address: function address() {
             return this.profileData.city + ' ' + this.profileData.country;
-        },
-
-        showQR: function showQR() {
-            return this.profileData.weixin !== 'weixin id' && !this.profileData.subscribed;
         }
     },
 
     components: {
         'name-form': NameForm,
         'address-form': AddressForm,
-        'weixin-form': WeixinForm,
         'modal': UploadModal,
         'add-product': AddProductModal,
         'product-cell': ProductCell
@@ -11698,20 +11692,24 @@ new Vue({
 
             var data = response.data;
             if (data.firstName.length > 0 && data.lastName.length > 0) {
-                this.profileData.name = data.firstName + ' ' + data.lastName;
+                vm.profileData.name = data.firstName + ' ' + data.lastName;
             }
             if (data.city.length > 0) {
-                this.profileData.city = data.city;
+                vm.profileData.city = data.city;
             }
             if (data.country.length > 0) {
-                this.profileData.country = data.country;
+                vm.profileData.country = data.country;
             }
             if (data.weixin.length > 0) {
-                this.profileData.weixin = data.weixin;
+                vm.profileData.subscribed = true;
+            } else {
+                console.log('Hello');
+                // need display qr ticket photo here
+                vm.$http.get('profile/qr').then(function (response) {
+                    console.log(response.data);
+                    vm.profileData.qr = response.data.qrPhoto;
+                });
             }
-
-            // check if user has subscribed to our offical account
-            this.profileData.subscribed = data.subscribed;
         }, function (error) {
             // what should we do here ?
         });
@@ -11733,9 +11731,6 @@ new Vue({
                 this.profileData.url = url + "?" + new Date().getTime();
             }
         },
-
-        // Watch if user has been entered anew
-        'profileData.weixin': function profileDataWeixin(val, oldVal) {},
 
         'cmsData.addShowProductModal': function cmsDataAddShowProductModal(val, oldVal) {
             // Modal closed, need to update product info
@@ -11787,7 +11782,7 @@ new Vue({
     }
 });
 
-},{"./components/AddProductModal.vue":30,"./components/AddressForm.vue":31,"./components/NameForm.vue":33,"./components/ProductCell.vue":34,"./components/UploadModal.vue":37,"./components/WeixinForm.vue":38,"vue":27,"vue-resource":16}],30:[function(require,module,exports){
+},{"./components/AddProductModal.vue":30,"./components/AddressForm.vue":31,"./components/NameForm.vue":33,"./components/ProductCell.vue":34,"./components/UploadModal.vue":37,"vue":27,"vue-resource":16}],30:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n.modal-mask {\n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .2);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n\n.moda-wrapper {\n    display: table-cell;\n    vertical-align: middle;\n}\n\n.product-modal-container { \n    font-size: .8em;\n    width: 650px;\n    margin: 0 auto;\n    padding: 20px 30px;\n    background-color: #fff;\n    border-radius: 2px;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n    position: relative;\n}\n\n.progress-overlay { \n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    background-color: rgba(0, 0, 0, .57);\n    z-index: 9999;\n}\n\n.moda-enter, .modal-leave { \n    opacity: 0;\n}\n\n.modal-enter .modal-container,\n.modal-leave .modal-container { \n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n\n.button-gap { \n    margin-left: 10px;\n}\n\n.large-button { \n    width: 120px;\n}\n\n.add-product-title { \n    font-size: 1.5em;\n    margin-bottom: 16px;\n}\n\n.add-product-subtitle { \n    margin-top: -0.5rem;\n    text-align: center;\n}\n")
 'use strict';
 
@@ -12291,72 +12286,6 @@ if (module.hot) {(function () {  module.hot.accept()
   var id = "/home/vagrant/Shopus/resources/assets/js/components/UploadModal.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\nh4 {\n    margin-bottom: 5px;\n}\n\n.file-selector { \n    margin-bottom: 25px;\n}\n\n.margindown { \n    margin-bottom: 15px;\n}\n\n.modal-mask { \n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .5);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n\n.modal-wrapper { \n    display: table-cell;\n    vertical-align: middle;\n}\n\n.modal-container { \n    width: 300px;\n    margin: 0 auto;\n    padding: 20px 30px;\n    background-color: #fff;\n    border-radius: 2px;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n}\n\n.modal-enter, .modal-leave { \n    opacity: 0;\n}\n\n.modal-enter .modal-container,\n.modal-leave .modal-container { \n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
-  if (!module.hot.data) {
-    hotAPI.createRecord(id, module.exports)
-  } else {
-    hotAPI.update(id, module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"vue":27,"vue-hot-reload-api":2,"vueify-insert-css":28}],38:[function(require,module,exports){
-var __vueify_style__ = require("vueify-insert-css").insert("\n.smaller {\n    font-size: 0.75em;\n}\n")
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    props: {
-        profile: {
-            type: Object,
-            required: true,
-            twoWay: true
-        }
-    },
-
-    data: function data() {
-        return {
-            weixin: '',
-            error: ''
-        };
-    },
-
-
-    computed: {
-        data: function data() {
-            return {
-                weixin: this.weixin
-            };
-        }
-    },
-
-    methods: {
-        update: function update() {
-            if (this.weixin.length === 0) {
-                this.error = "Please enter a value";
-                return;
-            }
-
-            this.$http.post('profile/edit', this.data).then(function (response) {
-                this.error = '';
-                this.profile.weixin = this.weixin;
-                $('#weixincell').next().webuiPopover('hide');
-            }, function (error) {
-                this.error = "Hmm, please try again later, will ya ?";
-            });
-        }
-    }
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"smaller\">\n    <form @submit.prevent=\"update\" class=\"pure-form pure-form-stacked\">\n        <div class=\"error\">{{ error }}</div>\n\n        <label for=\"weixin\">Weixin ID</label>\n        <input type=\"text\" v-model=\"weixin\">\n\n        <button type=\"submit\" class=\"pure-button pure-button-primary margintop1\">Save</button>\n    </form>\n</div>\n"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  var id = "/home/vagrant/Shopus/resources/assets/js/components/WeixinForm.vue"
-  module.hot.dispose(function () {
-    require("vueify-insert-css").cache["\n.smaller {\n    font-size: 0.75em;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {

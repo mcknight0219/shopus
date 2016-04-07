@@ -27,7 +27,6 @@ class EditProfileTest extends TestCase
         $this->actingAs($user)->json('POST', '/profile/edit', [
                 'firstName' => 'first name',
                 'lastName'  => 'last name',
-                'weixin'    => 'weixin id',
                 'country'   => 'canada',
                 'city'      => 'toronto'  
             ], ['HTTP_X-Requested-With' => 'XMLHttpRequest']
@@ -37,7 +36,6 @@ class EditProfileTest extends TestCase
 
         $this->assertEquals('first name',   $updated->firstName);
         $this->assertEquals('last name',    $updated->lastName);
-        $this->assertEquals('weixin id',    $updated->weixin);
         $this->assertEquals('canada',       $updated->country);
         $this->assertEquals('toronto',      $updated->city);
     }

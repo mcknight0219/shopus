@@ -23,7 +23,7 @@ class AssetService
     public function count($type)
     {
         try {
-            $resp = $this->httpService->request('GET', 'material/get_materialcount', []);
+            $resp = $this->httpService->request('GET', 'material/get_materialcount');
             $key = $type . '_count';
             return $resp[$key];
         } catch (\Exception $e) {

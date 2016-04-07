@@ -49,11 +49,6 @@ class Profile extends Model
      */
     public function subscribed()
     {
-        return !is_null(Subscriber::where('weixinId', $this->weixin)->first());
-    }
-
-    public function needRemindSubscribe()
-    {
-        return ! is_null($this->weixin) && ! $this->subscribed;
+        return !is_null(Subscriber::where('openId', $this->weixin)->first());
     }
 }

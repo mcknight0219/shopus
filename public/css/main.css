@@ -248,4 +248,18 @@ textarea {
 .error {
   color: red; }
 
+.qr-node {
+  position: fixed;
+  right: 50px;
+  top: 120px;
+  background: #fff;
+  z-index: 10;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+  opacity: .75; }
+
+.qr-text {
+  text-align: 'center';
+  font-size: .8em;
+  margin-top: -5px; }
+
 /*# sourceMappingURL=main.css.map */

@@ -18,11 +18,6 @@
                     <i class="fa fa-pencil editable pencil" v-show="profileData.editable || profileData.editing"
                        v-on:click="showNameEditor"></i>
                 </div>
-                <div class="profile-subcaption singleline">
-                    <span id="weixincell">@{{ profileData.weixin }}</span>
-                    <i class="fa fa-pencil editable pencil" v-show="profileData.editable || profileData.editing"
-                     v-on:click="showWeixinEditor"></i>
-                </div>
                 <div class="profile-address singleline margintop1">
                     <span id="addresscell">@{{ address }}</span>
                     <i class="fa fa-pencil editable pencil" v-show="profileData.editable || profileData.editing"
@@ -51,13 +46,10 @@
         <div id="addressFormPopover">
             <address-form :profile.sync="profileData"></address-form>
         </div>
-        <div id="weixinFormPopover">
-            <weixin-form :profile.sync="profileData"></weixin-form>
-        </div>
     </div>
 </div>
 
-<div class="qr-node" v-show="true">
+<div class="qr-node" v-show="profileData.qr">
     <img :src="profileData.qr" width="120px" height="120px">
-    <p class="centertext">扫一扫，添加我们的公众号。就可以开卖你的商品了 ！</p>   
+    <p class="qr-text">扫一扫，添加我们的公众号。就可以开卖你的商品了 ！</p>   
 </div>

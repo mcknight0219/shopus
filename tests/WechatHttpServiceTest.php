@@ -109,9 +109,9 @@ class WechatHttpServiceTest extends TestCase
 
     public function testServiceProvider()
     {
-        $service = App::make('App\Wechat\HttpServiceInterface');
+        $service = App::make('Api');
         $this->assertInstanceOf('App\Wechat\WechatHttpService', $service);
         // make sure wechat service is singleton
-        $this->assertSame($service, App::make('App\Wechat\HttpServiceInterface'));
+        $this->assertSame($service, App::make('Api'));
     }
 }

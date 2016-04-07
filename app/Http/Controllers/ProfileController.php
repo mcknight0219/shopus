@@ -2,27 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use Image;
-use Storage;
-use App\User;
+use App\QrTicket;
 use App\Http\Requests;
-use Wechat\QrTicketService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class ProfileController extends Controller
 {
-    public function getProfile(Request $request)
+    /**
+     * Get the profile data
+     *
+     * @return Illuminate\Http\Response
+     */
+    public function getProfile()
     {
-        $user = auth()->user(); 
-        return response()->json(array_merge($user->profile->toArray(), ['subscribed' => $user->subscribed, 'qrphoto' => $this->qrPhoto()]));
+        return response()->json(array_merge(auth()->user()->profile->toArray()));
     }
 
     /**
      * Only accessed first time user entered weixin id
-     * 
-     * @param  Request $request 
-     * @return Illuminate\Http\Response           
+     *
+     * @param  Request $request
+     * @return Illuminate\Http\Response
      */
     public function getQrPhoto(Request $request)
     {
@@ -31,12 +32,12 @@ class ProfileController extends Controller
 
     /**
      * Edit the profile attributes asynchronously
-     * 
-     * @param  Request $request 
-     * @return Illuminate\Http\Response 
+     *
+     * @param  Request $request
+     * @return Illuminate\Http\Response
      */
     public function postEditProfile(Request $request)
-    { 
+    {
         $profile = auth()->user()->profile;
         // Upload profile photo
         if ($request->hasFile('photo')) {
@@ -61,21 +62,19 @@ class ProfileController extends Controller
         }
     }
 
+    /**
+     * Get qr photo url or create one if none existing
+     *
+     * @return string 
+     */
     protected function qrPhoto() {
-        $profile = auth()->user()->profile;
-        /**
-         * If user hasn't entered his weixin or has already subscribed
-         * to the offical account, return empty string.
-         */
-        if (! $profile->needRemindSubscribe()) {
-            return '';
+        $id = auth()->user()->profile->id;
+        if (($url = QrTicket::where('scene', $id)->select('url')->first())) {
+            return $url;
         }
 
-        if (! is_null($url = QrTicket::where('scene', $profile->id)->select('url')->first())) {
-            return $url;
-        } 
-
         // Create a  Qr ticket through QrTicketService
-        return with(new QrTicketService)->createTicket($profile->id);
+        $qr = QrTicket::createAndReturn($id);
+        return $qr ? $qr->url : '';
     }
 }

@@ -44,7 +44,7 @@ class WechatHttpService implements HttpServiceInterface
     public function requestToken()
     {
         return collect(
-            json_decode(with(new Client(['base_uri' => 'https://api.weixin.qq.com/cgi-bin/']))->request('GET', 'token', [
+            json_decode($this->client->request('GET', 'token', [
                 'query' => [
                     'grant_type' => 'client_credential',
                     'appid' => env('WECHAT_APP_ID'),
@@ -93,6 +93,7 @@ class WechatHttpService implements HttpServiceInterface
         $this->rememberInCache($token);
 
         $body['query'] = ['ACCESS_TOKEN' => $token];
+        $body['headers'] = ['Content-Type' => 'application/json'];
         $resp = collect(
             json_decode(
                 $this->client->request($method, $path, $body)->getBody(),

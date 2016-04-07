@@ -25,7 +25,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get ('/',            'CmsController@index')->name('cms');
     Route::get ('register',     'Auth\AuthController@getRegister');
     Route::post('register',     'Auth\AuthController@postRegister');
-    Route::get ('login',        'Auth\AuthController@getLogin');
+    Route::get ('{login}',      'Auth\AuthController@getLogin')->where(['login' => 'login$']);
     Route::post('login',        'Auth\AuthController@postLogin');
     Route::get ('logout',       'Auth\AuthController@getLogout');
 });
@@ -50,5 +50,11 @@ Route::group(['middleware' => ['web', 'auth', 'admin']], function () {
    
 });
 
+/**
+ * Catch all route for non-existing pages
+ */
+Route::any('{catchcall}', function ($page) {
+    dd($page.' requested');
+})->where('catchall', '(.*)');
 
 

@@ -20,7 +20,7 @@ class PhotoController extends Controller
     public function getProfilePhoto()
     {
         $photo = Auth::user()->profile->photo;
-        return Image::make($photo ? $this->defaultPhoto() : Storage::disk('s3')->get($photo))->response();
+        return Image::make(!$photo ? $this->defaultPhoto() : Storage::disk('s3')->get($photo))->response();
     }
 
     /**
