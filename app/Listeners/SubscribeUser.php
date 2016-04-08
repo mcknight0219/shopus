@@ -12,8 +12,6 @@ class SubscribeUser
 {
     /**
      * Create the event listener.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -23,8 +21,7 @@ class SubscribeUser
     /**
      * Handle the event.
      *
-     * @param  WechatUserSubscribed  $event
-     * @return void
+     * @param  \App\Events\WechatUserSubscribed  $event
      */
     public function handle(WechatUserSubscribed $event)
     {

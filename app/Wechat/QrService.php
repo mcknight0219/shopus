@@ -2,6 +2,8 @@
 
 namespace App\Wechat;
 
+use Log;
+
 class QrService
 {
     private $httpService;

@@ -5,7 +5,6 @@ namespace App\Events;
 use App\Events\Event;
 use App\Models\Message;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class WechatUserSubscribed extends Event
 {
@@ -19,7 +18,7 @@ class WechatUserSubscribed extends Event
     /**
      * Create a new event instance.
      *
-     * @return void
+     * @param \App\Models\Message
      */
     public function __construct(Message $message)
     {
