@@ -15,7 +15,6 @@ class ForgetUser
      */
     public function __construct()
     {
-        //
     }
 
     /**

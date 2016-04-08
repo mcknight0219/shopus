@@ -47,7 +47,7 @@ class GrandDispatcher
     public function getResponse()
     {
         if ($this->response instanceof Message) {
-            return $this->response->toXml();
+            return response()->make($this->response->messageable->toXml(), 200, ['Content-Type' => 'application/xml']);
         } 
         return $this->response ?: 'success'; 
     }
@@ -59,13 +59,13 @@ class GrandDispatcher
      */
 	protected function event($msg)
     {
-        $eventName = collect([
+        $ev = collect([
             'subscribe'     => 'App\Events\WechatUserSubscribed',
             'unsubscribe'   => 'App\Events\WechatUserUnsubscribed',
             'scan'          => 'App\Events\WechatScanned'
         ])->get(Str::lower($msg->messageable->event));
         
-        Event::fire(new $eventName($msg));
+        $this->setResponse(event(new $ev($msg)));
     }
 
 	/**
@@ -78,12 +78,12 @@ class GrandDispatcher
     }
 
     /**
-     * After event is handled, a response can be sent back to weixin side
+     * Set the response of the event 
      *
      * @param mixed $msg
      */
-    protected function setRespondMessage($msg)
+    protected function setResponse($msg)
     {
-        $this->response = $msg;
+        $this->response = is_array($msg) ? $msg[0] : (string)$msg;
     }
 }

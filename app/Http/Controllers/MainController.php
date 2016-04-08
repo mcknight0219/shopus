@@ -10,6 +10,12 @@ use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
+    /**
+     * This is only called when Weixin first verify our server
+     * 
+     * @param  Request $request
+     * @return string
+     */
     public function getIndex(Request $request) 
     {
         if ($this->isCheckSignature($request)) {

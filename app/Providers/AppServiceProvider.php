@@ -38,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
             return new WechatHttpService(new Client(['base_uri' => 'https://api.weixin.qq.com/']));
         });
 
-        $this->app->singleton('CustomMessageService', function () {
+        $this->app->singleton('MessageService', function () {
             return new CustomMessageService($this->app->make('Api'));
         });
 

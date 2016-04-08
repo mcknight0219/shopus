@@ -29,9 +29,7 @@ class BackfillVendor
      */
     public function handle(WechatScanned $event)
     {
-        $scene = Str::substr($event->message->messageable->eventKey, Str::length('qrscene_'));
-        if ($scene !== 'regular') {
-            Subscriber::where('openId', $event->message->fromUserName)->get()->weixinId = $scene;
-        }        
+        $profileId = Str::substr($event->message->messageable->eventKey, Str::length('qrscene_'));
+        Profile::find($profileId)->update(['weixin' => $event->message->fromUserName]);
     }
 }

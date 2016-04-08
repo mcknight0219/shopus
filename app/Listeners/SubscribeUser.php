@@ -2,6 +2,8 @@
 
 namespace App\Listeners;
 
+use App\Profile;
+use App\MessageFactory;
 use App\Models\Subscriber;
 use Illuminate\Support\Str;
 use App\Events\WechatUserSubscribed;
@@ -15,7 +17,6 @@ class SubscribeUser
      */
     public function __construct()
     {
-        //
     }
 
     /**
@@ -26,15 +27,26 @@ class SubscribeUser
     public function handle(WechatUserSubscribed $event)
     {
         $m = $event->message;
-        $subscriber = new Subscriber;    
+        $subscriber = new Subscriber;
         $subscriber->openId = $m->fromUserName;
+        $subscriber->save();
         if (! is_null($m->messageable->eventKey)) {
-            $scene = Str::substr($m->messageable->eventKey, Str::length('qrscene_'));    
-            if ($scene !== 'regular') {
-                $subscriber->weixinId = $scene;
-            }
+            // scene id is profile id so we can link subscriber with user (a.k.a vendor)
+            $sceneId = Str::substr($m->messageable->eventKey, Str::length('qrscene_'));
+            $profile = Profile::find($sceneId);
+            $profile->weixin = $m->fromUserName;
         }
 
-        $subscriber->save();
+        // Return the text message to welcome user
+        return with(new MessageFactory)->create(
+            [
+                'FromUserName'  => env('WECHAT_ACCOUNT'),
+                'ToUserName'    => $m->toUserName,
+                'CreateTime'    => time(),
+                'MsgType'       => 'text',
+                'Content'       => 'Weclome to our official account !'
+            ],
+            'outbound'
+        );
     }
 }

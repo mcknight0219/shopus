@@ -1,8 +1,11 @@
 <?php
+
 namespace App\Wechat;
 
-use App\Wechat\HttpServiceInterface;
 use Log;
+use App\Model\Message;
+use App\Wechat\HttpServiceInterface;
+
 /**
  * Send customer message when certain events happen
  *
@@ -10,18 +13,33 @@ use Log;
  */
 class CustomMessageService
 {
+    /**
+     * @var \App\Wechat\HttpServiceInterface
+     */
     protected $httpService;
 
+    /**
+     * Make new instance of service.
+     *
+     * @param \App\Wechat\HttpServiceInterface $httpService
+     */
     public function __construct(HttpServiceInterface $httpService)
     {
         $this->httpService = $httpService;
     }
 
+    /**
+     * Send a text message to a user
+     *
+     * @param integer $customer
+     * @param string  $text 
+     * @return void
+     */
     public function sendText($customer, $text)
     {
         try {
             $this->httpService->request('POST', 'message/custom/send', [
-                'body' => [
+                'form_params' => [
                     'touser'    => $customer,
                     'msgtype'   => 'text',
                     'text'      => [
@@ -34,11 +52,18 @@ class CustomMessageService
         }
     }
 
+    /**
+     * Send an image message to a user
+     *
+     * @param integer $customer
+     * @param integer $mediaId
+     * @return void
+     */
     public function sendImage($customer, $mediaId)
     {
         try {
             $this->httpService->request('POST', 'message/custom/send', [
-               'body' => [
+               'form_params' => [
                    'touser'     => $customer,
                    'msgtype'    => 'image',
                    'image'      => [
@@ -50,12 +75,19 @@ class CustomMessageService
             $this->logError($e);
         }
     }
-
+    
+    /**
+     * Send an voice message to a user
+     *
+     * @param integer $customer
+     * @param integer $mediaId
+     * @return void
+     */
     public function sendVoice($customer, $mediaId)
     {
         try {
             $this->httpService->request('POST', 'message/custom/send', [
-                'body' => [
+                'form_params' => [
                     'touser'    => $customer,
                     'msgtype'   => 'voice',
                     'voice'     => [
@@ -68,11 +100,18 @@ class CustomMessageService
         }
     }
 
+    /**
+     * Send an voice message to a user
+     *
+     * @param integer $customer
+     * @param integer $mediaId
+     * @return void
+     */
     public function sendArticle($customer, $mediaId)
     {
         try {
             $this->httpService->request('POST', 'message/custom/send', [
-                'body' => [
+                'form_params' => [
                     'touser'    => $customer,
                     'msgtype'   => 'mpnews',
                     'mpnews'    => [
