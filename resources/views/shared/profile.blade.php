@@ -49,7 +49,7 @@
     </div>
 </div>
 
-<div class="qr-node" v-show="profileData.qr">
-    <img :src="profileData.qr" width="120px" height="120px">
-    <p class="qr-text">扫一扫，添加我们的公众号。就可以开卖你的商品了 ！</p>   
+<div class="qr-node" v-show="profileData.ticket">
+    <img :src="profileData.ticketUrl" width="150px" height="150px">
+    <p class="qr-text">扫描二维码加入平台</p>
 </div>

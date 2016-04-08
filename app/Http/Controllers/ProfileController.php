@@ -27,7 +27,7 @@ class ProfileController extends Controller
      */
     public function getQrPhoto(Request $request)
     {
-        return response()->json(['status' => 'ok', 'qrphoto' => $this->qrPhoto()]);
+        return response()->json(['status' => 'ok', 'ticket' => $this->qrPhoto()]);
     }
 
     /**
@@ -69,12 +69,12 @@ class ProfileController extends Controller
      */
     protected function qrPhoto() {
         $id = auth()->user()->profile->id;
-        if (($url = QrTicket::where('scene', $id)->select('url')->first())) {
-            return $url;
+        if (($qr = QrTicket::where('scene', $id)->select('ticket')->first())) {
+            return $qr->ticket;
         }
 
         // Create a  Qr ticket through QrTicketService
         $qr = QrTicket::createAndReturn($id);
-        return $qr ? $qr->url : '';
+        return $qr ? $qr->ticket : '';
     }
 }

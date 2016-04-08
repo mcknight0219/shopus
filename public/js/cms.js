@@ -11659,7 +11659,8 @@ new Vue({
             editable: false,
             editing: false,
             showModal: false,
-            qr: ''
+            ticket: '',
+            ticketUrl: ''
         },
 
         cmsData: {
@@ -11671,6 +11672,12 @@ new Vue({
     computed: {
         address: function address() {
             return this.profileData.city + ' ' + this.profileData.country;
+        },
+
+        ticketUrl: function ticketUrl() {
+            if (this.profileData.ticket.length > 0) {
+                return;
+            }
         }
     },
 
@@ -11706,8 +11713,8 @@ new Vue({
                 console.log('Hello');
                 // need display qr ticket photo here
                 vm.$http.get('profile/qr').then(function (response) {
-                    console.log(response.data);
-                    vm.profileData.qr = response.data.qrPhoto;
+                    vm.profileData.ticket = response.data.ticket;
+                    vm.profileData.ticketUrl = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + encodeURI(vm.profileData.ticket);
                 });
             }
         }, function (error) {
@@ -11911,7 +11918,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/Shopus/resources/assets/js/components/AddProductModal.vue"
+  var id = "/home/vagrant/shopus/resources/assets/js/components/AddProductModal.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n.modal-mask {\n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .2);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n\n.moda-wrapper {\n    display: table-cell;\n    vertical-align: middle;\n}\n\n.product-modal-container { \n    font-size: .8em;\n    width: 650px;\n    margin: 0 auto;\n    padding: 20px 30px;\n    background-color: #fff;\n    border-radius: 2px;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n    position: relative;\n}\n\n.progress-overlay { \n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    background-color: rgba(0, 0, 0, .57);\n    z-index: 9999;\n}\n\n.moda-enter, .modal-leave { \n    opacity: 0;\n}\n\n.modal-enter .modal-container,\n.modal-leave .modal-container { \n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n\n.button-gap { \n    margin-left: 10px;\n}\n\n.large-button { \n    width: 120px;\n}\n\n.add-product-title { \n    font-size: 1.5em;\n    margin-bottom: 16px;\n}\n\n.add-product-subtitle { \n    margin-top: -0.5rem;\n    text-align: center;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -11980,7 +11987,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/Shopus/resources/assets/js/components/AddressForm.vue"
+  var id = "/home/vagrant/shopus/resources/assets/js/components/AddressForm.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n.smaller {\n    font-size: 0.75em;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -11998,7 +12005,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/Shopus/resources/assets/js/components/Error.vue"
+  var id = "/home/vagrant/shopus/resources/assets/js/components/Error.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n.error-component {\n    color: red;\n    font-size: 0.9em; \n}\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -12067,7 +12074,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/Shopus/resources/assets/js/components/NameForm.vue"
+  var id = "/home/vagrant/shopus/resources/assets/js/components/NameForm.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n.smaller {\n    font-size: 0.75em;\n};\n\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -12110,7 +12117,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/Shopus/resources/assets/js/components/ProductCell.vue"
+  var id = "/home/vagrant/shopus/resources/assets/js/components/ProductCell.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n.nowrap {\n    white-space: nowrap;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -12192,7 +12199,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/Shopus/resources/assets/js/components/ProductPhotoUploader.vue"
+  var id = "/home/vagrant/shopus/resources/assets/js/components/ProductPhotoUploader.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n.image-upload img { \n    cursor: pointer;\n    border-radius: 9px;\n}\n\n.image-upload { \n    display: inline-block;\n    float: left;\n    margin-left: 15px;\n}\n\n.image-upload .title { \n    margin-bottom: 3px;\n    text-align: center;\n    font-size: 1.1em;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -12210,7 +12217,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/Shopus/resources/assets/js/components/Spinner.vue"
+  var id = "/home/vagrant/shopus/resources/assets/js/components/Spinner.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n.loader:before,\n.loader:after,\n.loader {\n    border-radius: 50%;\n    width: 2.5em;\n    height: 2.5em;\n    -webkit-animation-fill-mode: both;\n    animation-fill-mode: both;\n    -webkit-animation: load7 1.8s infinite ease-in-out;\n    animation: load7 1.8s infinite ease-in-out;\n}\n.loader {\n    font-size: 10px;\n    margin: 80px auto;\n    position: relative;\n    text-indent: -9999em;\n    -webkit-transform: translateZ(0);\n    -ms-transform: translateZ(0);\n    transform: translateZ(0);\n    -webkit-animation-delay: -0.16s;\n    animation-delay: -0.16s;\n}\n.loader:before {\n    left: -3.5em;\n    -webkit-animation-delay: -0.32s;\n    animation-delay: -0.32s;\n}\n.loader:after {\n    left: 3.5em;\n}\n.loader:before,\n.loader:after {\n    content: '';\n    position: absolute;\n    top: 0;\n}\n@-webkit-keyframes load7 {\n    0%,\n    80%,\n    100% {\n        box-shadow: 0 2.5em 0 -1.3em #ffffff;\n    }\n    40% {\n        box-shadow: 0 2.5em 0 0 #ffffff;\n    }\n}\n@keyframes load7 {\n    0%,\n    80%,\n    100% {\n        box-shadow: 0 2.5em 0 -1.3em #ffffff;\n    }\n    40% {\n        box-shadow: 0 2.5em 0 0 #ffffff;\n    }\n}\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -12283,7 +12290,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/Shopus/resources/assets/js/components/UploadModal.vue"
+  var id = "/home/vagrant/shopus/resources/assets/js/components/UploadModal.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\nh4 {\n    margin-bottom: 5px;\n}\n\n.file-selector { \n    margin-bottom: 25px;\n}\n\n.margindown { \n    margin-bottom: 15px;\n}\n\n.modal-mask { \n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .5);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n\n.modal-wrapper { \n    display: table-cell;\n    vertical-align: middle;\n}\n\n.modal-container { \n    width: 300px;\n    margin: 0 auto;\n    padding: 20px 30px;\n    background-color: #fff;\n    border-radius: 2px;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n}\n\n.modal-enter, .modal-leave { \n    opacity: 0;\n}\n\n.modal-enter .modal-container,\n.modal-leave .modal-container { \n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n"] = false
     document.head.removeChild(__vueify_style__)

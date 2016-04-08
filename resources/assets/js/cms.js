@@ -21,7 +21,8 @@ new Vue({
             editable: false,
             editing: false,
             showModal: false,
-            qr: ''
+            ticket: '',
+            ticketUrl: ''
         },
 
         cmsData: { 
@@ -33,6 +34,12 @@ new Vue({
     computed: {
         address: function () {
             return this.profileData.city + ' ' + this.profileData.country;
+        },
+
+        ticketUrl: function () {
+            if (this.profileData.ticket.length > 0) {
+                return ;
+            }
         }
     },
 
@@ -68,8 +75,8 @@ new Vue({
                 console.log('Hello');
                 // need display qr ticket photo here
                 vm.$http.get('profile/qr').then(function (response) {
-                    console.log(response.data);
-                   vm.profileData.qr = response.data.qrPhoto;     
+                    vm.profileData.ticket = response.data.ticket;
+                    vm.profileData.ticketUrl = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + encodeURI(vm.profileData.ticket);
                 });
             }
         }, function (error) { 
