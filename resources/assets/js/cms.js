@@ -72,7 +72,6 @@ new Vue({
             if (data.weixin.length > 0) {
                 vm.profileData.subscribed = true;
             } else {
-                console.log('Hello');
                 // need display qr ticket photo here
                 vm.$http.get('profile/qr').then(function (response) {
                     vm.profileData.ticket = response.data.ticket;

@@ -103,7 +103,7 @@ class MessageFactory
         $basic = $this->createBasic($fields);
 
         $event = new Event;
-        $extra = collect($fields)->filter(function ($val, $name) { return !in_array($name, $this->common); });
+        $extra = collect($fields)->filter(function ($val, $name) { return !in_array($name, $this->common); })->toArray();
         $event->event       = Str::lower($extra->get('Event'));
         $event->ticket      = $extra->get('Ticket');
         $event->eventKey    = $extra->get('EventKey');
