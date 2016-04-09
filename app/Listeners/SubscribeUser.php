@@ -7,8 +7,6 @@ use App\MessageFactory;
 use App\Models\Subscriber;
 use Illuminate\Support\Str;
 use App\Events\WechatUserSubscribed;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class SubscribeUser
 {
@@ -23,28 +21,48 @@ class SubscribeUser
      * Handle the event.
      *
      * @param  \App\Events\WechatUserSubscribed  $event
+     * @return \App\Models\Message
      */
     public function handle(WechatUserSubscribed $event)
     {
         $m = $event->message;
-        $subscriber = new Subscriber;
-        $subscriber->openId = $m->fromUserName;
+        /**
+         * openId is always unique to our official account, so if user subscribes
+         * again, we just need to toggle un-subscribed flag.
+         */
+        if($subscriber = Subscriber::where('openId', $m->fromUserName)->where('unsubscribed', true)->first()) {
+            $subscriber->unsubscribed = false;
+        } else {
+            $subscriber = new Subscriber;
+            $subscriber->openId = $m->fromUserName;
+        }
         $subscriber->save();
-        if (! is_null($m->messageable->eventKey)) {
+
+        // Link profile with subscriber if subscribe comes from profile page.
+        if ($key = $m->messageable->eventKey) {
             // scene id is profile id so we can link subscriber with user (a.k.a vendor)
-            $sceneId = Str::substr($m->messageable->eventKey, Str::length('qrscene_'));
-            $profile = Profile::find($sceneId);
-            $profile->weixin = $m->fromUserName;
+            Profile::find(Str::substr($key, Str::length('qrscene_')))->update(['weixin' => $m->fromUserName]);
         }
 
-        // Return the text message to welcome user
+        return $this->greetMessage($m->fromUserName, !is_null($key));
+    }
+
+    /**
+     * Greeting user after subscription.
+     *
+     * @param   string    $to
+     * @param   bool      $isVendor
+     * @return  \App\Models\Message
+     */
+    protected function greetMessage($to, $isVendor = false)
+    {
         return with(new MessageFactory)->create(
             [
                 'FromUserName'  => env('WECHAT_ACCOUNT'),
-                'ToUserName'    => $m->toUserName,
+                'ToUserName'    => $to,
                 'CreateTime'    => time(),
                 'MsgType'       => 'text',
-                'Content'       => 'Weclome to our official account !'
+                'Content'       => $isVendor ? '欢迎加入Shopus! 开始分享你的商品吧' : '欢迎订阅我们的公众号 !'
             ],
             'outbound'
         );
