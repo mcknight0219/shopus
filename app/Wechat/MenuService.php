@@ -12,23 +12,40 @@ class MenuService
         $this->httpService = $httpService;
     }
 
-    public function create($definition)
+    /**
+     * Create the menu definition
+     *
+     * @param array $definition
+     * @return \Illuminate\Support\Collection
+     */
+    public function create(Array $definition)
     {
         try {
-            $this->httpService->request('POST', 'menu/create', [
+            $resp = $this->httpService->request('POST', 'menu/create', [
                 'form_params'   => $definition
             ]);
         } catch (\Exception $e) {
             Log::error("Menu service: {$e->getMessage()}");
+            $resp = collect();
+        } finally {
+            return $resp;
         }
     }
 
+    /**
+     * Get all menu definition for official account
+     *
+     * @return mixed
+     */
     public function info()
     {
         try {
-            $info = $this->httpService->request('GET', 'get_current_selfmenu_info', []);
+            $resp = $this->httpService->request('GET', 'get_current_selfmenu_info');
         } catch (\Exception $e) {
             Log::error("Menu service: {$e->getMessage()}");
+            $resp = collect();
+        } finally {
+            return $resp;
         }
     }
 }

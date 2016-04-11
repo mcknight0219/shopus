@@ -14,8 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\Inspire::class,
-        Commands\CrawlCategory::class,
-        Commands\CrawlSKU::class
+        Commands\MakeMenu::class,
+        Commands\ManageGroup::class
     ];
 
     /**

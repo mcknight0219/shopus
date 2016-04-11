@@ -103,10 +103,11 @@ class MessageFactory
         $basic = $this->createBasic($fields);
 
         $event = new Event;
-        $extra = collect($fields)->filter(function ($val, $name) { return !in_array($name, $this->common); })->toArray();
+        $extra = collect($fields)->filter(function ($val, $name) { return !in_array($name, $this->common); });
         $event->event       = Str::lower($extra->get('Event'));
         $event->ticket      = $extra->get('Ticket');
-        $event->eventKey    = $extra->get('EventKey');
+        // Weixin sent empty array for unsubscribe event
+        $event->eventKey    = $extra->get('EventKey') ?: null;
         if ($extra->has('Latitude')) {
             $event->eventKey = implode(';', $extra->only('Latitude', 'Longitude', 'Precision')->values()->toArray());
         }

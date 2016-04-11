@@ -25,7 +25,7 @@ class ForgetUser
      */
     public function handle(WechatUserUnsubscribed $event)
     {
-        $subscriber = Subscriber::where('openId', intval($event->message->fromUserName))->first();
+        $subscriber = Subscriber::where('openId', $event->message->fromUserName)->first();
         $subscriber->unsubscribed = true;
         $subscriber->save();
     }
