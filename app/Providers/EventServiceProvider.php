@@ -24,6 +24,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\CategoryFound' => [
             'App\Listeners\GetSubcategory'
+        ],
+        'App\Events\ChangeSubscriberGroup' => [
+            'App\Listeners\ChangeSubscriberGroup'
         ]
     ];
 
