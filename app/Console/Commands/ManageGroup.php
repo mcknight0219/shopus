@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use DB;
 use App\Wechat\MenuService;
 use Illuminate\Console\Command;
 
@@ -46,11 +47,15 @@ class ManageGroup extends Command
      *
      * @param \Closure  $request
      * @param \Closure  $output
+     * @param \Closure  $persist
      */
-    protected function runCommand(\Closure $request, \Closure $output) 
+    protected function runCommand(\Closure $request, \Closure $output, \Closure $persist = null) 
     {
         try {
             $output($request());
+            if ($persist) {
+                $persist();
+            }
         } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
@@ -108,6 +113,9 @@ class ManageGroup extends Command
                     function($resp) {
                         $this->sayError($resp);
                         $this->info('Successfully rename a group');
+                    },
+                    function() use($id, $name) {
+                        DB::table('groups')->where('id', $id)->update(['name' => $name]);
                     }
                 );
                 break;
@@ -126,6 +134,9 @@ class ManageGroup extends Command
                     function($resp) {
                         $this->sayError($resp);
                         $this->info('Successfully delete a group');    
+                    },
+                    function() use($id) {
+                        DB::table('groups')->where('id', $id)->delete();
                     }
                 );
                 break;
@@ -141,9 +152,16 @@ class ManageGroup extends Command
                             ]
                         ]);
                     },
-                    function($resp) {
+                    function($resp) use(&$id) {
                         $this->sayError($resp);
+                        $id = $resp->get('group')['id'];
                         $this->info("Create a group: {$resp->get('group')['id']} {$resp->get('group')['name']}");    
+                    },
+                    function() use(&$id, $name) {
+                        DB::table('groups')->insert([
+                            'id'    => $id,
+                            'name'  => $name
+                        ]);
                     } 
                 );
                 break;
