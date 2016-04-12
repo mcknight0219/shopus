@@ -3,25 +3,23 @@
 namespace App\Events;
 
 use App\Events\Event;
+use App\Models\Subscriber;
 
 class ChangeSubscriberGroup extends Event
 {
     /**
-     * @var array
+     * @var \App\Models\Subscriber
      */
-    public $data;
+    public $subscriber;
 
     /**
      * Create a new event instance.
      *
-     * @return void
+     * @param \App\Models\Subscriber $subscriber
      */
-    public function __construct($openId, $toGroupId)
+    public function __construct(Subscriber $subscriber)
     {
-        $this->data = [
-            'openId'    => $openId,
-            'toGroupId' => $toGroupId
-        ];
+        $this->subscriber = $subscriber;
     }
 
     /**

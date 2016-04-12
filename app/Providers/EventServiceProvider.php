@@ -26,7 +26,7 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\GetSubcategory'
         ],
         'App\Events\ChangeSubscriberGroup' => [
-            'App\Listeners\ChangeSubscriberGroup'
+            'App\Listeners\MoveSubscriberGroup'
         ]
     ];
 
